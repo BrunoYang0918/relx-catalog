@@ -1870,7 +1870,7 @@ function renderHero() {
     var p = entry.product;
     var showName = p.name;
     if (lang !== 'zh' && p.i18n && p.i18n[lang] && p.i18n[lang].name) showName = p.i18n[lang].name;
-    html += '<div class="hero-card" onclick="toggleSelect(event,' + p.id + ')">'
+    html += '<div class="hero-card">'
       + '<span class="hc-badge">🔥 热销</span>'
       + '<div class="hc-img"><img src="' + p.img + '" alt=""></div>'
       + '<div class="hc-name">' + showName + '</div>'

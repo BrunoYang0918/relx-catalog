@@ -1727,6 +1727,7 @@ function updateTotal() {
 function checkCompatibility() {
   var items = getCartItems();
   var podSeries = {};
+  var seriesNames = {pro:'幻影Pro', phantom:'幻影', qingyu:'青羽', daqian:'大千', zeus:'宙斯', niche:'小众精选'};
   items.forEach(function(i) {
     var s = i.product.series;
     if (['pro','phantom','qingyu','daqian','zeus','niche'].indexOf(s) !== -1) {
@@ -1736,8 +1737,11 @@ function checkCompatibility() {
   var seriesList = Object.keys(podSeries);
   var warnEl = document.getElementById('cartWarn');
   if (!warnEl) return;
-  if (seriesList.length >= 2) {
-    warnEl.textContent = '💡 你选了 ' + seriesList.length + ' 种不同系列的烟弹（' + seriesList.join('、') + '），它们可能需要不同的烟具。发给客服帮你确认适配。';
+  // 大千和宙斯是专属接口，与其他系列混选才需要提醒
+  var hasStandalone = seriesList.indexOf('daqian') !== -1 || seriesList.indexOf('zeus') !== -1;
+  if (hasStandalone && seriesList.length >= 2) {
+    var names = seriesList.map(function(s) { return seriesNames[s] || s; });
+    warnEl.textContent = '💡 你选了 ' + names.join('、') + '，大千/宙斯是专属接口。发给客服帮你确认适配。';
     warnEl.style.display = 'block';
   } else {
     warnEl.style.display = 'none';

@@ -2131,27 +2131,11 @@ document.getElementById("cartPanel").addEventListener("click", function(e) {
   if (e.target === document.getElementById("cartPanel")) closeCart();
 });
 
-// 导航跳转（手动控制偏移，避免标题被遮挡）
-(function() {
-  var nav = document.getElementById('quickNav');
-  var OFFSET = 120;
-  nav.querySelectorAll('a').forEach(function(a) {
-    a.addEventListener('click', function(e) {
-      e.preventDefault();
-      var id = this.getAttribute('href').substring(1);
-      var el = document.getElementById(id);
-      if (el) {
-        var top = el.getBoundingClientRect().top + window.scrollY - OFFSET;
-        window.scrollTo({ top: top, behavior: 'smooth' });
-      }
-    });
-  });
-})();
-
-// 导航高亮
+// 导航跳转 + 高亮
 (function() {
   var nav = document.getElementById('quickNav');
   var links = nav.querySelectorAll('a');
+  var OFFSET = 120;
   var sections = [];
   links.forEach(function(a) {
     var id = a.getAttribute('href').substring(1);
@@ -2159,7 +2143,7 @@ document.getElementById("cartPanel").addEventListener("click", function(e) {
     if (el) sections.push({ el: el, link: a });
   });
   function update() {
-    var scrollY = window.scrollY + 120;
+    var scrollY = window.scrollY + OFFSET;
     var active = null;
     sections.forEach(function(s) {
       if (s.el.offsetTop <= scrollY) active = s.link;
@@ -2167,7 +2151,20 @@ document.getElementById("cartPanel").addEventListener("click", function(e) {
     links.forEach(function(l) { l.classList.remove('hl'); });
     if (active) active.classList.add('hl');
   }
+  links.forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      var id = this.getAttribute('href').substring(1);
+      var el = document.getElementById(id);
+      if (el) {
+        var top = el.getBoundingClientRect().top + window.scrollY - OFFSET;
+        window.scrollTo({ top: top, behavior: 'smooth' });
+        setTimeout(update, 400);
+      }
+    });
+  });
   window.addEventListener('scroll', update, { passive: true });
+  if ('onscrollend' in window) window.addEventListener('scrollend', update);
   update();
 })();
 </script>

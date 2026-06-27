@@ -1919,6 +1919,14 @@ document.getElementById('filterBar').addEventListener('click', function(e) {
       header.style.display = hasVisible ? '' : 'none';
     }
   });
+  // 筛选后滚到第一个匹配产品
+  if (filter !== 'all') {
+    var firstMatch = document.querySelector('#pod-pro .product-card:not([style*="none"]), #pod-phantom .product-card:not([style*="none"]), #pod-qingyu .product-card:not([style*="none"]), #pod-daqian .product-card:not([style*="none"]), #pod-zeus .product-card:not([style*="none"]), #pod-niche .product-card:not([style*="none"])');
+    if (firstMatch) {
+      var top = firstMatch.getBoundingClientRect().top + window.pageYOffset - 140;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    }
+  }
 });
 
 // 筛选栏：滚动到一次性区域时自动隐藏

@@ -903,7 +903,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
     <div class="cp-foot">
       <div class="cp-total">预估参考 <span id="cartTotal">¥0</span></div>
       <div class="cp-puffs" id="cartPuffs"></div>
-      <div class="cp-disclaimer">*口数及包烟数据为估算值，因个人肺活量及抽吸习惯不同，仅供参考</div>
+      <div class="cp-disclaimer" id="cartDisclaimer">*口数及包烟数据为估算值，因个人肺活量及抽吸习惯不同，仅供参考</div>
       <div class="cp-actions">
         <button class="btn-clear" onclick="clearCart()">🗑️ 清空</button>
         <button class="btn-copy" onclick="copyCart()">📋 文字清单</button>
@@ -1728,6 +1728,8 @@ function updateTotal() {
   } else if (puffEl) {
     puffEl.textContent = '';
   }
+  var disc = document.getElementById('cartDisclaimer');
+  if (disc) disc.style.display = hasPodOrDisp ? '' : 'none';
 }
 
 function checkCompatibility() {

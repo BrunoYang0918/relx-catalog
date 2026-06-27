@@ -1147,7 +1147,7 @@ function renderProductCard(p) {
 
 function renderDeviceSection(d) {
   var html = '<div class="section-header' + (d.name.indexOf("青羽") === 0 ? ' first' : '') + '"><h2>' + d.name + '</h2></div>';
-  var isNarrow = d.colors.length <= 2;
+  var isNarrow = d.colors.length <= 2 && d.name.indexOf("青羽") !== 0;
   html += '<div class="card-grid' + (isNarrow ? ' narrow' : '') + '">';
   d.colors.forEach(function(c) {
     var dp = DEVICE_PRODUCTS.find(function(x) { return x.img === c.img; });

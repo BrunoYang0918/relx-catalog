@@ -1,0 +1,56 @@
+# ----------------------------------
+# 悦刻产品图册 · Git 忽略规则
+# ----------------------------------
+
+# === 文档源文件（只托管最终 HTML）===
+*.docx
+*.pdf
+~$*
+
+# === 大文件 / 压缩包 ===
+*.zip
+*.mp4
+
+# === 临时文件 & 部署历史 ===
+.deploy/
+.deploy-v2/
+.playwright-cli/
+
+# === IDE / 系统 ===
+.workbuddy/
+.DS_Store
+Thumbs.db
+
+# === 杂项 ===
+pic*.jpg
+*彩页*.jpg
+*彩页*.png
+GitHub-Pages*.png
+"抽   奖   箱.pdf"
+
+# === 长图 ===
+产品图册-长图.png
+
+# === device_colors 中文名重复文件（已用英文名替代）===
+device_colors/大千_黑.png
+device_colors/宙斯_黑.png
+device_colors/幻影Pro_白.png
+device_colors/幻影Pro_粉.png
+device_colors/幻影Pro_银.png
+device_colors/幻影Pro_黑.png
+device_colors/幻影五代_嫩绿.png
+device_colors/幻影五代_渐变紫.png
+device_colors/幻影五代_渐变金.png
+device_colors/幻影五代_银.png
+device_colors/幻影五代_黑.png
+device_colors/御影S_雅灰.png
+device_colors/青羽_银.png
+device_colors/青羽_黑.png
+
+# === 本地多版本 HTML（非主站文件）===
+产品图册-融合版.html
+产品图册-融合版-备份-*.html
+产品图册-融合版-打印.html
+产品图册-自包含.html
+产品图册-移动版.html
+产品图册-门店特供版.html

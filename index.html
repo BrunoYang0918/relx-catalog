@@ -1081,6 +1081,7 @@ function getRenderLang() {
 }
 
 function getPuffs(p) {
+  if (p.id >= 200) return 0;
   if (p.id === 111 || p.id === 112) return 1800;
   var bySeries = { pro: 300, phantom: 300, qingyu: 300, daqian: 1500, zeus: 430, niche: 300 };
   if (p.series && bySeries[p.series] !== undefined) {

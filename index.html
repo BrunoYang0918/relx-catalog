@@ -86,10 +86,13 @@ main { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
 .section { padding: 16px 12px; }
 .section-header {
   text-align: center; padding: 20px 16px 12px;
-  border-top: 2px solid var(--gold); margin: 0 0 8px;
-  scroll-margin-top: 94px;
+  border-top: 1.5px solid var(--gold); margin: 0 16px 8px; opacity: .6;
+  scroll-margin-top: 120px;
 }
 .section-header.first { border-top: none; padding-top: 8px; }
+.section-header.major {
+  border-top-width: 2px; opacity: 1; margin: 0 0 8px;
+}
 .section-header h2 { font-size: 18px; color: var(--teal); font-weight: 700; }
 .section-header .subtitle { font-size: 13px; color: var(--text-light); margin-top: 4px; }
 
@@ -109,9 +112,6 @@ main { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
   transition: transform .15s;
 }
 .product-card:active { transform: scale(.98); }
-.product-card.best { border-color: var(--gold); border-width: 2px; }
-.product-card.star { border-color: var(--red); border-width: 2px; }
-.product-card.tip { border-color: var(--green); border-width: 2px; }
 
 /* 窄列横向卡片（烟具 ≤2 色） */
 .product-card.horizontal {
@@ -124,6 +124,10 @@ main { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
   flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px;
 }
 .product-card.horizontal .p-select-row { margin-top: 4px; }
+
+/* 烟具多色竖排卡片：图片加大，减少白边 */
+.product-card.large-img .p-img { height: 170px; }
+.product-card.large-img .p-img img { width: 110%; height: 110%; object-fit: contain; }
 
 .product-card .p-name-row {
   display: flex; justify-content: space-between; align-items: baseline; gap: 8px; min-height: 24px;
@@ -165,9 +169,11 @@ main { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
 }
 .product-card .p-strength { font-size: 10px; color: #aaa; }
 .product-card .p-style {
-  font-size: 10px; font-weight: 600; color: var(--teal);
-  background: #E8F4F5; padding: 1px 6px; border-radius: 8px;
+  font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 8px;
+  background: #E8F4F5; color: var(--teal);
 }
+.product-card .p-style.light { background: #E8F8F5; color: var(--green); }
+.product-card .p-style.strong { background: #FDEDEC; color: var(--red); }
 .product-card .p-puffs {
   font-size: 10px; color: #999; white-space: nowrap;
 }
@@ -319,7 +325,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
   border: 2px solid var(--gold); border-radius: 12px;
   padding: 14px 16px; margin: 8px 12px;
 }
-.highlight.star { border-color: var(--red); }
+.highlight.star { border-color: var(--teal); }
 .highlight .hl-title { font-size: 16px; font-weight: 700; color: #095155; margin-bottom: 4px; }
 .highlight .hl-title-row { display: flex; justify-content: space-between; align-items: center; }
 .highlight .hl-price-inline { font-size: 18px; font-weight: 800; color: var(--gold); white-space: nowrap; }
@@ -808,9 +814,8 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
   <a href="#devices">烟具选色</a>
 </div>
 
-<div class="section-header" id="pods">
+<div class="section-header major" id="pods">
   <h2 data-i18n="sec_pods">烟弹 · 口味速查</h2>
-  <div class="subtitle">快速筛选口味</div>
 </div>
 <div class="filter-bar" id="filterBar">
   <span class="fp on" data-filter="all">全部</span>
@@ -832,7 +837,6 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="section-header">
   <h2 data-i18n="sec_daqian">大千系列 · 10ml超大容量 · 一颗顶五颗</h2>
-  <div class="subtitle">10ml超大容量 · 一颗顶五颗</div>
 </div>
 <div class="card-grid" id="pod-daqian"></div>
 
@@ -842,19 +846,19 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 <div class="section-header"><h2 data-i18n="sec_niche">小众精选 · 悦刻杆子适配</h2></div>
 <div class="card-grid" id="pod-niche"></div>
 
-<div class="section-header" id="disposable">
+<div class="section-header major" id="disposable">
   <h2 data-i18n="sec_disposable">一次性电子烟 · 口味速查</h2>
 </div>
 
 <div class="highlight star">
-  <div class="hl-title hl-title-row" data-i18n="sec_highlight_title2">美深威 匠造者-01 / 匠造者-02 <span class="hl-price-inline">¥149</span></div>
+  <div class="hl-title hl-title-row">美深威 匠造者-01 / 匠造者-02 <span class="hl-price-inline">¥149</span></div>
   <div class="hl-features">
     <span>13ml超大油</span><span>可视油仓</span><span>可调输出功率</span><span>吸阻调节</span><span>电量显示</span><span>600mAh大电池</span>
   </div>
   <div class="hl-note"><b>01:</b> 甜豆+坚果+咖啡+蛋糕 四重层次 &nbsp;|&nbsp; <b>02:</b> 浓香烟草+可可+生巧 解瘾首选</div>
 </div>
 
-<div class="section-header first"><h2 data-i18n="disp_relx">悦刻 RELX · 9.6ml</h2></div>
+<div class="section-header"><h2 data-i18n="disp_relx">悦刻 RELX · 9.6ml</h2></div>
 <div class="card-grid" id="disp-relx"></div>
 
 <div class="section-header"><h2 data-i18n="disp_poolan">铂岚 POOLAN · 10.5ml · 国风雅韵</h2></div>
@@ -866,13 +870,13 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 <div class="section-header"><h2 data-i18n="disp_other">Voopoo · 美深威 · HQD</h2></div>
 <div class="card-grid" id="disp-other"></div>
 
-<div class="section-header" id="devices">
+<div class="section-header major" id="devices">
   <h2 data-i18n="sec_devices">烟具 · 选色图鉴</h2>
 </div>
 <div class="divider"></div>
 <div id="device-container"></div>
 
-<div class="section-header" id="contact"><h2 data-i18n="sec_contact">联系门店</h2></div>
+<div class="section-header major" id="contact"><h2 data-i18n="sec_contact">联系门店</h2></div>
 <div class="contact-bar">
   <div class="ct-left">
     <div class="ct-store-name">长寿路189弄购物中心店</div>
@@ -957,7 +961,7 @@ var POD_SECTIONS = {
       { id:1, name:"蓝田暖阳", price:129, series:"pro", tags:[{t:"淡雅中式",c:"blue"},{t:"新手友好",c:"blue"}], desc:"清雅烤烟香 · 淡雅中式 回味干净", descEm:null, str:"★★☆☆☆", style:"清淡", img:"extracted_images/pod_images/image1.jpeg", flags:[], status:"active" },
       { id:2, name:"森林复兴", price:129, series:"pro", tags:[{t:"清爽草本",c:"blue"}], desc:"草木草本香 · 凉茶草本 清爽不腻", descEm:null, str:"★★★☆☆", style:"适中", img:"extracted_images/pod_images/image2.jpeg", flags:[], status:"active" },
       { id:3, name:"传家宝藏", price:129, series:"pro", tags:[{t:"清透干净",c:"blue"},{t:"新手友好",c:"blue"}], desc:"清透烤烟香 · 清透干净 无杂味", descEm:null, str:"★★☆☆☆", style:"清淡", img:"extracted_images/pod_images/image3.jpeg", flags:[], status:"active" },
-      { id:4, name:"红运滚滚", price:129, series:"pro", tags:[{t:"解瘾强",c:"red"},{t:"爆款",c:"gold"},{t:"焦糖甜香",c:"blue"}], desc:"焦甜甘草香 · 焦糖甜香 浓厚烤烟", descEm:"rd", str:"★★★★☆", style:"偏浓", img:"extracted_images/pod_images/image4.jpeg", flags:["best","hot"], status:"active" },
+      { id:4, name:"红运滚滚", price:129, series:"pro", tags:[{t:"解瘾强",c:"red"},{t:"爆款",c:"gold"},{t:"焦糖甜香",c:"blue"}], desc:"焦甜甘草香 · 焦糖甜香 浓厚烤烟", descEm:"rd", str:"★★★★☆", style:"偏浓", img:"extracted_images/pod_images/image4.jpeg", flags:["best"], status:"active" },
       { id:5, name:"日出沧海", price:129, series:"pro", tags:[{t:"新品上市",c:"blue"},{t:"新手友好",c:"blue"}], desc:"清润海盐烤烟 · 海盐清爽 微甜回甘", descEm:null, str:"★★☆☆☆", style:"清淡", img:"extracted_images/pod_images/image5.jpeg", flags:[], status:"active" }
     ]
   },
@@ -965,7 +969,7 @@ var POD_SECTIONS = {
     title: "幻影系列",
     products: [
       { id:6, name:"金风习习", price:119, series:"phantom", tags:[{t:"新品上市",c:"blue"},{t:"菊花清甜",c:"green"},{t:"新手友好",c:"blue"},{t:"女生首选",c:"blue"}], desc:"冰糖菊花茶 · 菊花清甜", descEm:null, str:"★★☆☆☆", style:"清淡", img:"extracted_images/pod_images/image6.jpeg", flags:[], status:"active" },
-      { id:7, name:"绿扇盈盈", price:119, series:"phantom", tags:[{t:"万宝路替代",c:"blue"}], desc:"淡豆香烟草 · 万宝路淡香", descEm:null, str:"★★★☆☆", style:"适中", img:"extracted_images/pod_images/image7.jpeg", flags:["hot"], status:"active" },
+      { id:7, name:"绿扇盈盈", price:119, series:"phantom", tags:[{t:"爆款",c:"gold"},{t:"万宝路替代",c:"blue"}], desc:"淡豆香烟草 · 万宝路淡香", descEm:null, str:"★★★☆☆", style:"适中", img:"extracted_images/pod_images/image7.jpeg", flags:[], status:"active" },
       { id:8, name:"兰亭煮雪", price:119, series:"phantom", tags:[{t:"冰糖雪梨",c:"blue"},{t:"女生首选",c:"blue"}], desc:"甘草甜烤烟 · 冰糖雪梨", descEm:null, str:"★★☆☆☆", style:"清淡", img:"extracted_images/pod_images/image8.jpeg", flags:[], status:"active" },
       { id:9, name:"竹仗胜马", price:119, series:"phantom", tags:[{t:"茉莉花茶",c:"blue"},{t:"新手友好",c:"blue"}], desc:"草木花茶烤烟 · 茉莉花茶", descEm:null, str:"★★☆☆☆", style:"清淡", img:"extracted_images/pod_images/image9.jpeg", flags:[], status:"active" },
       { id:10, name:"绕指轻舞", price:119, series:"phantom", tags:[{t:"女生首选",c:"blue"}], desc:"清逸烤烟 · 轻盈不压喉 女生首选", descEm:null, str:"★★☆☆☆", style:"清淡", img:"extracted_images/pod_images/image10.jpeg", flags:[], status:"active" },
@@ -977,7 +981,7 @@ var POD_SECTIONS = {
   qingyu: {
     title: "青羽系列",
     products: [
-      { id:14, name:"忘江有径", price:99, series:"qingyu", tags:[{t:"爆款",c:"gold"},{t:"桂圆甜润",c:"blue"},{t:"新手友好",c:"blue"},{t:"女生首选",c:"blue"}], desc:"草本桂圆甜香 · 桂圆甜润", descEm:null, str:"★★★☆☆", style:"适中", img:"extracted_images/pod_images/image14.jpeg", flags:["best","hot"], status:"active" },
+      { id:14, name:"忘江有径", price:99, series:"qingyu", tags:[{t:"爆款",c:"gold"},{t:"桂圆甜润",c:"blue"},{t:"新手友好",c:"blue"},{t:"女生首选",c:"blue"}], desc:"草本桂圆甜香 · 桂圆甜润", descEm:null, str:"★★★☆☆", style:"适中", img:"extracted_images/pod_images/image14.jpeg", flags:["best"], status:"active" },
       { id:15, name:"旭日凌云", price:99, series:"qingyu", tags:[{t:"果味过渡",c:"green"},{t:"性价比",c:"blue"}], desc:"清瓜香甜 · 青瓜清爽 最佳果味过渡", descEm:"gr", str:"★★☆☆☆", style:"清淡", img:"extracted_images/pod_images/image15.jpeg", flags:["tip"], status:"active" },
       { id:16, name:"森林复兴", price:99, series:"qingyu", tags:[{t:"解瘾强",c:"red"}], desc:"苔香豆甜烤烟 · 烟劲饱满", descEm:null, str:"★★★★☆", style:"适中", img:"extracted_images/pod_images/image16.jpeg", flags:[], status:"active" },
       { id:17, name:"点点灵犀", price:99, series:"qingyu", tags:[{t:"全天口粮",c:"blue"},{t:"新手友好",c:"blue"}], desc:"清浅烤烟香 · 余味干净 全天口粮", descEm:null, str:"★★☆☆☆", style:"清淡", img:"extracted_images/pod_images/image17.jpeg", flags:[], status:"active" },
@@ -1140,7 +1144,7 @@ function renderProductCard(p) {
     + '<div class="p-name-row"><span class="p-name">' + showName + staffPick + '</span><span class="p-price">&yen;' + p.price + '</span></div>'
     + '<div class="p-tags-row">' + tagHtml + '</div>'
     + '<div class="p-desc"><span class="' + emCls + '">' + showDesc + '</span></div>'
-    + '<div class="p-bottom"><span class="p-strength">' + p.str + '</span><span class="p-style">' + p.style + '</span></div>'
+    + '<div class="p-bottom"><span class="p-strength">' + p.str + '</span><span class="p-style' + (p.style === '清淡' || p.style === '偏淡' ? ' light' : p.style === '偏浓' ? ' strong' : '') + '">' + p.style + '</span></div>'
     + '<div class="p-select-row"><span class="ps-text">加入清单</span><button class="ps-btn card-select" data-pid="' + p.id + '" onclick="toggleSelect(event,' + p.id + ')">＋</button></div>'
     + '</div>';
 }
@@ -1155,7 +1159,8 @@ function renderDeviceSection(d) {
     var stars = Math.min(5, Math.round(d.battery / 120));
     var starStr = '';
     for (var s = 0; s < 5; s++) starStr += s < stars ? '★' : '☆';
-    html += '<div class="product-card' + (isNarrow ? ' horizontal' : '') + '">'
+    var isLarge = d.colors.length >= 4;
+    html += '<div class="product-card' + (isNarrow ? ' horizontal' : isLarge ? ' large-img' : '') + '">'
       + '<div class="p-img"><img src="' + c.img + '" alt="' + c.label + '"></div>'
       + '<div class="p-info">'
         + '<div class="p-name-row"><span class="p-name">' + c.label + '</span><span class="p-price">&yen;' + d.price + '</span></div>'
@@ -2140,7 +2145,7 @@ document.getElementById("cartPanel").addEventListener("click", function(e) {
 // 导航跳转（手动控制偏移，避免标题被遮挡）
 (function() {
   var nav = document.getElementById('quickNav');
-  var OFFSET = 100;
+  var OFFSET = 120;
   nav.querySelectorAll('a').forEach(function(a) {
     a.addEventListener('click', function(e) {
       e.preventDefault();
@@ -2165,7 +2170,7 @@ document.getElementById("cartPanel").addEventListener("click", function(e) {
     if (el) sections.push({ el: el, link: a });
   });
   function update() {
-    var scrollY = window.scrollY + 100;
+    var scrollY = window.scrollY + 120;
     var active = null;
     sections.forEach(function(s) {
       if (s.el.offsetTop <= scrollY) active = s.link;

@@ -674,6 +674,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 .cart-panel .cp-actions button:active { transform: scale(.97); }
 .cart-panel .cp-actions .btn-copy { background: var(--green); color: #fff; }
 .cart-panel .cp-actions .btn-clear { background: #FDEDEC; color: var(--red); }
+.cart-panel .cp-actions .btn-png { background: var(--teal); color: #fff; }
 .cart-panel .cp-warn {
   background: #FFF8ED; border: 1px solid var(--gold); border-radius: 8px;
   padding: 10px 12px; margin: 4px 16px; font-size: 12px; color: #8B6914;
@@ -905,10 +906,8 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
       <div class="cp-disclaimer">*口数及包烟数据为估算值，因个人肺活量及抽吸习惯不同，仅供参考</div>
       <div class="cp-actions">
         <button class="btn-clear" onclick="clearCart()">🗑️ 清空</button>
-        <button class="btn-copy" onclick="copyCart()">📋 复制发给客服</button>
-      </div>
-      <div class="cp-actions" style="margin-top:6px;">
-        <button class="btn-png" onclick="exportCartPNG()" style="flex:1;padding:10px;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;background:#0D7377;color:#fff;">🖼️ 生成清单图片</button>
+        <button class="btn-copy" onclick="copyCart()">📋 文字清单</button>
+        <button class="btn-png" onclick="exportCartPNG()">🖼️ 图片清单</button>
       </div>
     </div>
   </div>
@@ -1722,8 +1721,9 @@ function updateTotal() {
   var total = items.reduce(function(s, i) { return s + i.product.price * i.qty; }, 0);
   document.getElementById('cartTotal').textContent = '¥' + total;
   var totalPuffs = items.reduce(function(s, i) { return s + getPuffs(i.product) * i.qty; }, 0);
+  var hasPodOrDisp = items.some(function(i) { return i.product.series || i.section !== '烟具'; });
   var puffEl = document.getElementById('cartPuffs');
-  if (puffEl && totalPuffs > 0) {
+  if (puffEl && totalPuffs > 0 && hasPodOrDisp) {
     puffEl.textContent = '📊 约 ' + totalPuffs + ' 口 · ≈' + Math.round(totalPuffs / 160) + ' 包烟';
   } else if (puffEl) {
     puffEl.textContent = '';

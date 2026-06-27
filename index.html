@@ -1310,9 +1310,12 @@ function alignCardDescs() {
   function finish() {
     if (allDone) return;
     allDone = true;
-    updateBar();
+    // 强制进度条走满，给用户一个"完成"信号
+    if (bar) bar.style.width = '100%';
+    if (hint) hint.textContent = '加载完成';
     var elapsed = Date.now() - startTime;
-    var delay = Math.max(0, MIN_DISPLAY - elapsed);
+    // 最少展示时间 + 300ms 让用户看到进度条走满
+    var delay = Math.max(0, MIN_DISPLAY - elapsed) + 300;
     setTimeout(function() {
       screen.classList.add('hidden');
       setTimeout(function() {

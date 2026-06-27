@@ -129,7 +129,7 @@ main { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
   flex-shrink: 0; white-space: nowrap;
 }
 .product-card .p-tags-row {
-  display: flex; flex-wrap: wrap; gap: 2px; min-height: 20px; align-items: center;
+  display: flex; flex-wrap: wrap; gap: 2px; min-height: 30px; align-items: center;
 }
 .product-card .p-img {
   width: 100%; height: 100px; background: #fff;
@@ -188,6 +188,9 @@ main { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
   padding: 8px 12px; display: flex;
   align-items: center; gap: 8px;
   animation: popIn .15s ease;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform;
 }
 @keyframes popIn { from { transform: scale(.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 .qty-picker button {
@@ -702,9 +705,63 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
   .admin-entry { display: none !important; }
   .admin-overlay { display: none !important; }
 }
+
+/* ===== 加载屏 ===== */
+#loadingScreen {
+  position: fixed; inset: 0; z-index: 99999;
+  background: linear-gradient(160deg, #0D7377 0%, #064446 50%, #0A5C60 100%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transition: opacity .5s ease, visibility .5s ease;
+}
+#loadingScreen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+#loadingScreen .ls-inner {
+  display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 32px;
+}
+#loadingScreen .ls-icon {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: rgba(255,255,255,.12); display: flex;
+  align-items: center; justify-content: center; font-size: 28px;
+}
+#loadingScreen .ls-store {
+  font-size: 15px; font-weight: 600; color: rgba(255,255,255,.85);
+  letter-spacing: 1px; text-align: center;
+}
+#loadingScreen .ls-brand {
+  font-size: 13px; color: rgba(255,255,255,.55);
+  text-align: center; letter-spacing: 2px;
+}
+#loadingScreen .ls-bar-wrap {
+  width: 160px; height: 3px; background: rgba(255,255,255,.15);
+  border-radius: 2px; overflow: hidden; margin-top: 8px;
+}
+#loadingScreen .ls-bar {
+  width: 0%; height: 100%; background: #C9A96E;
+  border-radius: 2px; transition: width .3s ease;
+}
+#loadingScreen .ls-hint {
+  font-size: 12px; color: rgba(255,255,255,.45); margin-top: 4px;
+}
+#loadingScreen .ls-fade-text {
+  animation: lsPulse 1.6s ease-in-out infinite;
+}
+@keyframes lsPulse {
+  0%, 100% { opacity: .45; }
+  50% { opacity: .85; }
+}
 </style>
 </head>
 <body>
+
+<!-- 加载屏 — 品牌过渡 -->
+<div id="loadingScreen">
+  <div class="ls-inner">
+    <div class="ls-icon">🏪</div>
+    <div class="ls-store">长寿路189弄购物中心店</div>
+    <div class="ls-brand">悦刻 · 国标电子烟选品指南</div>
+    <div class="ls-bar-wrap"><div class="ls-bar" id="lsBar"></div></div>
+    <div class="ls-hint ls-fade-text" id="lsHint">正在准备产品图册…</div>
+  </div>
+</div>
 
 <main>
 
@@ -1213,7 +1270,81 @@ function alignCardDescs() {
   });
 }
 
-renderAll();
+// ===== 智能加载屏：预加载图片 → 平滑过渡 =====
+(function initLoader() {
+  var screen = document.getElementById('loadingScreen');
+  var bar = document.getElementById('lsBar');
+  var hint = document.getElementById('lsHint');
+  if (!screen) { renderAll(); return; }
+
+  var MIN_DISPLAY = 800;
+  var TIMEOUT = 8000;
+  var startTime = Date.now();
+  var allDone = false;
+
+  // 收集所有产品图片路径
+  var images = [];
+  function collect(src) { if (src && images.indexOf(src) === -1) images.push(src); }
+  Object.keys(POD_SECTIONS).forEach(function(k) {
+    POD_SECTIONS[k].products.forEach(function(p) { if (p.status !== 'off') collect(p.img); });
+  });
+  Object.keys(DISPOSABLE_SECTIONS).forEach(function(k) {
+    DISPOSABLE_SECTIONS[k].products.forEach(function(p) { if (p.status !== 'off') collect(p.img); });
+  });
+  DEVICES.forEach(function(d) {
+    d.colors.forEach(function(c) { collect(c.img); });
+  });
+  collect('qrcode_wecom.png');
+
+  var total = images.length, loaded = 0;
+
+  function updateBar() {
+    if (!bar) return;
+    var pct = total > 0 ? Math.round(loaded / total * 100) : 100;
+    bar.style.width = pct + '%';
+    if (loaded >= total || allDone) {
+      hint.textContent = '马上就好…';
+    }
+  }
+
+  function finish() {
+    if (allDone) return;
+    allDone = true;
+    updateBar();
+    var elapsed = Date.now() - startTime;
+    var delay = Math.max(0, MIN_DISPLAY - elapsed);
+    setTimeout(function() {
+      screen.classList.add('hidden');
+      setTimeout(function() {
+        if (screen.parentNode) screen.parentNode.removeChild(screen);
+      }, 600);
+    }, delay);
+  }
+
+  // 先渲染内容（DOM 即刻就位，图片自然加载）
+  renderAll();
+
+  if (total === 0) { finish(); return; }
+
+  // 并行预加载所有图片，更新进度条
+  images.forEach(function(src) {
+    var img = new Image();
+    img.onload = img.onerror = function() {
+      loaded++;
+      updateBar();
+      if (loaded >= total) finish();
+    };
+    img.src = src;
+  });
+
+  // 兜底超时（8s）
+  setTimeout(function() { finish(); }, TIMEOUT);
+  // 终极保险（12s）：防止移动端 WebView 极端节流跳过 8s 定时器
+  setTimeout(function() { finish(); }, 12000);
+
+  // 初始进度条
+  updateBar();
+})();
 
 var allProducts = [];
 function collectAll() {
@@ -1614,6 +1745,10 @@ function showQtyPicker(e, pid) {
     }
   };
   setTimeout(function() { document.addEventListener('click', clickOutside); }, 50);
+  // 滚动/缩放手势时关闭选择器，避免飘走
+  var dismissOnScroll = function() { dismissQtyPicker(); };
+  window.addEventListener('scroll', dismissOnScroll, { passive: true, once: true });
+  window.addEventListener('touchmove', dismissOnScroll, { passive: true, once: true });
 }
 
 function pickerConfirm(pid) {

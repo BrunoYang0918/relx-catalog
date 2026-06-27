@@ -1238,14 +1238,20 @@ function showToast(msg) {
   setTimeout(function() { t.classList.remove("show"); }, 2000);
 }
 
-var ADMIN_PIN = '1989';
+var ADMIN_PIN_HASH = 'b6d26c100203d1bc1752ff6ee5537d1e34af47326f55ba6cb0c9b3741501b1ae';
 
-function openAdmin() {
+async function openAdmin() {
   var pin = prompt('请输入管理密码：');
-  if (pin === ADMIN_PIN) {
+  if (!pin) return;
+  var encoder = new TextEncoder();
+  var data = encoder.encode(pin + 'relx_shop_2026');
+  var hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  var hashArray = Array.from(new Uint8Array(hashBuffer));
+  var hashHex = hashArray.map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+  if (hashHex === ADMIN_PIN_HASH) {
     document.getElementById("adminOverlay").classList.add("show");
     renderAdminList();
-  } else if (pin !== null) {
+  } else {
     alert('密码错误');
   }
 }

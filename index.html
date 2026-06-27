@@ -65,22 +65,15 @@ main { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
 .quick-nav {
   position: sticky; top: 48px; z-index: 99;
   background: #fff; border-bottom: 1px solid var(--border);
-  padding: 8px 0;
-  overflow-x: auto;
-  white-space: nowrap;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
+  padding: 8px 12px; display: flex; gap: 8px;
 }
-.quick-nav::-webkit-scrollbar { display: none; }
 .quick-nav a {
-  display: inline-block; padding: 6px 14px; margin: 0 2px;
+  flex: 1; text-align: center; padding: 6px 0;
   font-size: 13px; font-weight: 600; color: var(--teal);
   background: #E8F4F5; border-radius: 20px;
   text-decoration: none; white-space: nowrap;
   transition: all .2s;
 }
-.quick-nav a:first-child { margin-left: 12px; }
-.quick-nav a:last-child { margin-right: 12px; }
 .quick-nav a:active, .quick-nav a.hl { background: var(--teal); color: #fff; }
 
 .section { padding: 16px 12px; }

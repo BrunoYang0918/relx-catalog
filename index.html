@@ -148,12 +148,21 @@ main { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
 .product-card .p-desc .em.gd { color: var(--gold); }
 .product-card .p-bottom {
   display: flex; justify-content: space-between; align-items: center;
-  min-height: 22px;
+  min-height: 22px; gap: 4px;
 }
 .product-card .p-strength { font-size: 11px; color: #999; }
 .product-card .p-style {
   font-size: 11px; font-weight: 600; color: var(--teal);
   background: #E8F4F5; padding: 2px 8px; border-radius: 10px;
+}
+.product-card .p-puffs {
+  font-size: 10px; color: #999; white-space: nowrap;
+}
+.product-card .p-puffs-note {
+  font-size: 9px; color: #ccc; white-space: nowrap;
+}
+.product-card .p-puffs-row {
+  min-height: 16px; display: flex; align-items: center;
 }
 .product-card .p-select-row, .device-card .p-select-row {
   margin-top: auto; display: flex; align-items: center; gap: 6px;
@@ -589,6 +598,8 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 }
 .cart-panel .cp-total { font-size: 18px; font-weight: 700; text-align: right; }
 .cart-panel .cp-total span { color: var(--red); }
+.cart-panel .cp-puffs { font-size: 12px; color: #999; text-align: right; margin-bottom: 2px; }
+.cart-panel .cp-disclaimer { font-size: 10px; color: #bbb; text-align: center; margin-top: 4px; }
 .cart-panel .cp-actions { display: flex; gap: 8px; }
 .cart-panel .cp-actions button {
   flex: 1; padding: 12px; border: none; border-radius: 10px;
@@ -831,6 +842,8 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
     <div class="cp-upsell" id="cartUpsell" style="display:none;"></div>
     <div class="cp-foot">
       <div class="cp-total">预估参考 <span id="cartTotal">¥0</span></div>
+      <div class="cp-puffs" id="cartPuffs"></div>
+      <div class="cp-disclaimer">*口数及包烟数据为估算值，因个人肺活量及抽吸习惯不同，仅供参考</div>
       <div class="cp-actions">
         <button class="btn-clear" onclick="clearCart()">🗑️ 清空</button>
         <button class="btn-copy" onclick="copyCart()">📋 复制发给客服</button>
@@ -929,8 +942,8 @@ var POD_SECTIONS = {
       { id:32, name:"翠川苍", price:99, series:"niche", tags:[{t:"果甜清爽",c:"green"}], desc:"淡雅果甜烤烟 · 清新不突兀", descEm:null, str:"★★☆☆☆", style:"清淡", img:"extracted_images/pod_images/image32.jpeg", flags:[], status:"active" },
       { id:33, name:"云岭松风", price:99, series:"niche", tags:[{t:"松针草本",c:"blue"}], desc:"松针草本香 · 国风意境", descEm:null, str:"★★★☆☆", style:"适中", img:"extracted_images/pod_images/image33.jpeg", flags:[], status:"active" },
       { id:34, name:"碧海澄空", price:99, series:"niche", tags:[{t:"果味过渡",c:"green"},{t:"凉感推荐",c:"green"}], desc:"海盐+薄荷+果香 · 以前薄荷水果", descEm:"gr", str:"★★☆☆☆", style:"清淡", img:"extracted_images/pod_images/image34.jpeg", flags:["tip"], status:"active" },
-      { id:35, name:"金丝露", price:119, series:"niche", tags:[{t:"焦香烤烟",c:"blue"}], desc:"焦香烤烟 · 纯正 老烟民最爱", descEm:null, str:"★★★☆☆", style:"适中", img:"extracted_images/pod_images/image35.png", flags:[], status:"active" },
-      { id:36, name:"冷烟月", price:119, series:"niche", tags:[{t:"草本清香",c:"blue"}], desc:"草本清香 · 干净利落", descEm:null, str:"★★★☆☆", style:"适中", img:"extracted_images/pod_images/image36.jpeg", flags:[], status:"active" },
+      { id:35, name:"金丝露", price:119, series:"niche", tags:[{t:"焦香烤烟",c:"blue"},{t:"2.5ml大容量",c:"gold"}], desc:"焦香烤烟 · 纯正 老烟民最爱", descEm:null, str:"★★★☆☆", style:"适中", img:"extracted_images/pod_images/image35.png", flags:[], status:"active" },
+      { id:36, name:"冷烟月", price:119, series:"niche", tags:[{t:"草本清香",c:"blue"},{t:"2.5ml大容量",c:"gold"}], desc:"草本清香 · 干净利落", descEm:null, str:"★★★☆☆", style:"适中", img:"extracted_images/pod_images/image36.jpeg", flags:[], status:"active" },
       { id:37, name:"兰亭雅集", price:99, series:"niche", tags:[{t:"花香清雅",c:"blue"}], desc:"蜂蜜紫罗兰香 · 以前花香味", descEm:null, str:"★★☆☆☆", style:"清淡", img:"extracted_images/pod_images/image37.jpeg", flags:[], status:"active" }
     ]
   }
@@ -1009,6 +1022,28 @@ function getRenderLang() {
   return (saved && saved !== 'zh') ? saved : 'zh';
 }
 
+function getPuffs(p) {
+  if (p.id === 111 || p.id === 112) return 1800;
+  var bySeries = { pro: 300, phantom: 300, qingyu: 300, daqian: 1500, zeus: 430, niche: 300 };
+  if (p.series && bySeries[p.series] !== undefined) {
+    var base = bySeries[p.series];
+    if (p.id === 35 || p.id === 36) base = 375;
+    var isPack2 = (p.tags || []).some(function(t) { return t.t === '2颗装'; });
+    var multiplier = p.series === 'daqian' ? 1 : (isPack2 ? 2 : 3);
+    return base * multiplier;
+  }
+  if (p.id >= 101 && p.id <= 103) return 1440;
+  if (p.id >= 104 && p.id <= 105) return 1575;
+  if (p.id >= 106 && p.id <= 109) return 1500;
+  if (p.id >= 110 && p.id <= 113) return 1400;
+  return 300;
+}
+function puffsText(puffs) {
+  var packs = puffs / 160;
+  var packStr = packs < 3 ? packs.toFixed(1) : Math.round(packs);
+  return '≈' + puffs + '口 · ≈' + packStr + '包烟';
+}
+
 function renderProductCard(p) {
   if (p.status === "off") return "";
   var lang = getRenderLang();
@@ -1022,12 +1057,14 @@ function renderProductCard(p) {
     return '<span class="tag tag-' + tg.c + '">' + tg.t + '</span>';
   }).join(" ");
   var emCls = p.descEm ? ' em ' + p.descEm : ' em';
+  var puffs = getPuffs(p);
   return '<div class="product-card' + (cls ? ' ' + cls : '') + '">'
     + '<div class="p-name-row"><span class="p-name">' + showName + '</span><span class="p-price">&yen;' + p.price + '</span></div>'
     + '<div class="p-tags-row">' + tagHtml + '</div>'
     + '<div class="p-img"><img src="' + p.img + '" alt="' + showName + '"></div>'
     + '<div class="p-desc"><span class="' + emCls + '">' + showDesc + '</span></div>'
     + '<div class="p-bottom"><span class="p-strength">' + p.str + '</span><span class="p-style">' + p.style + '</span></div>'
+    + '<div class="p-puffs-row"><span class="p-puffs">' + puffsText(puffs) + '<span class="p-puffs-note">（估算仅供参考）</span></span></div>'
     + '<div class="p-select-row"><span class="ps-text">点击加入选品清单</span><button class="ps-btn card-select" data-pid="' + p.id + '" onclick="toggleSelect(event,' + p.id + ')">＋</button></div>'
     + '</div>';
 }
@@ -1611,6 +1648,13 @@ function updateTotal() {
   var items = getCartItems();
   var total = items.reduce(function(s, i) { return s + i.product.price * i.qty; }, 0);
   document.getElementById('cartTotal').textContent = '¥' + total;
+  var totalPuffs = items.reduce(function(s, i) { return s + getPuffs(i.product) * i.qty; }, 0);
+  var puffEl = document.getElementById('cartPuffs');
+  if (puffEl && totalPuffs > 0) {
+    puffEl.textContent = '📊 约 ' + totalPuffs + ' 口 · ≈' + Math.round(totalPuffs / 160) + ' 包烟';
+  } else if (puffEl) {
+    puffEl.textContent = '';
+  }
 }
 
 function checkCompatibility() {
@@ -1679,6 +1723,8 @@ function copyCart() {
   });
   lines.push('━━━━━━━━━━━━━━━━');
   lines.push('合计参考 ¥' + total);
+  var totalPuffs = items.reduce(function(s, i) { return s + getPuffs(i.product) * i.qty; }, 0);
+  if (totalPuffs > 0) lines.push('约 ' + totalPuffs + ' 口 · ≈' + Math.round(totalPuffs / 160) + ' 包烟（估算仅供参考）');
   lines.push('');
   lines.push('请帮我确认库存和适配，谢谢！');
   var text = lines.join('\n');

@@ -2142,29 +2142,29 @@ document.getElementById("cartPanel").addEventListener("click", function(e) {
     var el = document.getElementById(id);
     if (el) sections.push({ el: el, link: a });
   });
-  function update() {
-    var scrollY = window.scrollY + OFFSET;
-    var active = null;
-    sections.forEach(function(s) {
-      if (s.el.offsetTop <= scrollY) active = s.link;
-    });
+  function highlight(link) {
     links.forEach(function(l) { l.classList.remove('hl'); });
-    if (active) active.classList.add('hl');
+    if (link) link.classList.add('hl');
   }
   links.forEach(function(a) {
     a.addEventListener('click', function(e) {
       e.preventDefault();
+      highlight(this);
       var id = this.getAttribute('href').substring(1);
       var el = document.getElementById(id);
-      if (el) {
-        var top = el.getBoundingClientRect().top + window.scrollY - OFFSET;
-        window.scrollTo({ top: top, behavior: 'smooth' });
-        setTimeout(update, 400);
-      }
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
+  function update() {
+    var best = null, bestDist = Infinity;
+    sections.forEach(function(s) {
+      var rect = s.el.getBoundingClientRect();
+      var dist = Math.abs(rect.top + rect.height * 0.3 - OFFSET);
+      if (dist < bestDist) { bestDist = dist; best = s.link; }
+    });
+    highlight(best);
+  }
   window.addEventListener('scroll', update, { passive: true });
-  if ('onscrollend' in window) window.addEventListener('scrollend', update);
   update();
 })();
 </script>

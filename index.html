@@ -614,9 +614,8 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
   white-space: nowrap; transition: transform .15s;
 }
 .floating-bar .fb-btn:active { transform: scale(.96); }
-.floating-bar .fb-phone { background: #E8F4F5; color: var(--teal); }
-.floating-bar .fb-wechat { background: var(--green); color: #fff; }
-.floating-bar .fb-store { background: var(--gold); color: #fff; }
+.floating-bar .fb-glossary { background: #E8F4F5; color: var(--teal); }
+.floating-bar .fb-quiz { background: var(--gold); color: #fff; }
 .floating-bar .fb-cart { background: #fff; color: var(--teal); border: 2px solid var(--teal); position: relative; min-width: 60px; }
 .floating-bar .fb-cart .fb-badge {
   position: absolute; top: -8px; right: -6px;
@@ -828,20 +827,19 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
   color: #fff; font-size: 12px; font-weight: 600; text-decoration: none; white-space: nowrap;
 }
 
-/* 口味词典 */
-.glossary { margin: 12px 12px 0; }
-.glossary .gls-toggle {
-  width: 100%; padding: 12px 16px; background: #fff; border: 1px solid var(--border);
-  border-radius: 10px; font-size: 13px; font-weight: 600; color: var(--teal);
-  cursor: pointer; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px;
+/* 口味词典弹窗 */
+.glossary-popover {
+  display: none; position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+  z-index: 500; max-width: 560px; width: calc(100% - 24px);
+  background: #fff; border-radius: 12px; box-shadow: 0 -4px 24px rgba(0,0,0,.15);
+  padding: 14px 16px; font-size: 12px; color: #666; line-height: 2.0;
 }
-.glossary .gls-body {
-  display: none; background: #fff; border: 1px solid var(--border); border-top: none;
-  border-radius: 0 0 10px 10px; padding: 12px 16px; font-size: 11px; color: #666; line-height: 1.8;
+.glossary-popover.show { display: block; }
+.glossary-popover b { color: var(--teal); }
+.glossary-backdrop {
+  display: none; position: fixed; inset: 0; z-index: 499;
 }
-.glossary.open .gls-body { display: block; }
-.glossary.open .gls-toggle { border-radius: 10px 10px 0 0; }
-.glossary .gls-body b { color: var(--teal); }
+.glossary-backdrop.show { display: block; }
 
 /* 口味探测器 */
 .quiz-overlay {
@@ -882,6 +880,40 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 .quiz-result .qr-reset {
   background: none; border: none; color: var(--teal); font-size: 13px; cursor: pointer; margin-top: 8px;
 }
+.quiz-result .qr-add-row {
+  display: flex; align-items: center; gap: 6px; margin-top: 8px; justify-content: center;
+}
+.quiz-result .qr-add-btn {
+  padding: 6px 16px; background: var(--teal); color: #fff;
+  border: none; border-radius: 16px; font-size: 12px; font-weight: 600; cursor: pointer;
+}
+.quiz-result .qr-add-btn:active { transform: scale(.95); }
+.quiz-result .qr-qty-ctrl { display: none; align-items: center; gap: 4px; }
+.quiz-result .qr-qty-ctrl.show { display: flex; }
+.quiz-result .qr-qty-ctrl button {
+  width: 28px; height: 28px; border-radius: 14px; border: 1.5px solid var(--teal);
+  background: #fff; color: var(--teal); font-size: 16px; font-weight: 700;
+  cursor: pointer; line-height: 1; display: flex; align-items: center; justify-content: center;
+}
+.quiz-result .qr-qty-ctrl button:active { background: #E8F4F5; }
+.quiz-result .qr-qty-ctrl .qr-qty-num {
+  font-size: 14px; font-weight: 700; color: var(--teal); min-width: 24px; text-align: center;
+}
+/* 新手烟具推荐横幅 */
+.quiz-result .qr-dev-banner {
+  display: flex; align-items: center; gap: 10px;
+  background: linear-gradient(135deg, #FFF8E1, #FFF3CD);
+  border: 1.5px solid var(--gold); border-radius: 10px;
+  padding: 10px 12px; margin-bottom: 10px;
+}
+.quiz-result .qr-dev-banner .qrdb-icon { font-size: 26px; flex-shrink: 0; }
+.quiz-result .qr-dev-banner .qrdb-info { flex: 1; min-width: 0; }
+.quiz-result .qr-dev-banner .qrdb-name { font-size: 13px; font-weight: 700; color: #095155; }
+.quiz-result .qr-dev-banner .qrdb-price { font-size: 10px; color: #666; margin-top: 2px; }
+.quiz-result .qr-dev-banner .qrdb-link {
+  flex-shrink: 0; font-size: 12px; font-weight: 600; color: var(--gold);
+  text-decoration: none; white-space: nowrap;
+}
 
 .quiz-entry {
   padding: 5px 12px; border-radius: 16px; border: 1px dashed var(--gold);
@@ -890,11 +922,6 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
   flex-shrink: 0; display: flex; align-items: center; gap: 3px;
 }
 .quiz-entry:active { transform: scale(.96); }
-
-/* 复购提醒 */
-.cp-reminder {
-  font-size: 11px; color: var(--teal); text-align: center; padding: 4px 0;
-}
 
 /* 地图导航弹窗 */
 .map-modal-overlay {
@@ -942,8 +969,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 <div class="topbar">
   <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南</div>
   <div class="tb-right">
-    <span class="tb-btn" onclick="document.getElementById('glossary').classList.toggle('open');event.stopPropagation()">📖 词典</span>
-    <span class="tb-btn" onclick="openQuiz()">🔍 帮我选</span>
+    <a class="tb-btn" href="javascript:void(0)" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">📞 联系门店</a>
     <div class="lang-dropdown" id="langDrop">
       <div class="ld-btn" id="langBtn" onclick="event.stopPropagation();document.getElementById('langDrop').classList.toggle('open')">中</div>
       <div class="ld-menu" id="langMenu">
@@ -953,8 +979,16 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
         <span data-lang="ru">Русский</span>
       </div>
     </div>
-    <a class="tb-btn" href="javascript:void(0)" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">📞 联系门店</a>
   </div>
+</div>
+
+<div class="glossary-backdrop" id="glossaryBackdrop" onclick="closeGlossary()"></div>
+<div class="glossary-popover" id="glossaryPopover">
+  <b>劲道 ★</b>：★越多吸阻越强、击喉感越明显。老烟民建议 ★★★★ 起步<br>
+  <b>凉感</b>：入口有薄荷般清凉感，非水果味，适合喜欢清爽口感的用户<br>
+  <b>果味过渡</b>：模拟水果风味调香，适合怀念以前果味的用户过渡<br>
+  <b>击喉感</b>：烟雾接触喉咙时的刺激感和满足感，击喉越强越像真烟<br>
+  <b>国标烟草</b>：符合国家标准的烟草基底口味，安全合规但不会叫水果名
 </div>
 
 <div class="quick-nav" id="quickNav">
@@ -983,17 +1017,6 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="section-header major" id="pods">
   <h2 data-i18n="sec_pods">烟弹 · 口味速查</h2>
-</div>
-
-<div class="glossary" id="glossary">
-  <button class="gls-toggle" onclick="document.getElementById('glossary').classList.toggle('open')">📖 口味小词典 ▾</button>
-  <div class="gls-body">
-    <b>劲道 ★</b>：★越多吸阻越强、击喉感越明显。老烟民建议 ★★★★ 起步<br>
-    <b>凉感</b>：入口有薄荷般清凉感，非水果味，适合喜欢清爽口感的用户<br>
-    <b>果味过渡</b>：模拟水果风味调香，适合怀念以前果味的用户过渡<br>
-    <b>击喉感</b>：烟雾接触喉咙时的刺激感和满足感，击喉越强越像真烟<br>
-    <b>国标烟草</b>：符合国家标准的烟草基底口味，安全合规但不会叫水果名
-  </div>
 </div>
 
 <div class="section-header"><h2 data-i18n="sec_pro">幻影Pro系列 · 适配六代 · 三档功率</h2></div>
@@ -1104,8 +1127,8 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <div class="floating-bar" id="floatingBar">
-  <a class="fb-btn fb-phone" href="tel:18939741711">📞 189-3974-1711</a>
-  <button class="fb-btn fb-wechat" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">💬 企业微信客服</button>
+  <button class="fb-btn fb-glossary" onclick="toggleGlossary(event)">📖 口味词典</button>
+  <button class="fb-btn fb-quiz" onclick="openQuiz()">🔍 帮我选</button>
   <button class="fb-btn fb-cart" id="fbCart" onclick="openCart()">
     选品清单 <span class="fb-badge" id="fbBadge" style="display:none">0</span>
   </button>
@@ -1124,7 +1147,6 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
       <div class="cp-total">预估参考 <span id="cartTotal">¥0</span></div>
       <div class="cp-puffs" id="cartPuffs"></div>
       <div class="cp-disclaimer" id="cartDisclaimer">*口数及包烟数据为估算值，因个人肺活量及抽吸习惯不同，仅供参考</div>
-      <div class="cp-reminder">📆 一颗烟弹约用 5—7 天，记得提前补货哦</div>
       <div class="cp-actions">
         <button class="btn-clear" onclick="clearCart()">🗑️ 清空</button>
         <button class="btn-copy" onclick="copyCart()">📋 文字清单</button>
@@ -2454,6 +2476,13 @@ document.addEventListener('click', function(e) {
 
 // 口味探测器
 var QUIZ_STEPS = [
+  { title: '你现在用什么烟具？', key: 'device', options: [
+    { label: '幻影Pro / 幻影 / 青羽 / 御影S', val: 'phantom' },
+    { label: '大千（10ml大弹，可配转接口通用）', val: 'daqian' },
+    { label: '宙斯（可配转接口通用）', val: 'zeus' },
+    { label: '没有烟具，先试试一次性', val: 'disposable' },
+    { label: '没有烟具，考虑入手烟具', val: 'newbie' }
+  ]},
   { title: '你抽烟劲道偏好？', key: 'strength', options: [
     { label: '清淡柔和，不呛不刺激', val: '清淡' },
     { label: '适中就好，有点感觉', val: '适中' },
@@ -2464,24 +2493,24 @@ var QUIZ_STEPS = [
     { label: '果甜风味，清爽好闻', val: '果味' },
     { label: '茶香花香，优雅细腻', val: '花香' },
     { label: '不挑，都行', val: '不限' }
-  ]},
-  { title: '你的预算范围？', key: 'budget', options: [
-    { label: '实惠为主 ¥99 段', val: '99' },
-    { label: '中等价位 ¥119 段', val: '119' },
-    { label: '旗舰体验 ¥129+ 段', val: '129' },
-    { label: '不限预算', val: '不限' }
-  ]},
-  { title: '你现在用什么烟具？', key: 'device', options: [
-    { label: '幻影五代 / 幻影Pro', val: 'phantom' },
-    { label: '青羽', val: 'qingyu' },
-    { label: '大千（10ml大弹专用）', val: 'daqian' },
-    { label: '宙斯 / 御影S', val: 'zeus' },
-    { label: '没有烟具 / 想看一次性', val: 'disposable' }
   ]}
 ];
 
 var quizAnswers = {};
 var quizStep = 0;
+
+function toggleGlossary(e) {
+  e.stopPropagation();
+  var pop = document.getElementById('glossaryPopover');
+  var bd = document.getElementById('glossaryBackdrop');
+  var isOpen = pop.classList.contains('show');
+  if (isOpen) { closeGlossary(); }
+  else { pop.classList.add('show'); bd.classList.add('show'); }
+}
+function closeGlossary() {
+  document.getElementById('glossaryPopover').classList.remove('show');
+  document.getElementById('glossaryBackdrop').classList.remove('show');
+}
 
 function openQuiz() {
   quizAnswers = {}; quizStep = 0;
@@ -2526,10 +2555,10 @@ function showQuizResult() {
   var card = document.getElementById('quizCard');
   // 设备兼容过滤
   var DEVICE_COMPAT = {
-    phantom: ['pro', 'phantom', 'qingyu', 'niche'],
-    qingyu: ['qingyu', 'phantom', 'niche'],
-    daqian: ['daqian'],
-    zeus: ['zeus'],
+    phantom: ['pro', 'phantom', 'qingyu', 'niche'],          // 幻影/青羽/御影S通用
+    daqian: ['daqian', 'pro', 'phantom', 'qingyu', 'niche'],  // 大千可配转接口，通用所有系列
+    zeus: ['zeus', 'pro', 'phantom', 'qingyu', 'niche'],       // 宙斯可配转接口，通用所有系列
+    newbie: ['pro', 'phantom', 'qingyu', 'niche'],             // 无烟具推御影S兼容系列
     disposable: []
   };
   var compatSeries = DEVICE_COMPAT[quizAnswers.device] || [];
@@ -2566,11 +2595,6 @@ function showQuizResult() {
     if (quizAnswers.taste === '花香' && /花香|花茶|蜂蜜|紫罗兰|山茶|酒香/.test(tagTexts)) score += 25;
     if (quizAnswers.taste === '烟草' && /烤烟|烟草|烟香|雪茄|焦香/.test(tagTexts)) score += 25;
     if (quizAnswers.taste === '不限') score += 15;
-    // 预算匹配
-    if (quizAnswers.budget === '99' && p.price <= 109) score += 20;
-    if (quizAnswers.budget === '119' && p.price >= 110 && p.price <= 129) score += 20;
-    if (quizAnswers.budget === '129' && p.price >= 129) score += 20;
-    if (quizAnswers.budget === '不限') score += 10;
     // 新手加成
     if (quizAnswers.strength === '清淡' && tagTexts.indexOf('新手友好') !== -1) score += 15;
     if (quizAnswers.strength === '偏浓' && tagTexts.indexOf('解瘾强') !== -1) score += 15;
@@ -2594,25 +2618,85 @@ function showQuizResult() {
 
   var recsHtml = top3.map(function(item, i) {
     var p = item.product;
+    var pid = p.id;
     var reasons = [];
     if (quizAnswers.strength) reasons.push(whyMap[quizAnswers.strength] || '');
     if (quizAnswers.taste && quizAnswers.taste !== '不限') reasons.push(whyMap[quizAnswers.taste] || '');
     var seriesName = '';
     Object.keys(POD_SECTIONS).forEach(function(k) { if (POD_SECTIONS[k].products.indexOf(p) !== -1) seriesName = POD_SECTIONS[k].title; });
     Object.keys(DISPOSABLE_SECTIONS).forEach(function(k) { if (DISPOSABLE_SECTIONS[k].products.indexOf(p) !== -1) seriesName = DISPOSABLE_SECTIONS[k].title; });
-    return '<div class="qr-rec" onclick="goToProduct(\'' + p.name + '\',\'' + (p.id >= 200 ? 'devices' : 'pods') + '\')">'
+    var inCart = cart[pid] || 0;
+    var btnCls = inCart ? 'qr-add-btn done' : 'qr-add-btn';
+    var btnTxt = inCart ? '✓ 已加' + inCart + '件' : '＋ 加入清单';
+    var ctrlCls = inCart ? 'qr-qty-ctrl show' : 'qr-qty-ctrl';
+    var qtyNum = inCart || 1;
+    return '<div class="qr-rec">'
       + '<div class="qr-name">🏅 ' + p.name + ' <span style="font-size:11px;color:var(--gold)">¥' + p.price + '</span></div>'
       + '<div class="qr-series">' + seriesName + '</div>'
       + '<div class="qr-reason">💡 ' + reasons.filter(Boolean).join(' · ') + '</div>'
+      + '<div class="qr-add-row" id="qrAddRow_' + pid + '">'
+      + '<button class="' + btnCls + '" id="qrAddBtn_' + pid + '" onclick="addQuizItem(' + pid + ')">' + btnTxt + '</button>'
+      + '<span class="' + ctrlCls + '" id="qrQtyCtrl_' + pid + '">'
+      + '<button onclick="quizChangeQty(' + pid + ',-1)">−</button>'
+      + '<span class="qr-qty-num" id="qrQtyNum_' + pid + '">' + qtyNum + '</span>'
+      + '<button onclick="quizChangeQty(' + pid + ',1)">＋</button>'
+      + '</span>'
+      + '</div>'
       + '</div>';
   }).join('');
 
+  var deviceBanner = '';
+  if (quizAnswers.device === 'newbie') {
+    deviceBanner = '<div class="qr-dev-banner">'
+      + '<div class="qrdb-icon">⚡</div>'
+      + '<div class="qrdb-info">'
+      + '<div class="qrdb-name">新手首推：御影S · 新生代王者</div>'
+      + '<div class="qrdb-price">¥368 · 3档功率 · 口数精准记录 · 电量实时显示</div>'
+      + '</div>'
+      + '<a class="qrdb-link" href="javascript:void(0)" onclick="closeQuiz();document.getElementById(\'devices\').scrollIntoView({behavior:\'smooth\'})">查看烟具 →</a>'
+      + '</div>';
+  }
+
   card.innerHTML = '<div class="quiz-result">'
-    + '<div class="qr-title">🎯 为你推荐 3 款</div>'
+    + '<div class="qr-title">🎯 为你推荐</div>'
+    + deviceBanner
     + '<div class="qr-recs">' + recsHtml + '</div>'
     + '<button class="qr-reset" onclick="openQuiz()">🔄 重新测试</button>'
     + '<button class="qr-reset" onclick="closeQuiz()" style="margin-left:12px;">✕ 关闭</button>'
     + '</div>';
+}
+
+function addQuizItem(pid) {
+  cart[pid] = (cart[pid] || 0) + 1;
+  saveCart();
+  updateCartBadge();
+  refreshSelectButtons();
+  // Update the quiz card UI
+  var btn = document.getElementById('qrAddBtn_' + pid);
+  var ctrl = document.getElementById('qrQtyCtrl_' + pid);
+  var num = document.getElementById('qrQtyNum_' + pid);
+  if (btn) { btn.textContent = '✓ 已加' + cart[pid] + '件'; btn.classList.add('done'); }
+  if (ctrl) ctrl.classList.add('show');
+  if (num) num.textContent = cart[pid];
+}
+
+function quizChangeQty(pid, delta) {
+  if (!cart[pid]) cart[pid] = 1;
+  cart[pid] += delta;
+  if (cart[pid] < 1) {
+    delete cart[pid];
+    var btn = document.getElementById('qrAddBtn_' + pid);
+    var ctrl = document.getElementById('qrQtyCtrl_' + pid);
+    if (btn) { btn.textContent = '＋ 加入清单'; btn.classList.remove('done'); }
+    if (ctrl) ctrl.classList.remove('show');
+  }
+  saveCart();
+  updateCartBadge();
+  refreshSelectButtons();
+  var btn2 = document.getElementById('qrAddBtn_' + pid);
+  var num = document.getElementById('qrQtyNum_' + pid);
+  if (btn2 && cart[pid]) { btn2.textContent = '✓ 已加' + cart[pid] + '件'; btn2.classList.add('done'); }
+  if (num && cart[pid]) num.textContent = cart[pid];
 }
 
 function goToProduct(name, sectionId) {

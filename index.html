@@ -778,6 +778,116 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
   0%, 100% { opacity: .45; }
   50% { opacity: .85; }
 }
+
+/* 系列下拉导航 */
+.nav-dropdown { position: relative; flex: 1; text-align: center; }
+.nav-dropdown .nd-trigger {
+  display: block; padding: 6px 0; font-size: 13px; font-weight: 600;
+  color: var(--teal); background: #E8F4F5; border-radius: 20px;
+  text-decoration: none; white-space: nowrap; cursor: pointer; user-select: none;
+}
+.nav-dropdown .nd-menu {
+  display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+  margin-top: 4px; background: #fff; border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.12); overflow: hidden; z-index: 200;
+  min-width: 120px; flex-direction: column;
+}
+.nav-dropdown.open .nd-menu { display: flex; }
+.nav-dropdown .nd-menu a {
+  display: block; padding: 10px 16px; font-size: 12px; color: #333;
+  text-decoration: none; white-space: nowrap; text-align: center; border-bottom: 1px solid #f5f5f5;
+}
+.nav-dropdown .nd-menu a:last-child { border-bottom: none; }
+.nav-dropdown .nd-menu a:active { background: #E8F4F5; }
+
+/* 地图定位 */
+.map-section {
+  margin: 12px 12px 0; background: #fff; border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden;
+}
+.map-section .map-img {
+  width: 100%; height: 200px; background: #F9F8F5;
+  display: flex; align-items: center; justify-content: center; color: #999; font-size: 13px;
+}
+.map-section .map-info {
+  padding: 12px 16px; display: flex; align-items: center; gap: 10px;
+}
+.map-section .map-info .map-icon { font-size: 24px; flex-shrink: 0; }
+.map-section .map-info .map-addr { flex: 1; min-width: 0; }
+.map-section .map-info .map-addr .addr-title { font-size: 14px; font-weight: 700; color: #095155; }
+.map-section .map-info .map-addr .addr-detail { font-size: 12px; color: #666; margin-top: 2px; }
+.map-section .map-info .map-nav-btn {
+  flex-shrink: 0; padding: 8px 16px; border-radius: 20px; background: var(--teal);
+  color: #fff; font-size: 12px; font-weight: 600; text-decoration: none; white-space: nowrap;
+}
+
+/* 口味词典 */
+.glossary { margin: 12px 12px 0; }
+.glossary .gls-toggle {
+  width: 100%; padding: 12px 16px; background: #fff; border: 1px solid var(--border);
+  border-radius: 10px; font-size: 13px; font-weight: 600; color: var(--teal);
+  cursor: pointer; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.glossary .gls-body {
+  display: none; background: #fff; border: 1px solid var(--border); border-top: none;
+  border-radius: 0 0 10px 10px; padding: 12px 16px; font-size: 11px; color: #666; line-height: 1.8;
+}
+.glossary.open .gls-body { display: block; }
+.glossary.open .gls-toggle { border-radius: 10px 10px 0 0; }
+.glossary .gls-body b { color: var(--teal); }
+
+/* 口味探测器 */
+.quiz-overlay {
+  display: none; position: fixed; inset: 0; z-index: 5000;
+  background: rgba(0,0,0,.5); align-items: center; justify-content: center;
+}
+.quiz-overlay.show { display: flex; }
+.quiz-card {
+  background: #fff; border-radius: 16px; padding: 24px 20px;
+  width: 90%; max-width: 360px; max-height: 80vh; overflow-y: auto;
+}
+.quiz-card .q-title { font-size: 18px; font-weight: 700; color: #095155; text-align: center; margin-bottom: 6px; }
+.quiz-card .q-sub { font-size: 12px; color: #999; text-align: center; margin-bottom: 16px; }
+.quiz-card .q-options { display: flex; flex-direction: column; gap: 8px; }
+.quiz-card .q-opt {
+  padding: 12px 16px; border: 1.5px solid var(--border); border-radius: 10px;
+  font-size: 14px; cursor: pointer; text-align: center; transition: all .15s;
+  background: #fff; color: #333;
+}
+.quiz-card .q-opt:active { background: #E8F4F5; border-color: var(--teal); }
+.quiz-card .q-opt.sel { background: #E8F4F5; border-color: var(--teal); color: var(--teal); font-weight: 600; }
+.quiz-card .q-btn {
+  width: 100%; padding: 14px; margin-top: 16px; border: none; border-radius: 10px;
+  background: var(--teal); color: #fff; font-size: 15px; font-weight: 700; cursor: pointer;
+}
+.quiz-card .q-btn:disabled { opacity: .4; }
+.quiz-result { text-align: center; }
+.quiz-result .qr-title { font-size: 16px; font-weight: 700; color: #095155; margin-bottom: 12px; }
+.quiz-result .qr-recs { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+.quiz-result .qr-rec {
+  padding: 12px; border: 1px solid var(--gold); border-radius: 10px;
+  background: #FFFDF7; text-align: left; cursor: pointer; transition: transform .15s;
+}
+.quiz-result .qr-rec:active { transform: scale(.98); }
+.quiz-result .qr-rec .qr-name { font-size: 14px; font-weight: 700; color: #095155; }
+.quiz-result .qr-rec .qr-series { font-size: 10px; color: #999; }
+.quiz-result .qr-rec .qr-reason { font-size: 11px; color: var(--gold); margin-top: 4px; }
+.quiz-result .qr-reset {
+  background: none; border: none; color: var(--teal); font-size: 13px; cursor: pointer; margin-top: 8px;
+}
+
+.quiz-entry {
+  padding: 5px 12px; border-radius: 16px; border: 1px dashed var(--gold);
+  background: #FFFDF7; font-size: 12px; font-weight: 600; color: var(--gold);
+  cursor: pointer; white-space: nowrap; transition: all .15s;
+  flex-shrink: 0; display: flex; align-items: center; gap: 3px;
+}
+.quiz-entry:active { transform: scale(.96); }
+
+/* 复购提醒 */
+.cp-reminder {
+  font-size: 11px; color: var(--teal); text-align: center; padding: 4px 0;
+}
 </style>
 </head>
 <body>
@@ -811,7 +921,17 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 </div>
 
 <div class="quick-nav" id="quickNav">
-  <a href="#pods">烟弹选味</a>
+  <div class="nav-dropdown" id="navPodDropdown">
+    <span class="nd-trigger" onclick="event.stopPropagation();document.getElementById('navPodDropdown').classList.toggle('open')">烟弹选味 ▾</span>
+    <div class="nd-menu">
+      <a href="#pod-pro" onclick="scrollToSection('#pod-pro')">幻影Pro</a>
+      <a href="#pod-phantom" onclick="scrollToSection('#pod-phantom')">幻影</a>
+      <a href="#pod-qingyu" onclick="scrollToSection('#pod-qingyu')">青羽</a>
+      <a href="#pod-daqian" onclick="scrollToSection('#pod-daqian')">大千</a>
+      <a href="#pod-zeus" onclick="scrollToSection('#pod-zeus')">宙斯</a>
+      <a href="#pod-niche" onclick="scrollToSection('#pod-niche')">小众精选</a>
+    </div>
+  </div>
   <a href="#disposable">一次性款</a>
   <a href="#devices">烟具选色</a>
 </div>
@@ -822,6 +942,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
   <span class="sp" data-filter="有劲解瘾">💨 有劲解瘾</span>
   <span class="sp" data-filter="果味口感">🍈 果味口感</span>
   <span class="sp" data-filter="柔和香甜">🌸 柔和香甜</span>
+  <span class="quiz-entry" onclick="openQuiz()">🔍 帮我选</span>
 </div>
 
 <div class="section-header major" id="pods">
@@ -890,6 +1011,20 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 <div id="device-container"></div>
 
 <div class="section-header major" id="contact"><h2 data-i18n="sec_contact">联系门店</h2></div>
+
+<div class="map-section">
+  <div class="map-info">
+    <div class="map-icon">📍</div>
+    <div class="map-addr">
+      <div class="addr-title">长寿路189弄购物中心</div>
+      <div class="addr-detail">1楼 L105B室 · 长寿路189号</div>
+      <div class="addr-detail">🚇 地铁13号线长寿路站 2号口步行3分钟</div>
+    </div>
+    <a class="map-nav-btn" href="https://uri.amap.com/navigation?to=121.4382,31.2446,长寿路189弄购物中心&mode=walk&coordinate=gaode" target="_blank">🗺️ 导航</a>
+  </div>
+</div>
+
+<div class="section-header major" id="contact"><h2 data-i18n="sec_contact">联系门店</h2></div>
 <div class="contact-bar">
   <div class="ct-left">
     <div class="ct-store-name">长寿路189弄购物中心店</div>
@@ -910,7 +1045,22 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="footer-note"></div>
 
+<div class="glossary" id="glossary">
+  <button class="gls-toggle" onclick="document.getElementById('glossary').classList.toggle('open')">📖 口味小词典 ▾</button>
+  <div class="gls-body">
+    <b>劲道 ★</b>：★越多吸阻越强、击喉感越明显。老烟民建议 ★★★★ 起步<br>
+    <b>凉感</b>：入口有薄荷般清凉感，非水果味，适合喜欢清爽口感的用户<br>
+    <b>果味过渡</b>：模拟水果风味调香，适合怀念以前果味的用户过渡<br>
+    <b>击喉感</b>：烟雾接触喉咙时的刺激感和满足感，击喉越强越像真烟<br>
+    <b>国标烟草</b>：符合国家标准的烟草基底口味，安全合规但不会叫水果名
+  </div>
+</div>
+
 <div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规</div>
+
+<div class="quiz-overlay" id="quizOverlay" onclick="if(event.target===this)closeQuiz()">
+  <div class="quiz-card" id="quizCard"></div>
+</div>
 
 </main>
 
@@ -936,6 +1086,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
       <div class="cp-total">预估参考 <span id="cartTotal">¥0</span></div>
       <div class="cp-puffs" id="cartPuffs"></div>
       <div class="cp-disclaimer" id="cartDisclaimer">*口数及包烟数据为估算值，因个人肺活量及抽吸习惯不同，仅供参考</div>
+      <div class="cp-reminder">📆 一颗烟弹约用 5—7 天，记得提前补货哦</div>
       <div class="cp-actions">
         <button class="btn-clear" onclick="clearCart()">🗑️ 清空</button>
         <button class="btn-copy" onclick="copyCart()">📋 文字清单</button>
@@ -2200,17 +2351,11 @@ document.getElementById("cartPanel").addEventListener("click", function(e) {
   if (e.target === document.getElementById("cartPanel")) closeCart();
 });
 
-// 导航跳转 + 高亮
+// 导航跳转 + 高亮 (IntersectionObserver)
 (function() {
   var nav = document.getElementById('quickNav');
-  var links = nav.querySelectorAll('a');
+  var links = nav.querySelectorAll('a[href^="#"]');
   var OFFSET = 120;
-  var sections = [];
-  links.forEach(function(a) {
-    var id = a.getAttribute('href').substring(1);
-    var el = document.getElementById(id);
-    if (el) sections.push({ el: el, link: a });
-  });
   function highlight(link) {
     links.forEach(function(l) { l.classList.remove('hl'); });
     if (link) link.classList.add('hl');
@@ -2224,18 +2369,186 @@ document.getElementById("cartPanel").addEventListener("click", function(e) {
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
-  function update() {
-    var best = null, bestDist = Infinity;
-    sections.forEach(function(s) {
-      var rect = s.el.getBoundingClientRect();
-      var dist = Math.abs(rect.top + rect.height * 0.3 - OFFSET);
-      if (dist < bestDist) { bestDist = dist; best = s.link; }
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (!entry.isIntersecting) return;
+      var id = entry.target.id;
+      links.forEach(function(a) {
+        if (a.getAttribute('href') === '#' + id) highlight(a);
+      });
     });
-    highlight(best);
-  }
-  window.addEventListener('scroll', update, { passive: true });
-  update();
+  }, { rootMargin: '-' + OFFSET + 'px 0px -60% 0px' });
+  links.forEach(function(a) {
+    var id = a.getAttribute('href').substring(1);
+    var el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
 })();
+
+// 下拉导航跳转
+function scrollToSection(sel) {
+  var el = document.querySelector(sel);
+  if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  document.getElementById('navPodDropdown').classList.remove('open');
+}
+
+// 口味探测器
+var QUIZ_STEPS = [
+  { title: '你抽烟劲道偏好？', key: 'strength', options: [
+    { label: '清淡柔和，不呛不刺激', val: '清淡' },
+    { label: '适中就好，有点感觉', val: '适中' },
+    { label: '要有劲才过瘾', val: '偏浓' }
+  ]},
+  { title: '你喜欢什么口感风味？', key: 'taste', options: [
+    { label: '烟草本味，像真烟', val: '烟草' },
+    { label: '果甜风味，清爽好闻', val: '果味' },
+    { label: '茶香花香，优雅细腻', val: '花香' },
+    { label: '不挑，都行', val: '不限' }
+  ]},
+  { title: '你的预算范围？', key: 'budget', options: [
+    { label: '实惠为主 ¥99 段', val: '99' },
+    { label: '中等价位 ¥119 段', val: '119' },
+    { label: '旗舰体验 ¥129+ 段', val: '129' },
+    { label: '不限预算', val: '不限' }
+  ]}
+];
+
+var quizAnswers = {};
+var quizStep = 0;
+
+function openQuiz() {
+  quizAnswers = {}; quizStep = 0;
+  document.getElementById('quizOverlay').classList.add('show');
+  renderQuizStep();
+}
+
+function closeQuiz() {
+  document.getElementById('quizOverlay').classList.remove('show');
+}
+
+function renderQuizStep() {
+  var card = document.getElementById('quizCard');
+  if (quizStep < QUIZ_STEPS.length) {
+    var s = QUIZ_STEPS[quizStep];
+    var optsHtml = s.options.map(function(o, i) {
+      var sel = quizAnswers[s.key] === o.val ? ' sel' : '';
+      return '<div class="q-opt' + sel + '" onclick="selectQuizOption(\'' + s.key + '\',\'' + o.val + '\',this)">' + o.label + '</div>';
+    }).join('');
+    card.innerHTML = '<div class="q-title">Q' + (quizStep + 1) + '/' + QUIZ_STEPS.length + '</div>'
+      + '<div class="q-sub">' + s.title + '</div>'
+      + '<div class="q-options">' + optsHtml + '</div>'
+      + '<button class="q-btn" ' + (quizAnswers[s.key] ? '' : 'disabled') + ' onclick="quizNext()">' + (quizStep === QUIZ_STEPS.length - 1 ? '🔍 查看推荐' : '下一题 →') + '</button>';
+  } else {
+    showQuizResult();
+  }
+}
+
+function selectQuizOption(key, val, el) {
+  quizAnswers[key] = val;
+  el.parentElement.querySelectorAll('.q-opt').forEach(function(o) { o.classList.remove('sel'); });
+  el.classList.add('sel');
+  renderQuizStep();
+}
+
+function quizNext() {
+  quizStep++;
+  renderQuizStep();
+}
+
+function showQuizResult() {
+  var card = document.getElementById('quizCard');
+  // 评分匹配
+  var allProducts = [];
+  Object.keys(POD_SECTIONS).forEach(function(k) {
+    POD_SECTIONS[k].products.forEach(function(p) {
+      if (p.status === 'active') allProducts.push(p);
+    });
+  });
+  Object.keys(DISPOSABLE_SECTIONS).forEach(function(k) {
+    DISPOSABLE_SECTIONS[k].products.forEach(function(p) {
+      if (p.status === 'active') allProducts.push(p);
+    });
+  });
+
+  var scored = allProducts.map(function(p) {
+    var score = 0;
+    // 劲道匹配
+    if (quizAnswers.strength === '清淡' && (p.style === '清淡' || p.style === '偏淡')) score += 30;
+    if (quizAnswers.strength === '适中' && p.style === '适中') score += 30;
+    if (quizAnswers.strength === '偏浓' && p.style === '偏浓') score += 30;
+    // 口感匹配
+    var tagTexts = (p.tags || []).map(function(t) { return t.t; }).join(' ');
+    if (quizAnswers.taste === '果味' && /果味|绿豆|凤梨|蓝莓|荔枝|青瓜|酸甜|柑橘/.test(tagTexts)) score += 25;
+    if (quizAnswers.taste === '花香' && /花香|花茶|蜂蜜|紫罗兰|山茶|酒香/.test(tagTexts)) score += 25;
+    if (quizAnswers.taste === '烟草' && /烤烟|烟草|烟香|雪茄|焦香/.test(tagTexts)) score += 25;
+    if (quizAnswers.taste === '不限') score += 15;
+    // 预算匹配
+    if (quizAnswers.budget === '99' && p.price <= 109) score += 20;
+    if (quizAnswers.budget === '119' && p.price >= 110 && p.price <= 129) score += 20;
+    if (quizAnswers.budget === '129' && p.price >= 129) score += 20;
+    if (quizAnswers.budget === '不限') score += 10;
+    // 新手加成
+    if (quizAnswers.strength === '清淡' && tagTexts.indexOf('新手友好') !== -1) score += 15;
+    if (quizAnswers.strength === '偏浓' && tagTexts.indexOf('解瘾强') !== -1) score += 15;
+    return { product: p, score: score };
+  });
+
+  scored.sort(function(a, b) { return b.score - a.score; });
+  var top3 = scored.slice(0, 3);
+
+  var whyMap = {
+    '清淡': '劲道柔和，不呛不刺激',
+    '适中': '劲道适中，刚刚好的满足感',
+    '偏浓': '劲道十足，老烟民解瘾首选',
+    '果味': '果甜风味，口感清爽',
+    '花香': '花香/茶香调性，优雅细腻',
+    '烟草': '纯正烟草味，像抽真烟',
+    '不限': '口感百搭，谁都能驾驭'
+  };
+
+  var recsHtml = top3.map(function(item, i) {
+    var p = item.product;
+    var reasons = [];
+    if (quizAnswers.strength) reasons.push(whyMap[quizAnswers.strength] || '');
+    if (quizAnswers.taste && quizAnswers.taste !== '不限') reasons.push(whyMap[quizAnswers.taste] || '');
+    var seriesName = '';
+    Object.keys(POD_SECTIONS).forEach(function(k) { if (POD_SECTIONS[k].products.indexOf(p) !== -1) seriesName = POD_SECTIONS[k].title; });
+    Object.keys(DISPOSABLE_SECTIONS).forEach(function(k) { if (DISPOSABLE_SECTIONS[k].products.indexOf(p) !== -1) seriesName = DISPOSABLE_SECTIONS[k].title; });
+    return '<div class="qr-rec" onclick="goToProduct(\'' + p.name + '\',\'' + (p.id >= 200 ? 'devices' : 'pods') + '\')">'
+      + '<div class="qr-name">🏅 ' + p.name + ' <span style="font-size:11px;color:var(--gold)">¥' + p.price + '</span></div>'
+      + '<div class="qr-series">' + seriesName + '</div>'
+      + '<div class="qr-reason">💡 ' + reasons.filter(Boolean).join(' · ') + '</div>'
+      + '</div>';
+  }).join('');
+
+  card.innerHTML = '<div class="quiz-result">'
+    + '<div class="qr-title">🎯 为你推荐 3 款</div>'
+    + '<div class="qr-recs">' + recsHtml + '</div>'
+    + '<button class="qr-reset" onclick="openQuiz()">🔄 重新测试</button>'
+    + '<button class="qr-reset" onclick="closeQuiz()" style="margin-left:12px;">✕ 关闭</button>'
+    + '</div>';
+}
+
+function goToProduct(name, sectionId) {
+  closeQuiz();
+  // 重置筛选为全部
+  document.querySelectorAll('#sceneNav .sp').forEach(function(s) { s.classList.remove('on'); });
+  document.querySelector('#sceneNav .sp.all').classList.add('on');
+  applyFilter('all');
+  // 滚动到目标
+  setTimeout(function() {
+    var cards = document.querySelectorAll('.product-card');
+    for (var i = 0; i < cards.length; i++) {
+      var nameEl = cards[i].querySelector('.p-name');
+      if (nameEl && nameEl.textContent.indexOf(name) !== -1) {
+        cards[i].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        cards[i].style.boxShadow = '0 0 0 3px var(--gold)';
+        setTimeout(function() { cards[i].style.boxShadow = ''; }, 2000);
+        break;
+      }
+    }
+  }, 100);
+}
 </script>
 
 <script src="i18n.js"></script>

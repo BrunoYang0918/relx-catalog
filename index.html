@@ -367,7 +367,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 .contact-bar .ct-badge-auth { background: #E8F4F5; color: var(--teal); border: 1px solid var(--teal); }
 .contact-bar .ct-phone { font-size: 18px; font-weight: 700; color: var(--gold); }
 .contact-bar .ct-right { flex-shrink: 0; }
-.contact-bar .ct-qr { width: 64px; height: 64px; border-radius: 6px; overflow: hidden; }
+.contact-bar .ct-qr { width: 90px; height: 90px; border-radius: 6px; overflow: hidden; }
 .contact-bar .ct-qr img { width: 100%; height: 100%; object-fit: contain; }
 .contact-bar .ct-qr-label { font-size: 10px; color: #999; text-align: center; }
 .contact-bar .ct-trust {
@@ -942,6 +942,8 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 <div class="topbar">
   <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南</div>
   <div class="tb-right">
+    <span class="tb-btn" onclick="document.getElementById('glossary').classList.toggle('open');event.stopPropagation()">📖 词典</span>
+    <span class="tb-btn" onclick="openQuiz()">🔍 帮我选</span>
     <div class="lang-dropdown" id="langDrop">
       <div class="ld-btn" id="langBtn" onclick="event.stopPropagation();document.getElementById('langDrop').classList.toggle('open')">中</div>
       <div class="ld-menu" id="langMenu">
@@ -951,7 +953,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
         <span data-lang="ru">Русский</span>
       </div>
     </div>
-    <a class="tb-btn" href="javascript:void(0)" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">📞 门店</a>
+    <a class="tb-btn" href="javascript:void(0)" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">📞 联系门店</a>
   </div>
 </div>
 
@@ -977,7 +979,6 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
   <span class="sp" data-filter="有劲解瘾">💨 有劲解瘾</span>
   <span class="sp" data-filter="果味口感">🍈 果味口感</span>
   <span class="sp" data-filter="柔和香甜">🌸 柔和香甜</span>
-  <span class="quiz-entry" onclick="openQuiz()">🔍 帮我选</span>
 </div>
 
 <div class="section-header major" id="pods">

@@ -854,20 +854,25 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 <div class="card-grid" id="pod-pro"></div>
 
 <div class="section-header"><h2 data-i18n="sec_phantom">幻影系列 · 适配五代/六代 · 口味最丰富</h2></div>
+<div class="newbie-hint">💡 <b>口味最全的系列</b> — 从淡雅花茶到浓郁雪茄，总能找到你的味</div>
 <div class="card-grid" id="pod-phantom"></div>
 
 <div class="section-header"><h2 data-i18n="sec_qingyu">青羽系列 · 性价比之王</h2></div>
+<div class="newbie-hint">💡 <b>¥99 入门首选</b> — 价格亲民口感不妥协，忘江有径和旭日凌云是两大招牌</div>
 <div class="card-grid" id="pod-qingyu"></div>
 
 <div class="section-header">
   <h2 data-i18n="sec_daqian">大千系列 · 10ml超大容量 · 一颗顶五颗</h2>
 </div>
+<div class="newbie-hint">💡 <b>重度用户首选</b> — 10ml 容量一颗顶五颗，省心又省钱</div>
 <div class="card-grid" id="pod-daqian"></div>
 
 <div class="section-header"><h2 data-i18n="sec_zeus">宙斯系列 · 高端旗舰 · 适配宙斯主机</h2></div>
+<div class="newbie-hint">💡 <b>旗舰体验</b> — 追求极致口感？宙斯弹+宙斯杆是最佳拍档</div>
 <div class="card-grid" id="pod-zeus"></div>
 
 <div class="section-header"><h2 data-i18n="sec_niche">小众精选 · 悦刻杆子适配</h2></div>
+<div class="newbie-hint">💡 <b>悦刻杆子通用</b> — 小众品牌也有宝藏口味，翠川苍和碧海澄空值得一试</div>
 <div class="card-grid" id="pod-niche"></div>
 
 <div class="section-header major" id="disposable">
@@ -883,20 +888,25 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 </div>
 
 <div class="section-header"><h2 data-i18n="disp_relx">悦刻 RELX · 9.6ml</h2></div>
+<div class="newbie-hint">💡 <b>原厂品质</b> — 开袋即用无需充电，适合尝鲜或备用</div>
 <div class="card-grid" id="disp-relx"></div>
 
 <div class="section-header"><h2 data-i18n="disp_poolan">铂岚 POOLAN · 10.5ml · 国风雅韵</h2></div>
+<div class="newbie-hint">💡 <b>国风美学</b> — 敬亭山木质清香、念关山香槟气泡，送礼自用两相宜</div>
 <div class="card-grid" id="disp-poolan"></div>
 
 <div class="section-header"><h2 data-i18n="disp_mirui">迷睿 · 10ml</h2></div>
+<div class="newbie-hint">💡 <b>清新日常</b> — 四款各具特色，伯爵红茶和蓝莓牛奶人气最高</div>
 <div class="card-grid" id="disp-mirui"></div>
 
 <div class="section-header"><h2 data-i18n="disp_other">Voopoo · 美深威 · HQD</h2></div>
+<div class="newbie-hint">💡 <b>进阶玩家之选</b> — 匠造者系列13ml超大容量 + 可调功率，功能最全</div>
 <div class="card-grid" id="disp-other"></div>
 
 <div class="section-header major" id="devices">
   <h2 data-i18n="sec_devices">烟具 · 选色图鉴</h2>
 </div>
+<div class="newbie-hint">💡 <b>选好杆子再看弹</b> — 不同烟具适配不同烟弹，建议先选烟具再配口味</div>
 <div class="divider"></div>
 <div id="device-container"></div>
 
@@ -2042,34 +2052,30 @@ window.addEventListener('resize', function() {
 });
 
 // 场景导航
-var SCENE_KEYWORDS = {
-  '清晨提神': ['新手友好', '茶系推荐', '凉感推荐', '清甜'],
-  '饭后解瘾': ['解瘾强'],
-  '办公轻吸': ['新手友好', '全天口粮', '长期口粮', '中南海替代'],
-  '睡前放松': ['女生首选', '花茶清雅', '花香清雅', '酒香独特', '甜润', '桂圆甜润', '红枣蜜香'],
-  '社交场合': ['爆款', '新品上市', '层次丰富', '外烟替代']
+var SCENE_NAMES = {
+  '清晨提神': ['蓝田暖阳', '传家宝藏', '日出沧海', '金风习习', '绕指轻舞', '浩海潮升', '竹仗胜马', '春鸣', '太霄', '白岸', '金缕'],
+  '饭后解瘾': ['红运滚滚', '森林复兴', '群玉山见', '柳暗花明', '甘泽', '广厦间', '山雾秋', '匠造者-02'],
+  '办公轻吸': ['蓝田暖阳', '传家宝藏', '绕指轻舞', '竹仗胜马', '浩海潮升', '悠岚', '点点灵犀', '敬亭山', '夏暮', '念关山'],
+  '睡前放松': ['兰亭煮雪', '忘江有径', '佳人佳期', '晨光入林', '暖夕穿林', '柔情牛仔', '翠川苍', '兰亭雅集', '柏芬', '隋和', '见山', '霜月', '满园茵茵'],
+  '社交场合': ['红运滚滚', '群玉山见', '绿扇盈盈', '知夏', '云岭松风', '金丝露', '匠造者-01', '金光奕奕', '飞马环游']
 };
 
+var ALL_POD_GRIDS = '#pod-pro, #pod-phantom, #pod-qingyu, #pod-daqian, #pod-zeus, #pod-niche, #disp-relx, #disp-poolan, #disp-mirui, #disp-other';
+
 function applySceneFilter(scene) {
-  var grids = document.querySelectorAll('#pod-pro, #pod-phantom, #pod-qingyu, #pod-daqian, #pod-zeus, #pod-niche');
-  var keywords = SCENE_KEYWORDS[scene] || [];
+  var grids = document.querySelectorAll(ALL_POD_GRIDS);
+  var names = SCENE_NAMES[scene] || [];
   grids.forEach(function(grid) {
     var cards = grid.querySelectorAll('.product-card');
     var hasVisible = false;
     cards.forEach(function(card) {
-      var tags = card.querySelectorAll('.tag');
       var match = false;
-      if (keywords.length === 0) { match = true; }
+      if (names.length === 0) { match = true; }
       else {
-        tags.forEach(function(t) {
-          keywords.forEach(function(kw) {
-            if (t.textContent.indexOf(kw) !== -1) match = true;
-          });
-        });
         var nameEl = card.querySelector('.p-name');
         if (nameEl) {
-          keywords.forEach(function(kw) {
-            if (nameEl.textContent.indexOf(kw) !== -1) match = true;
+          names.forEach(function(n) {
+            if (nameEl.textContent.trim() === n) match = true;
           });
         }
       }
@@ -2078,8 +2084,15 @@ function applySceneFilter(scene) {
     });
     alignCardDescs();
     var header = grid.previousElementSibling;
+    while (header && !header.classList.contains('section-header')) {
+      header = header.previousElementSibling;
+    }
     if (header && header.classList.contains('section-header')) {
       header.style.display = hasVisible ? '' : 'none';
+    }
+    var hint = grid.previousElementSibling;
+    if (hint && hint.classList.contains('newbie-hint')) {
+      hint.style.display = hasVisible ? '' : 'none';
     }
   });
 }
@@ -2111,7 +2124,7 @@ document.getElementById('filterBar').addEventListener('click', function(e) {
   var filter = e.target.getAttribute('data-filter');
   this.querySelectorAll('.fp').forEach(function(f) { f.classList.remove('on'); });
   e.target.classList.add('on');
-  var grids = document.querySelectorAll('#pod-pro, #pod-phantom, #pod-qingyu, #pod-daqian, #pod-zeus, #pod-niche');
+  var grids = document.querySelectorAll('#pod-pro, #pod-phantom, #pod-qingyu, #pod-daqian, #pod-zeus, #pod-niche, #disp-relx, #disp-poolan, #disp-mirui, #disp-other');
   grids.forEach(function(grid) {
     var cards = grid.querySelectorAll('.product-card');
     var hasVisible = false;
@@ -2125,15 +2138,23 @@ document.getElementById('filterBar').addEventListener('click', function(e) {
       if (match) hasVisible = true;
     });
     alignCardDescs();
-    // 该系列无匹配 → 隐藏标题
+    // 该系列无匹配 → 隐藏标题及引导
     var header = grid.previousElementSibling;
+    while (header && !header.classList.contains('section-header')) {
+      header = header.previousElementSibling;
+    }
     if (header && header.classList.contains('section-header')) {
       header.style.display = hasVisible ? '' : 'none';
+    }
+    // 同时隐藏中间的新手引导
+    var hint = grid.previousElementSibling;
+    if (hint && hint.classList.contains('newbie-hint')) {
+      hint.style.display = hasVisible ? '' : 'none';
     }
   });
   // 筛选后滚到第一个匹配产品
   if (filter !== 'all') {
-    var firstMatch = document.querySelector('#pod-pro .product-card:not([style*="none"]), #pod-phantom .product-card:not([style*="none"]), #pod-qingyu .product-card:not([style*="none"]), #pod-daqian .product-card:not([style*="none"]), #pod-zeus .product-card:not([style*="none"]), #pod-niche .product-card:not([style*="none"])');
+    var firstMatch = document.querySelector('#pod-pro .product-card:not([style*="none"]), #pod-phantom .product-card:not([style*="none"]), #pod-qingyu .product-card:not([style*="none"]), #pod-daqian .product-card:not([style*="none"]), #pod-zeus .product-card:not([style*="none"]), #pod-niche .product-card:not([style*="none"]), #disp-relx .product-card:not([style*="none"]), #disp-poolan .product-card:not([style*="none"]), #disp-mirui .product-card:not([style*="none"]), #disp-other .product-card:not([style*="none"])');
     if (firstMatch) {
       var top = firstMatch.getBoundingClientRect().top + window.pageYOffset - 140;
       window.scrollTo({ top: top, behavior: 'smooth' });

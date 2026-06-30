@@ -2055,7 +2055,7 @@ function applySceneFilter(scene) {
         var nameEl = card.querySelector('.p-name');
         if (nameEl) {
           names.forEach(function(n) {
-            if (nameEl.textContent.trim() === n) match = true;
+            if (nameEl.textContent.indexOf(n) !== -1) match = true;
           });
         }
       }

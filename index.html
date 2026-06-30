@@ -922,14 +922,14 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="quick-nav" id="quickNav">
   <div class="nav-dropdown" id="navPodDropdown">
-    <span class="nd-trigger" onclick="event.stopPropagation();document.getElementById('navPodDropdown').classList.toggle('open')">烟弹选味 ▾</span>
+    <span class="nd-trigger" id="navPodTrigger" onclick="event.stopPropagation();document.getElementById('navPodDropdown').classList.toggle('open')">烟弹选味 ▾</span>
     <div class="nd-menu">
-      <a href="#pod-pro" onclick="scrollToSection('#pod-pro')">幻影Pro</a>
-      <a href="#pod-phantom" onclick="scrollToSection('#pod-phantom')">幻影</a>
-      <a href="#pod-qingyu" onclick="scrollToSection('#pod-qingyu')">青羽</a>
-      <a href="#pod-daqian" onclick="scrollToSection('#pod-daqian')">大千</a>
-      <a href="#pod-zeus" onclick="scrollToSection('#pod-zeus')">宙斯</a>
-      <a href="#pod-niche" onclick="scrollToSection('#pod-niche')">小众精选</a>
+      <a href="#" onclick="scrollToSection('#pod-pro','幻影Pro')">幻影Pro</a>
+      <a href="#" onclick="scrollToSection('#pod-phantom','幻影')">幻影</a>
+      <a href="#" onclick="scrollToSection('#pod-qingyu','青羽')">青羽</a>
+      <a href="#" onclick="scrollToSection('#pod-daqian','大千')">大千</a>
+      <a href="#" onclick="scrollToSection('#pod-zeus','宙斯')">宙斯</a>
+      <a href="#" onclick="scrollToSection('#pod-niche','小众精选')">小众精选</a>
     </div>
   </div>
   <a href="#disposable">一次性款</a>
@@ -2360,11 +2360,16 @@ document.getElementById("cartPanel").addEventListener("click", function(e) {
     links.forEach(function(l) { l.classList.remove('hl'); });
     if (link) link.classList.add('hl');
   }
+  function resetPodLabel() {
+    var trigger = document.getElementById('navPodTrigger');
+    if (trigger) trigger.textContent = '烟弹选味 ▾';
+  }
   links.forEach(function(a) {
     a.addEventListener('click', function(e) {
       e.preventDefault();
       highlight(this);
       var id = this.getAttribute('href').substring(1);
+      if (id !== 'pods') resetPodLabel();
       var el = document.getElementById(id);
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
@@ -2376,6 +2381,7 @@ document.getElementById("cartPanel").addEventListener("click", function(e) {
       links.forEach(function(a) {
         if (a.getAttribute('href') === '#' + id) highlight(a);
       });
+      if (id !== 'pods') resetPodLabel();
     });
   }, { rootMargin: '-' + OFFSET + 'px 0px -60% 0px' });
   links.forEach(function(a) {
@@ -2386,7 +2392,7 @@ document.getElementById("cartPanel").addEventListener("click", function(e) {
 })();
 
 // 下拉导航跳转
-function scrollToSection(sel) {
+function scrollToSection(sel, label) {
   var grid = document.querySelector(sel);
   if (!grid) return;
   // 找到该系列的 section-header
@@ -2397,7 +2403,16 @@ function scrollToSection(sel) {
   var target = header || grid;
   target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   document.getElementById('navPodDropdown').classList.remove('open');
+  if (label) {
+    document.getElementById('navPodTrigger').textContent = label + ' ▾';
+  }
 }
+
+// 点击页面其他区域关闭下拉
+document.addEventListener('click', function(e) {
+  var dd = document.getElementById('navPodDropdown');
+  if (dd && !dd.contains(e.target)) dd.classList.remove('open');
+});
 
 // 口味探测器
 var QUIZ_STEPS = [

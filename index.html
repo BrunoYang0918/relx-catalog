@@ -2387,8 +2387,15 @@ document.getElementById("cartPanel").addEventListener("click", function(e) {
 
 // 下拉导航跳转
 function scrollToSection(sel) {
-  var el = document.querySelector(sel);
-  if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  var grid = document.querySelector(sel);
+  if (!grid) return;
+  // 找到该系列的 section-header
+  var header = grid.previousElementSibling;
+  while (header && !header.classList.contains('section-header')) {
+    header = header.previousElementSibling;
+  }
+  var target = header || grid;
+  target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   document.getElementById('navPodDropdown').classList.remove('open');
 }
 

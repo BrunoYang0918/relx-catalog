@@ -949,6 +949,40 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
   width: 100%; padding: 12px; border: none; border-radius: 10px;
   background: #f5f5f5; color: #999; font-size: 14px; cursor: pointer;
 }
+
+/* ===== 清单图片预览弹窗（企微兼容） ===== */
+.list-export-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,.92);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  animation: listFadeIn .2s ease;
+}
+@keyframes listFadeIn { from { opacity: 0; } to { opacity: 1; } }
+.list-export-overlay .leo-img-wrap {
+  position: relative; max-width: 92vw; max-height: 72vh;
+  border-radius: 10px; overflow: hidden; background: #fff;
+  box-shadow: 0 8px 32px rgba(0,0,0,.4);
+}
+.list-export-overlay .leo-img-wrap img {
+  display: block; max-width: 100%; max-height: 72vh; object-fit: contain;
+}
+.list-export-overlay .leo-hint {
+  color: rgba(255,255,255,.75); font-size: 14px;
+  margin-top: 18px; letter-spacing: 1px; text-align: center;
+}
+.list-export-overlay .leo-close {
+  position: absolute; top: 14px; right: 18px;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(255,255,255,.15); color: #fff;
+  font-size: 20px; line-height: 34px; text-align: center;
+  cursor: pointer; border: none; z-index: 2;
+}
+.list-export-overlay .leo-dl-fallback {
+  margin-top: 14px; padding: 8px 24px; border-radius: 20px;
+  background: rgba(255,255,255,.2); color: #fff;
+  font-size: 13px; border: none; cursor: pointer;
+  letter-spacing: .5px;
+}
 </style>
 </head>
 <body>
@@ -2192,11 +2226,49 @@ function exportCartPNG() {
   y += 24; ctx.fillStyle = '#999'; ctx.font = '11px "PingFang SC","Microsoft YaHei",sans-serif';
   ctx.textAlign = 'center'; ctx.fillText('请将清单发给企业微信客服确认', cw / 2, y); ctx.textAlign = 'left';
   closeCart();
-  var link = document.createElement('a');
-  link.download = '悦刻选购清单_' + new Date().toISOString().slice(0,10) + '.png';
-  link.href = canvas.toDataURL('image/png');
-  link.click();
-  showToast('清单图片已生成，可发送给客服');
+
+  var dataUrl = canvas.toDataURL('image/png');
+
+  // 移除已有弹窗
+  var oldOv = document.querySelector('.list-export-overlay');
+  if (oldOv) oldOv.remove();
+
+  var overlay = document.createElement('div');
+  overlay.className = 'list-export-overlay';
+  overlay.innerHTML =
+    '<button class="leo-close">&times;</button>' +
+    '<div class="leo-img-wrap"><img src="' + dataUrl + '" alt="选购清单"></div>' +
+    '<div class="leo-hint">长按图片即可保存到相册</div>' +
+    '<button class="leo-dl-fallback" id="leoDlFallback">📥 点击保存（如长按无效）</button>';
+
+  // 关闭逻辑
+  function removeOverlay() {
+    overlay.remove();
+    document.body.style.overflow = '';
+  }
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay || e.target.classList.contains('leo-close')) {
+      removeOverlay();
+    }
+  });
+
+  document.body.appendChild(overlay);
+  document.body.style.overflow = 'hidden';
+
+  // 备选：用 a[download] 兜底（对部分 WebView 可能生效）
+  var dlBtn = overlay.querySelector('#leoDlFallback');
+  dlBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    var a = document.createElement('a');
+    a.download = '悦刻选购清单_' + new Date().toISOString().slice(0,10) + '.png';
+    a.href = dataUrl;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    showToast('已触发下载，如未开始请长按图片保存');
+  });
+
+  showToast('清单已生成，长按图片即可保存');
 }
 
 function renderHero() {

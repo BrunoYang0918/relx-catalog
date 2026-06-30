@@ -2104,6 +2104,16 @@ document.getElementById('sceneNav').addEventListener('click', function(e) {
   this.querySelectorAll('.sp').forEach(function(s) { s.classList.remove('on'); });
   sp.classList.add('on');
   applyFilter(filter);
+  if (filter !== 'all') {
+    var first = document.querySelector(ALL_GRIDS.split(', ')[0] + ' .product-card:not([style*="none"])');
+    var grids = document.querySelectorAll(ALL_GRIDS);
+    for (var i = 0; i < grids.length && !first; i++) {
+      first = grids[i].querySelector('.product-card:not([style*="none"])');
+    }
+    if (first) {
+      first.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
 });
 
 // 场景导航：滚动到烟具区域时自动隐藏

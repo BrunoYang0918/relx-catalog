@@ -2410,6 +2410,13 @@ var QUIZ_STEPS = [
     { label: '中等价位 ¥119 段', val: '119' },
     { label: '旗舰体验 ¥129+ 段', val: '129' },
     { label: '不限预算', val: '不限' }
+  ]},
+  { title: '你现在用什么烟具？', key: 'device', options: [
+    { label: '幻影五代 / 幻影Pro', val: 'phantom' },
+    { label: '青羽', val: 'qingyu' },
+    { label: '大千（10ml大弹专用）', val: 'daqian' },
+    { label: '宙斯 / 御影S', val: 'zeus' },
+    { label: '没有烟具 / 想看一次性', val: 'disposable' }
   ]}
 ];
 
@@ -2457,21 +2464,38 @@ function quizNext() {
 
 function showQuizResult() {
   var card = document.getElementById('quizCard');
-  // 评分匹配
+  // 设备兼容过滤
+  var DEVICE_COMPAT = {
+    phantom: ['pro', 'phantom', 'qingyu', 'niche'],
+    qingyu: ['qingyu', 'phantom', 'niche'],
+    daqian: ['daqian'],
+    zeus: ['zeus'],
+    disposable: []
+  };
+  var compatSeries = DEVICE_COMPAT[quizAnswers.device] || [];
+  var isDisposable = quizAnswers.device === 'disposable';
+
   var allProducts = [];
-  Object.keys(POD_SECTIONS).forEach(function(k) {
-    POD_SECTIONS[k].products.forEach(function(p) {
-      if (p.status === 'active') allProducts.push(p);
+  if (isDisposable) {
+    Object.keys(DISPOSABLE_SECTIONS).forEach(function(k) {
+      DISPOSABLE_SECTIONS[k].products.forEach(function(p) {
+        if (p.status === 'active') allProducts.push(p);
+      });
     });
-  });
-  Object.keys(DISPOSABLE_SECTIONS).forEach(function(k) {
-    DISPOSABLE_SECTIONS[k].products.forEach(function(p) {
-      if (p.status === 'active') allProducts.push(p);
+  } else {
+    Object.keys(POD_SECTIONS).forEach(function(k) {
+      if (compatSeries.indexOf(k) !== -1) {
+        POD_SECTIONS[k].products.forEach(function(p) {
+          if (p.status === 'active') allProducts.push(p);
+        });
+      }
     });
-  });
+  }
 
   var scored = allProducts.map(function(p) {
     var score = 0;
+    // 设备完全匹配加分
+    if (!isDisposable && compatSeries.length > 0 && compatSeries.indexOf(p.series) !== -1) score += 20;
     // 劲道匹配
     if (quizAnswers.strength === '清淡' && (p.style === '清淡' || p.style === '偏淡')) score += 30;
     if (quizAnswers.strength === '适中' && p.style === '适中') score += 30;

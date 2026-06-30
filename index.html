@@ -80,7 +80,7 @@ main { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
 .section-header {
   text-align: center; padding: 20px 16px 12px;
   border-top: 1.5px solid var(--gold); margin: 0 16px 8px; opacity: .6;
-  scroll-margin-top: 180px;
+  scroll-margin-top: 140px;
 }
 .section-header.first { border-top: none; padding-top: 8px; }
 .section-header.major {
@@ -544,22 +544,8 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 }
 .scene-nav .sp:active { transform: scale(.96); }
 .scene-nav .sp.on { background: var(--gold); color: #fff; border-color: var(--gold); }
-
-.filter-bar {
-  display: flex; gap: 6px; padding: 8px 12px; overflow-x: auto;
-  -webkit-overflow-scrolling: touch; scrollbar-width: none;
-  position: sticky; top: 132px; z-index: 98;
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
-}
-.filter-bar::-webkit-scrollbar { display: none; }
-.filter-bar .fp {
-  padding: 5px 12px; border-radius: 16px; border: 1px solid var(--border);
-  background: #fff; font-size: 12px; font-weight: 600; color: #666;
-  cursor: pointer; white-space: nowrap; transition: all .15s;
-}
-.filter-bar .fp:active { transform: scale(.96); }
-.filter-bar .fp.on { background: var(--teal); color: #fff; border-color: var(--teal); }
+.scene-nav .sp.all { background: #fff; color: #666; border-color: var(--border); font-weight: 600; }
+.scene-nav .sp.all.on { background: var(--teal); color: #fff; border-color: var(--teal); }
 
 .new-product-strip {
   padding: 8px 12px;
@@ -831,22 +817,16 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 </div>
 
 <div class="scene-nav" id="sceneNav">
-  <span class="sp" data-scene="清晨提神">🌅 清晨提神</span>
-  <span class="sp" data-scene="饭后解瘾">🍜 饭后解瘾</span>
-  <span class="sp" data-scene="办公轻吸">💼 办公轻吸</span>
-  <span class="sp" data-scene="睡前放松">🌃 睡前放松</span>
-  <span class="sp" data-scene="社交场合">🎉 社交场合</span>
+  <span class="sp all on" data-scene="all">全部</span>
+  <span class="sp" data-scene="清晨提神">🌅 清晨</span>
+  <span class="sp" data-scene="饭后解瘾">🍜 饭后</span>
+  <span class="sp" data-scene="办公轻吸">💼 办公</span>
+  <span class="sp" data-scene="睡前放松">🌃 睡前</span>
+  <span class="sp" data-scene="社交场合">🎉 社交</span>
 </div>
 
 <div class="section-header major" id="pods">
   <h2 data-i18n="sec_pods">烟弹 · 口味速查</h2>
-</div>
-<div class="filter-bar" id="filterBar">
-  <span class="fp on" data-filter="all">全部</span>
-  <span class="fp" data-filter="解瘾强">解瘾强</span>
-  <span class="fp" data-filter="果味过渡">果味过渡</span>
-  <span class="fp" data-filter="新手友好">新手友好</span>
-  <span class="fp" data-filter="女生首选">女生首选</span>
 </div>
 
 <div class="section-header"><h2 data-i18n="sec_pro">幻影Pro系列 · 适配六代 · 三档功率</h2></div>
@@ -2053,11 +2033,11 @@ window.addEventListener('resize', function() {
 
 // 场景导航
 var SCENE_NAMES = {
-  '清晨提神': ['蓝田暖阳', '传家宝藏', '日出沧海', '金风习习', '绕指轻舞', '浩海潮升', '竹仗胜马', '春鸣', '太霄', '白岸', '金缕'],
-  '饭后解瘾': ['红运滚滚', '森林复兴', '群玉山见', '柳暗花明', '甘泽', '广厦间', '山雾秋', '匠造者-02'],
-  '办公轻吸': ['蓝田暖阳', '传家宝藏', '绕指轻舞', '竹仗胜马', '浩海潮升', '悠岚', '点点灵犀', '敬亭山', '夏暮', '念关山'],
-  '睡前放松': ['兰亭煮雪', '忘江有径', '佳人佳期', '晨光入林', '暖夕穿林', '柔情牛仔', '翠川苍', '兰亭雅集', '柏芬', '隋和', '见山', '霜月', '满园茵茵'],
-  '社交场合': ['红运滚滚', '群玉山见', '绿扇盈盈', '知夏', '云岭松风', '金丝露', '匠造者-01', '金光奕奕', '飞马环游']
+  '清晨提神': ['蓝田暖阳', '传家宝藏', '日出沧海', '金风习习', '绕指轻舞', '浩海潮升', '竹仗胜马', '春鸣', '太霄', '悠岚', '翠川苍', '金缕', '夏暮', '敬亭山', '白岸', '满园茵茵'],
+  '饭后解瘾': ['红运滚滚', '森林复兴', '群玉山见', '柳暗花明', '甘泽', '拂柳风', '广厦间', '绿扇盈盈', '金丝露', '山雾秋', '匠造者-02'],
+  '办公轻吸': ['蓝田暖阳', '传家宝藏', '金风习习', '绕指轻舞', '竹仗胜马', '浩海潮升', '兰亭煮雪', '悠岚', '太霄', '点点灵犀', '佳人佳期', '冷烟月', '敬亭山', '夏暮', '念关山', '金缕'],
+  '睡前放松': ['金风习习', '兰亭煮雪', '忘江有径', '旭日凌云', '佳人佳期', '晨光入林', '暖夕穿林', '柔情牛仔', '春鸣', '柏芬', '隋和', '翠川苍', '碧海澄空', '兰亭雅集', '满园茵茵', '金光奕奕', '见山', '白岸', '念关山', '霜月'],
+  '社交场合': ['红运滚滚', '日出沧海', '群玉山见', '绿扇盈盈', '甘泽', '知夏', '拂柳风', '云岭松风', '金丝露', '晨光入林', '柔情牛仔', '匠造者-01', '匠造者-02', '金光奕奕', '飞马环游']
 };
 
 var ALL_POD_GRIDS = '#pod-pro, #pod-phantom, #pod-qingyu, #pod-daqian, #pod-zeus, #pod-niche, #disp-relx, #disp-poolan, #disp-mirui, #disp-other';
@@ -2101,74 +2081,18 @@ document.getElementById('sceneNav').addEventListener('click', function(e) {
   var sp = e.target.closest('.sp');
   if (!sp) return;
   var scene = sp.getAttribute('data-scene');
-  // 互斥：取消所有筛选 chip
-  document.querySelectorAll('#filterBar .fp').forEach(function(f) { f.classList.remove('on'); });
-  document.getElementById('filterBar').querySelector('[data-filter="all"]').classList.add('on');
   // 切换高亮
-  var wasActive = sp.classList.contains('on');
   this.querySelectorAll('.sp').forEach(function(s) { s.classList.remove('on'); });
-  if (!wasActive) {
-    sp.classList.add('on');
-    applySceneFilter(scene);
-  } else {
-    // 再次点击取消
-    applySceneFilter('all');
-  }
+  sp.classList.add('on');
+  applySceneFilter(scene);
 });
 
-// 筛选 Chips
-document.getElementById('filterBar').addEventListener('click', function(e) {
-  if (!e.target.classList.contains('fp')) return;
-  // 互斥：取消场景导航高亮
-  document.querySelectorAll('#sceneNav .sp').forEach(function(s) { s.classList.remove('on'); });
-  var filter = e.target.getAttribute('data-filter');
-  this.querySelectorAll('.fp').forEach(function(f) { f.classList.remove('on'); });
-  e.target.classList.add('on');
-  var grids = document.querySelectorAll('#pod-pro, #pod-phantom, #pod-qingyu, #pod-daqian, #pod-zeus, #pod-niche, #disp-relx, #disp-poolan, #disp-mirui, #disp-other');
-  grids.forEach(function(grid) {
-    var cards = grid.querySelectorAll('.product-card');
-    var hasVisible = false;
-    cards.forEach(function(card) {
-      if (filter === 'all') { card.style.display = ''; hasVisible = true; return; }
-      var tags = card.querySelectorAll('.tag');
-      var match = false;
-      tags.forEach(function(t) { if (t.textContent.indexOf(filter) !== -1) match = true; });
-      if (card.querySelector('.p-name') && card.querySelector('.p-name').textContent.indexOf(filter) !== -1) match = true;
-      card.style.display = match ? '' : 'none';
-      if (match) hasVisible = true;
-    });
-    alignCardDescs();
-    // 该系列无匹配 → 隐藏标题及引导
-    var header = grid.previousElementSibling;
-    while (header && !header.classList.contains('section-header')) {
-      header = header.previousElementSibling;
-    }
-    if (header && header.classList.contains('section-header')) {
-      header.style.display = hasVisible ? '' : 'none';
-    }
-    // 同时隐藏中间的新手引导
-    var hint = grid.previousElementSibling;
-    if (hint && hint.classList.contains('newbie-hint')) {
-      hint.style.display = hasVisible ? '' : 'none';
-    }
-  });
-  // 筛选后滚到第一个匹配产品
-  if (filter !== 'all') {
-    var firstMatch = document.querySelector('#pod-pro .product-card:not([style*="none"]), #pod-phantom .product-card:not([style*="none"]), #pod-qingyu .product-card:not([style*="none"]), #pod-daqian .product-card:not([style*="none"]), #pod-zeus .product-card:not([style*="none"]), #pod-niche .product-card:not([style*="none"]), #disp-relx .product-card:not([style*="none"]), #disp-poolan .product-card:not([style*="none"]), #disp-mirui .product-card:not([style*="none"]), #disp-other .product-card:not([style*="none"])');
-    if (firstMatch) {
-      var top = firstMatch.getBoundingClientRect().top + window.pageYOffset - 140;
-      window.scrollTo({ top: top, behavior: 'smooth' });
-    }
-  }
-});
-
-// 筛选栏+场景导航：滚动到一次性/烟具区域时自动隐藏
+// 场景导航：滚动到一次性/烟具区域时自动隐藏
 (function() {
-  var fb = document.getElementById('filterBar');
   var sn = document.getElementById('sceneNav');
   var disp = document.getElementById('disposable');
   var devs = document.getElementById('devices');
-  if (!fb || !disp) return;
+  if (!sn || !disp) return;
   var ticking = false;
   window.addEventListener('scroll', function() {
     if (ticking) return;
@@ -2178,8 +2102,7 @@ document.getElementById('filterBar').addEventListener('click', function(e) {
       var rect = disp.getBoundingClientRect();
       var devRect = devs ? devs.getBoundingClientRect() : {top: 9999};
       var hide = rect.top <= 100 || devRect.top <= 100;
-      fb.style.display = hide ? 'none' : '';
-      if (sn) sn.style.display = hide ? 'none' : '';
+      sn.style.display = hide ? 'none' : '';
     });
   });
 })();

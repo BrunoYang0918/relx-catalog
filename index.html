@@ -817,12 +817,11 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 </div>
 
 <div class="scene-nav" id="sceneNav">
-  <span class="sp all on" data-scene="all">全部</span>
-  <span class="sp" data-scene="清晨提神">🌅 清晨</span>
-  <span class="sp" data-scene="饭后解瘾">🍜 饭后</span>
-  <span class="sp" data-scene="办公轻吸">💼 办公</span>
-  <span class="sp" data-scene="睡前放松">🌃 睡前</span>
-  <span class="sp" data-scene="社交场合">🎉 社交</span>
+  <span class="sp all on" data-filter="all">全部</span>
+  <span class="sp" data-filter="新手入门">🌱 新手入门</span>
+  <span class="sp" data-filter="有劲解瘾">💨 有劲解瘾</span>
+  <span class="sp" data-filter="果味口感">🍈 果味口感</span>
+  <span class="sp" data-filter="柔和香甜">🌸 柔和香甜</span>
 </div>
 
 <div class="section-header major" id="pods">
@@ -2031,32 +2030,53 @@ window.addEventListener('resize', function() {
   }, 150);
 });
 
-// 场景导航
-var SCENE_NAMES = {
-  '清晨提神': ['蓝田暖阳', '传家宝藏', '日出沧海', '金风习习', '绕指轻舞', '浩海潮升', '竹仗胜马', '春鸣', '太霄', '悠岚', '翠川苍', '金缕', '夏暮', '敬亭山', '白岸', '满园茵茵'],
-  '饭后解瘾': ['红运滚滚', '森林复兴', '群玉山见', '柳暗花明', '甘泽', '拂柳风', '广厦间', '绿扇盈盈', '金丝露', '山雾秋', '匠造者-02'],
-  '办公轻吸': ['蓝田暖阳', '传家宝藏', '金风习习', '绕指轻舞', '竹仗胜马', '浩海潮升', '兰亭煮雪', '悠岚', '太霄', '点点灵犀', '佳人佳期', '冷烟月', '敬亭山', '夏暮', '念关山', '金缕'],
-  '睡前放松': ['金风习习', '兰亭煮雪', '忘江有径', '旭日凌云', '佳人佳期', '晨光入林', '暖夕穿林', '柔情牛仔', '春鸣', '柏芬', '隋和', '翠川苍', '碧海澄空', '兰亭雅集', '满园茵茵', '金光奕奕', '见山', '白岸', '念关山', '霜月'],
-  '社交场合': ['红运滚滚', '日出沧海', '群玉山见', '绿扇盈盈', '甘泽', '知夏', '拂柳风', '云岭松风', '金丝露', '晨光入林', '柔情牛仔', '匠造者-01', '匠造者-02', '金光奕奕', '飞马环游']
+// 筛选导航
+var FILTER_DATA = {
+  '新手入门': {
+    tags: ['新手友好'],
+    names: ['满园茵茵', '敬亭山', '念关山', '夏暮', '金缕', '见山']
+  },
+  '有劲解瘾': {
+    tags: ['解瘾强'],
+    names: []
+  },
+  '果味口感': {
+    tags: ['果味过渡'],
+    names: ['绿扇盈盈', '忘江有径']
+  },
+  '柔和香甜': {
+    tags: ['女生首选'],
+    names: ['春鸣', '满园茵茵', '金光奕奕', '见山', '白岸', '霜月', '金风习习', '兰亭雅集']
+  }
 };
 
-var ALL_POD_GRIDS = '#pod-pro, #pod-phantom, #pod-qingyu, #pod-daqian, #pod-zeus, #pod-niche, #disp-relx, #disp-poolan, #disp-mirui, #disp-other';
+var ALL_GRIDS = '#pod-pro, #pod-phantom, #pod-qingyu, #pod-daqian, #pod-zeus, #pod-niche, #disp-relx, #disp-poolan, #disp-mirui, #disp-other';
 
-function applySceneFilter(scene) {
-  var grids = document.querySelectorAll(ALL_POD_GRIDS);
-  var names = SCENE_NAMES[scene] || [];
+function applyFilter(filter) {
+  var grids = document.querySelectorAll(ALL_GRIDS);
+  var data = FILTER_DATA[filter];
   grids.forEach(function(grid) {
     var cards = grid.querySelectorAll('.product-card');
     var hasVisible = false;
     cards.forEach(function(card) {
       var match = false;
-      if (names.length === 0) { match = true; }
+      if (!data) { match = true; }  // "全部"
       else {
-        var nameEl = card.querySelector('.p-name');
-        if (nameEl) {
-          names.forEach(function(n) {
-            if (nameEl.textContent.indexOf(n) !== -1) match = true;
+        // 1. 标签匹配
+        var tags = card.querySelectorAll('.tag');
+        tags.forEach(function(t) {
+          (data.tags || []).forEach(function(kw) {
+            if (t.textContent.indexOf(kw) !== -1) match = true;
           });
+        });
+        // 2. 产品名补充匹配
+        if (!match) {
+          var nameEl = card.querySelector('.p-name');
+          if (nameEl) {
+            (data.names || []).forEach(function(n) {
+              if (nameEl.textContent.indexOf(n) !== -1) match = true;
+            });
+          }
         }
       }
       card.style.display = match ? '' : 'none';
@@ -2080,29 +2100,25 @@ function applySceneFilter(scene) {
 document.getElementById('sceneNav').addEventListener('click', function(e) {
   var sp = e.target.closest('.sp');
   if (!sp) return;
-  var scene = sp.getAttribute('data-scene');
-  // 切换高亮
+  var filter = sp.getAttribute('data-filter');
   this.querySelectorAll('.sp').forEach(function(s) { s.classList.remove('on'); });
   sp.classList.add('on');
-  applySceneFilter(scene);
+  applyFilter(filter);
 });
 
-// 场景导航：滚动到一次性/烟具区域时自动隐藏
+// 场景导航：滚动到烟具区域时自动隐藏
 (function() {
   var sn = document.getElementById('sceneNav');
-  var disp = document.getElementById('disposable');
   var devs = document.getElementById('devices');
-  if (!sn || !disp) return;
+  if (!sn || !devs) return;
   var ticking = false;
   window.addEventListener('scroll', function() {
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(function() {
       ticking = false;
-      var rect = disp.getBoundingClientRect();
-      var devRect = devs ? devs.getBoundingClientRect() : {top: 9999};
-      var hide = rect.top <= 100 || devRect.top <= 100;
-      sn.style.display = hide ? 'none' : '';
+      var devRect = devs.getBoundingClientRect();
+      sn.style.display = devRect.top <= 100 ? 'none' : '';
     });
   });
 })();

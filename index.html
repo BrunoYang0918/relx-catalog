@@ -924,12 +924,12 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
   <div class="nav-dropdown" id="navPodDropdown">
     <span class="nd-trigger" id="navPodTrigger" onclick="event.stopPropagation();document.getElementById('navPodDropdown').classList.toggle('open')">烟弹选味 ▾</span>
     <div class="nd-menu">
-      <a href="#" onclick="scrollToSection('#pod-pro','幻影Pro')">幻影Pro</a>
-      <a href="#" onclick="scrollToSection('#pod-phantom','幻影')">幻影</a>
-      <a href="#" onclick="scrollToSection('#pod-qingyu','青羽')">青羽</a>
-      <a href="#" onclick="scrollToSection('#pod-daqian','大千')">大千</a>
-      <a href="#" onclick="scrollToSection('#pod-zeus','宙斯')">宙斯</a>
-      <a href="#" onclick="scrollToSection('#pod-niche','小众精选')">小众精选</a>
+      <a href="javascript:void(0)" onclick="scrollToSection('#pod-pro','幻影Pro')">幻影Pro</a>
+      <a href="javascript:void(0)" onclick="scrollToSection('#pod-phantom','幻影')">幻影</a>
+      <a href="javascript:void(0)" onclick="scrollToSection('#pod-qingyu','青羽')">青羽</a>
+      <a href="javascript:void(0)" onclick="scrollToSection('#pod-daqian','大千')">大千</a>
+      <a href="javascript:void(0)" onclick="scrollToSection('#pod-zeus','宙斯')">宙斯</a>
+      <a href="javascript:void(0)" onclick="scrollToSection('#pod-niche','小众精选')">小众精选</a>
     </div>
   </div>
   <a href="#disposable">一次性款</a>
@@ -947,6 +947,17 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="section-header major" id="pods">
   <h2 data-i18n="sec_pods">烟弹 · 口味速查</h2>
+</div>
+
+<div class="glossary" id="glossary">
+  <button class="gls-toggle" onclick="document.getElementById('glossary').classList.toggle('open')">📖 口味小词典 ▾</button>
+  <div class="gls-body">
+    <b>劲道 ★</b>：★越多吸阻越强、击喉感越明显。老烟民建议 ★★★★ 起步<br>
+    <b>凉感</b>：入口有薄荷般清凉感，非水果味，适合喜欢清爽口感的用户<br>
+    <b>果味过渡</b>：模拟水果风味调香，适合怀念以前果味的用户过渡<br>
+    <b>击喉感</b>：烟雾接触喉咙时的刺激感和满足感，击喉越强越像真烟<br>
+    <b>国标烟草</b>：符合国家标准的烟草基底口味，安全合规但不会叫水果名
+  </div>
 </div>
 
 <div class="section-header"><h2 data-i18n="sec_pro">幻影Pro系列 · 适配六代 · 三档功率</h2></div>
@@ -1011,20 +1022,6 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 <div id="device-container"></div>
 
 <div class="section-header major" id="contact"><h2 data-i18n="sec_contact">联系门店</h2></div>
-
-<div class="map-section">
-  <div class="map-info">
-    <div class="map-icon">📍</div>
-    <div class="map-addr">
-      <div class="addr-title">长寿路189弄购物中心</div>
-      <div class="addr-detail">1楼 L105B室 · 长寿路189号</div>
-      <div class="addr-detail">🚇 地铁13号线长寿路站 2号口步行3分钟</div>
-    </div>
-    <a class="map-nav-btn" href="https://uri.amap.com/navigation?to=121.4382,31.2446,长寿路189弄购物中心&mode=walk&coordinate=gaode" target="_blank">🗺️ 导航</a>
-  </div>
-</div>
-
-<div class="section-header major" id="contact"><h2 data-i18n="sec_contact">联系门店</h2></div>
 <div class="contact-bar">
   <div class="ct-left">
     <div class="ct-store-name">长寿路189弄购物中心店</div>
@@ -1033,6 +1030,8 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
       <span class="ct-badge ct-badge-auth">中国烟草授权门店</span>
     </div>
     <div class="ct-phone">📞 189 3974 1711</div>
+    <div style="font-size:11px;color:#666;margin-top:4px;">📍 长寿路189号 1楼 L105B室</div>
+    <div style="font-size:10px;color:#999;">🚇 地铁13号线长寿路站2号口步行3分钟</div>
   </div>
   <div class="ct-right">
     <div style="text-align:center;">
@@ -1045,17 +1044,6 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="footer-note"></div>
 
-<div class="glossary" id="glossary">
-  <button class="gls-toggle" onclick="document.getElementById('glossary').classList.toggle('open')">📖 口味小词典 ▾</button>
-  <div class="gls-body">
-    <b>劲道 ★</b>：★越多吸阻越强、击喉感越明显。老烟民建议 ★★★★ 起步<br>
-    <b>凉感</b>：入口有薄荷般清凉感，非水果味，适合喜欢清爽口感的用户<br>
-    <b>果味过渡</b>：模拟水果风味调香，适合怀念以前果味的用户过渡<br>
-    <b>击喉感</b>：烟雾接触喉咙时的刺激感和满足感，击喉越强越像真烟<br>
-    <b>国标烟草</b>：符合国家标准的烟草基底口味，安全合规但不会叫水果名
-  </div>
-</div>
-
 <div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规</div>
 
 <div class="quiz-overlay" id="quizOverlay" onclick="if(event.target===this)closeQuiz()">
@@ -1067,6 +1055,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <div class="floating-bar" id="floatingBar">
+  <a class="fb-btn fb-phone" href="tel:18939741711">📞 189-3974-1711</a>
   <button class="fb-btn fb-wechat" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">💬 企业微信客服</button>
   <button class="fb-btn fb-cart" id="fbCart" onclick="openCart()">
     选品清单 <span class="fb-badge" id="fbBadge" style="display:none">0</span>

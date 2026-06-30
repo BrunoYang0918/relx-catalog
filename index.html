@@ -2105,14 +2105,7 @@ document.getElementById('sceneNav').addEventListener('click', function(e) {
   sp.classList.add('on');
   applyFilter(filter);
   if (filter !== 'all') {
-    var first = document.querySelector(ALL_GRIDS.split(', ')[0] + ' .product-card:not([style*="none"])');
-    var grids = document.querySelectorAll(ALL_GRIDS);
-    for (var i = 0; i < grids.length && !first; i++) {
-      first = grids[i].querySelector('.product-card:not([style*="none"])');
-    }
-    if (first) {
-      first.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 });
 

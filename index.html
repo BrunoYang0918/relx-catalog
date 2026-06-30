@@ -888,6 +888,33 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 .cp-reminder {
   font-size: 11px; color: var(--teal); text-align: center; padding: 4px 0;
 }
+
+/* 地图导航弹窗 */
+.map-modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 6000;
+  background: rgba(0,0,0,.5); align-items: center; justify-content: center;
+}
+.map-modal-overlay.show { display: flex; }
+.map-modal-sheet {
+  background: #fff; border-radius: 16px; padding: 24px 20px 16px;
+  width: 90%; max-width: 320px; text-align: center;
+  animation: slideUp .25s ease;
+}
+.map-modal-title { font-size: 18px; font-weight: 700; color: #095155; margin-bottom: 4px; }
+.map-modal-sub { font-size: 12px; color: #666; margin-bottom: 20px; }
+.map-modal-opts { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.map-opt {
+  padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 700;
+  text-decoration: none; text-align: center; transition: transform .15s;
+}
+.map-opt:active { transform: scale(.97); }
+.map-opt-baidu { background: #F0F4FF; color: #2932E5; border: 1px solid #C8D6F5; }
+.map-opt-amap { background: #EDF5FF; color: #2E82FF; border: 1px solid #C2E0FF; }
+.map-opt-apple { background: #EDF8EF; color: #33A23D; border: 1px solid #C6E8CA; }
+.map-modal-close {
+  width: 100%; padding: 12px; border: none; border-radius: 10px;
+  background: #f5f5f5; color: #999; font-size: 14px; cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -1030,7 +1057,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
       <span class="ct-badge ct-badge-auth">中国烟草授权门店</span>
     </div>
     <div class="ct-phone">📞 189 3974 1711</div>
-    <div style="font-size:11px;color:#666;margin-top:4px;">📍 长寿路189号 1楼 L105B室</div>
+    <div class="ct-addr" onclick="openMapModal()" style="font-size:11px;color:var(--teal);margin-top:4px;cursor:pointer;font-weight:600;">📍 长寿路189号 1楼 L105B室 <span style="font-size:10px;color:var(--gold);">▶ 导航</span></div>
     <div style="font-size:10px;color:#999;">🚇 地铁13号线长寿路站2号口步行3分钟</div>
   </div>
   <div class="ct-right">
@@ -1042,18 +1069,16 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
   <div class="ct-trust"><span>🛡️ 国标正品</span><span>🚀 全城闪送</span><span>🛠️ 售后无忧</span></div>
 </div>
 
-<div class="map-section" style="margin-top:12px;">
-  <div class="map-info">
-    <div class="map-icon">🗺️</div>
-    <div class="map-addr">
-      <div class="addr-title">导航到店</div>
-      <div class="addr-detail">选择你常用的地图 App</div>
+<div id="mapModal" class="map-modal-overlay" onclick="if(event.target===this)closeMapModal()">
+  <div class="map-modal-sheet">
+    <div class="map-modal-title">🗺️ 导航到店</div>
+    <div class="map-modal-sub">长寿路189号 1楼 L105B室</div>
+    <div class="map-modal-opts">
+      <a class="map-opt map-opt-baidu" href="https://map.baidu.com/search/长寿路189号189弄购物中心" target="_blank">百度地图</a>
+      <a class="map-opt map-opt-amap" href="https://uri.amap.com/navigation?to=121.4382,31.2446,长寿路189弄购物中心&mode=walk&coordinate=gaode" target="_blank">高德地图</a>
+      <a class="map-opt map-opt-apple" href="https://maps.apple.com/?q=长寿路189号189弄购物中心" target="_blank">Apple 地图</a>
     </div>
-    <div style="display:flex;gap:6px;flex-shrink:0;">
-      <a class="map-nav-btn" style="background:#fff;color:#2932E5;border:1px solid #2932E5;" href="https://map.baidu.com/search/长寿路189号189弄购物中心" target="_blank">百度</a>
-      <a class="map-nav-btn" style="background:#fff;color:#2E82FF;border:1px solid #2E82FF;" href="https://uri.amap.com/navigation?to=121.4382,31.2446,长寿路189弄购物中心&mode=walk&coordinate=gaode" target="_blank">高德</a>
-      <a class="map-nav-btn" style="background:#fff;color:#33A23D;border:1px solid #33A23D;" href="https://maps.apple.com/?q=长寿路189号189弄购物中心" target="_blank">苹果</a>
-    </div>
+    <button class="map-modal-close" onclick="closeMapModal()">取消</button>
   </div>
 </div>
 
@@ -2600,6 +2625,13 @@ function goToProduct(name, sectionId) {
       }
     }
   }, 100);
+}
+
+function openMapModal() {
+  document.getElementById('mapModal').classList.add('show');
+}
+function closeMapModal() {
+  document.getElementById('mapModal').classList.remove('show');
 }
 </script>
 

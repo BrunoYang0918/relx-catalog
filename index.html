@@ -2514,6 +2514,8 @@ function showQuizResult() {
     // 新手加成
     if (quizAnswers.strength === '清淡' && tagTexts.indexOf('新手友好') !== -1) score += 15;
     if (quizAnswers.strength === '偏浓' && tagTexts.indexOf('解瘾强') !== -1) score += 15;
+    // 高毛利优先
+    if (p.name.indexOf('匠造者') === 0) score += 10;
     return { product: p, score: score };
   });
 

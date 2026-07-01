@@ -666,10 +666,12 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 .cart-panel {
   position: fixed; inset: 0; z-index: 3000;
-  background: rgba(0,0,0,.4); display: none;
+  background: rgba(0,0,0,.4); display: flex;
   align-items: flex-end; justify-content: center;
+  /* iOS 12 兼容：用 opacity 代替 display 切换 */
+  opacity: 0; pointer-events: none; transition: opacity .15s;
 }
-.cart-panel.show { display: flex; }
+.cart-panel.show { opacity: 1; pointer-events: auto; }
 .cart-panel .cp-sheet {
   background: #fff; border-radius: 16px 16px 0 0;
   width: 100%; max-width: 600px; max-height: 70vh;
@@ -866,10 +868,12 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 /* 口味探测器 */
 .quiz-overlay {
-  display: none; position: fixed; inset: 0; z-index: 5000;
-  background: rgba(0,0,0,.5); align-items: center; justify-content: center;
+  position: fixed; inset: 0; z-index: 5000;
+  background: rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center;
+  /* iOS 12 兼容：用 opacity 代替 display 切换 */
+  opacity: 0; pointer-events: none; transition: opacity .15s;
 }
-.quiz-overlay.show { display: flex; }
+.quiz-overlay.show { opacity: 1; pointer-events: auto; }
 .quiz-card {
   background: #fff; border-radius: 16px; padding: 24px 20px;
   width: 90%; max-width: 360px; max-height: 80vh; overflow-y: auto;
@@ -1173,7 +1177,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="footer-note"></div>
 
-<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v2.1.0701</span></div>
+<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v2.1.0701a</span></div>
 
 </main>
 
@@ -2092,10 +2096,7 @@ function updateCartBadge() {
 
 function openCart() {
   renderCartBody();
-  var panel = document.getElementById('cartPanel');
-  panel.classList.add('show');
-  // iOS 12 强制回流
-  panel.offsetHeight;
+  document.getElementById('cartPanel').classList.add('show');
 }
 function closeCart() {
   document.getElementById('cartPanel').classList.remove('show');
@@ -2645,10 +2646,7 @@ function closeGlossary() {
 
 function openQuiz() {
   quizAnswers = {}; quizStep = 0;
-  var overlay = document.getElementById('quizOverlay');
-  overlay.classList.add('show');
-  // iOS 12 强制回流：classList.add 后立即读尺寸触发渲染
-  overlay.offsetHeight;
+  document.getElementById('quizOverlay').classList.add('show');
   renderQuizStep();
 }
 

@@ -1186,12 +1186,12 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 </main>
 
-<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" ontouchstart="">↑</button>
 
 <div class="floating-bar" id="floatingBar">
-  <button class="fb-btn fb-glossary" onclick="toggleGlossary(event)">📖 口味词典</button>
-  <button class="fb-btn fb-quiz" onclick="openQuiz()">🔍 帮我选</button>
-  <button class="fb-btn fb-cart" id="fbCart" onclick="openCart()">
+  <button class="fb-btn fb-glossary" onclick="toggleGlossary(event)" ontouchstart="">📖 口味词典</button>
+  <button class="fb-btn fb-quiz" onclick="openQuiz()" ontouchstart="">🔍 帮我选</button>
+  <button class="fb-btn fb-cart" id="fbCart" onclick="openCart()" ontouchstart="">
     选品清单 <span class="fb-badge" id="fbBadge" style="display:none">0</span>
   </button>
 </div>
@@ -1433,7 +1433,7 @@ function renderProductCard(p) {
     + '<div class="p-tags-row">' + tagHtml + '</div>'
     + '<div class="p-desc"><span class="' + emCls + '">' + showDesc + '</span></div>'
     + '<div class="p-bottom"><span class="p-strength">' + p.str + '</span><span class="p-style' + (p.style === '清淡' || p.style === '偏淡' ? ' light' : p.style === '偏浓' ? ' strong' : '') + '">' + p.style + '</span></div>'
-    + '<div class="p-select-row"><span class="ps-text">加入清单</span><button class="ps-btn card-select" data-pid="' + p.id + '" onclick="toggleSelect(event,' + p.id + ')">＋</button></div>'
+    + '<div class="p-select-row"><span class="ps-text">加入清单</span><button class="ps-btn card-select" data-pid="' + p.id + '" ontouchstart="" onclick="toggleSelect(event,' + p.id + ')">＋</button></div>'
     + '</div>';
 }
 
@@ -1454,7 +1454,7 @@ function renderDeviceSection(d) {
         + '<div class="p-name-row"><span class="p-name">' + c.label + '</span><span class="p-price">&yen;' + d.price + '</span></div>'
         + '<div class="p-desc">适配：' + d.compat + '</div>'
         + '<div class="p-desc">电池：' + d.battery + 'mAh ' + starStr + '</div>'
-        + '<div class="p-select-row"><span class="ps-text">加入清单</span><button class="ps-btn card-select" data-pid="' + pid + '" onclick="toggleSelect(event,' + pid + ')">＋</button></div>'
+        + '<div class="p-select-row"><span class="ps-text">加入清单</span><button class="ps-btn card-select" data-pid="' + pid + '" ontouchstart="" onclick="toggleSelect(event,' + pid + ')">＋</button></div>'
       + '</div>'
       + '</div>';
   });

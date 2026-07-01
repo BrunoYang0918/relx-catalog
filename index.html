@@ -1175,11 +1175,11 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规</div>
 
+</main>
+
 <div class="quiz-overlay" id="quizOverlay" onclick="if(event.target===this)closeQuiz()">
   <div class="quiz-card" id="quizCard"></div>
 </div>
-
-</main>
 
 <div class="floating-bar" id="floatingBar">
   <button class="fb-btn fb-glossary" onclick="toggleGlossary(event)" ontouchstart="">📖 口味词典</button>
@@ -2110,7 +2110,10 @@ function updateCartBadge() {
 
 function openCart() {
   renderCartBody();
-  document.getElementById('cartPanel').classList.add('show');
+  var panel = document.getElementById('cartPanel');
+  panel.classList.add('show');
+  // iOS 12 强制回流
+  panel.offsetHeight;
 }
 function closeCart() {
   document.getElementById('cartPanel').classList.remove('show');
@@ -2660,7 +2663,10 @@ function closeGlossary() {
 
 function openQuiz() {
   quizAnswers = {}; quizStep = 0;
-  document.getElementById('quizOverlay').classList.add('show');
+  var overlay = document.getElementById('quizOverlay');
+  overlay.classList.add('show');
+  // iOS 12 强制回流：classList.add 后立即读尺寸触发渲染
+  overlay.offsetHeight;
   renderQuizStep();
 }
 

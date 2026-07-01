@@ -676,10 +676,10 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 }
 .cart-panel.show { display: block; }
 .cart-panel .cp-sheet {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  margin: 0 auto;
+  position: absolute; bottom: 0; left: 0;
+  width: 100%; max-width: 600px;
   background: #fff; border-radius: 16px 16px 0 0;
-  width: 100%; max-width: 600px; max-height: 70vh;
+  max-height: 70vh;
   display: flex; flex-direction: column;
   animation: slideUp .25s ease;
 }
@@ -878,10 +878,9 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 }
 .quiz-overlay.show { display: block; }
 .quiz-card {
-  position: absolute; top: 0; bottom: 0; left: 0; right: 0;
-  margin: auto;
   background: #fff; border-radius: 16px; padding: 24px 20px;
   width: 90%; max-width: 360px; max-height: 80vh; overflow-y: auto;
+  margin: 12vh auto;
 }
 .quiz-card .q-title { font-size: 18px; font-weight: 700; color: #095155; text-align: center; margin-bottom: 6px; }
 .quiz-card .q-sub { font-size: 12px; color: #999; text-align: center; margin-bottom: 16px; }
@@ -1033,7 +1032,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 <div class="app-shell"><div class="app-scroll"><main>
 
 <div class="topbar">
-  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v2.7</span></div>
+  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v2.8</span></div>
   <div class="tb-right">
     <a class="tb-btn" href="javascript:void(0)" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">📞 联系门店</a>
     <div class="lang-dropdown" id="langDrop">
@@ -1182,7 +1181,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="footer-note"></div>
 
-<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v2.7</span></div>
+<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v2.8</span></div>
 
 </main></div>
 <div class="floating-bar" id="floatingBar">

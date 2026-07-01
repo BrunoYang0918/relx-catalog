@@ -29,13 +29,12 @@ body {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
-/* 全屏 flex 布局：底部栏在正常文档流中，绑定 scroll 容器 */
+/* 全屏 flex 布局：main 作为滚动容器，sticky 元素依附于 main 正常运作 */
 .app-shell {
   display: flex; flex-direction: column; height: 100%;
 }
 .app-scroll {
-  flex: 1; overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  flex: 1; display: flex; flex-direction: column; min-height: 0;
 }
 
 body::before {
@@ -47,7 +46,10 @@ body::before {
   background-size: 400px 64px;
 }
 
-main { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
+main {
+  flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  position: relative; z-index: 1; max-width: 600px; margin: 0 auto;
+}
 
 .topbar {
   position: sticky; top: 0; z-index: 100;
@@ -1050,7 +1052,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 <div class="app-shell"><div class="app-scroll"><main>
 
 <div class="topbar">
-  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v3.0</span></div>
+  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v3.1</span></div>
   <div class="tb-right">
     <a class="tb-btn" href="javascript:void(0)" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">📞 联系门店</a>
     <div class="lang-dropdown" id="langDrop">
@@ -1200,7 +1202,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="footer-note"></div>
 
-<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v3.0</span></div>
+<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v3.1</span></div>
 
 </main></div>
 <div class="floating-bar" id="floatingBar">

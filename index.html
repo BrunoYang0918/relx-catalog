@@ -1614,6 +1614,10 @@ function alignCardDescs() {
   if (!bar) return;
 
   document.addEventListener('touchstart', function(e) {
+    // 🐛 调试：任何触摸都闪一下背景，确认 handler 是否触发
+    document.body.style.background = '#ffdddd';
+    setTimeout(function() { document.body.style.background = ''; }, 200);
+
     // 获取底部浮动栏中所有按钮
     var btns = bar.querySelectorAll('.fb-btn');
     var touch = e.touches[0];
@@ -1631,6 +1635,9 @@ function alignCardDescs() {
         if (btn.classList.contains('fb-glossary')) toggleGlossary(e);
         else if (btn.classList.contains('fb-quiz')) openQuiz();
         else if (btn.classList.contains('fb-cart')) openCart();
+        // 🐛 命中反馈：按钮短暂变蓝
+        btn.style.background = '#1E90FF';
+        setTimeout(function(b) { b.style.background = ''; }, 300, btn);
         break;
       }
     }

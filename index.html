@@ -24,7 +24,7 @@ body {
   color: var(--text);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  padding-bottom: 16px;
+  padding-bottom: 120px;
   position: relative;
   /* iPad/iOS 全局触摸优化 */
   touch-action: manipulation;
@@ -607,27 +607,20 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 @keyframes floatUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
 .floating-bar {
-  position: sticky; bottom: 0;
+  position: fixed; bottom: 0; left: 0; right: 0;
   z-index: 1000;
   background: #fff; border-top: 1px solid var(--border);
   padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px));
   display: flex;
   box-shadow: 0 -2px 12px rgba(0,0,0,.08);
-  /* iPad/iOS 兼容 */
-  touch-action: manipulation;
-  -webkit-touch-callout: none;
 }
 .floating-bar .fb-btn {
   flex: 1; padding: 11px 8px; margin: 0 4px; border-radius: 10px; border: none;
   font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: none;
   text-align: center; display: flex; align-items: center; justify-content: center;
   white-space: nowrap; transition: transform .15s;
-  /* iPad/iOS 兼容 */
-  touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
-  -webkit-touch-callout: none;
   user-select: none;
-  pointer-events: auto;
 }
 .floating-bar .fb-btn:first-child { margin-left: 0; }
 .floating-bar .fb-btn:last-child { margin-right: 0; }
@@ -1186,6 +1179,8 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
   <div class="quiz-card" id="quizCard"></div>
 </div>
 
+</main>
+
 <div class="floating-bar" id="floatingBar">
   <button class="fb-btn fb-glossary" onclick="toggleGlossary(event)" ontouchstart="">📖 口味词典</button>
   <button class="fb-btn fb-quiz" onclick="openQuiz()" ontouchstart="">🔍 帮我选</button>
@@ -1193,8 +1188,6 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
     选品清单 <span class="fb-badge" id="fbBadge" style="display:none">0</span>
   </button>
 </div>
-
-</main>
 
 <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" ontouchstart="">↑</button>
 
@@ -1614,28 +1607,34 @@ function alignCardDescs() {
 })();
 
 // ===== iOS 12 固定定位按钮触摸修复 =====
-// iOS 12 Safari 的 position:fixed 元素在页面底部不接收 touch/click 事件
-// 必须用原生 addEventListener('touchstart') 绕过
+// iOS 12 兼容：position:fixed 底部元素不接收事件
+// 方案：document 级 touchstart 手动坐标命中检测
 (function fixIosFixedTouch() {
   var bar = document.getElementById('floatingBar');
   if (!bar) return;
-  bar.addEventListener('touchstart', function(e) {
-    var btn = e.target.closest('.fb-btn');
-    if (!btn) return;
-    e.preventDefault();
-    e.stopPropagation();
-    // 模拟视觉反馈
-    btn.style.transform = 'scale(.96)';
-    setTimeout(function() { btn.style.transform = ''; }, 150);
-    // 触发对应功能
-    if (btn.classList.contains('fb-glossary')) toggleGlossary(e);
-    else if (btn.classList.contains('fb-quiz')) openQuiz();
-    else if (btn.classList.contains('fb-cart')) openCart();
-  }, { passive: false });
-  // 同时绑定 click 作为非 iOS 12 的正常触发（不过度干扰）
-  bar.addEventListener('click', function(e) {
-    // iOS 12 的 click 在此不会到达，但现代浏览器会，让它正常走 inline onclick
-  });
+
+  document.addEventListener('touchstart', function(e) {
+    // 获取底部浮动栏中所有按钮
+    var btns = bar.querySelectorAll('.fb-btn');
+    var touch = e.touches[0];
+    if (!touch) return;
+
+    for (var i = 0; i < btns.length; i++) {
+      var rect = btns[i].getBoundingClientRect();
+      if (touch.clientX >= rect.left && touch.clientX <= rect.right &&
+          touch.clientY >= rect.top && touch.clientY <= rect.bottom) {
+        var btn = btns[i];
+        // 视觉反馈
+        btn.style.transform = 'scale(.96)';
+        setTimeout(function(b) { b.style.transform = ''; }, 150, btn);
+        // 触发功能
+        if (btn.classList.contains('fb-glossary')) toggleGlossary(e);
+        else if (btn.classList.contains('fb-quiz')) openQuiz();
+        else if (btn.classList.contains('fb-cart')) openCart();
+        break;
+      }
+    }
+  }, { passive: true });
 })();
 
 var allProducts = [];

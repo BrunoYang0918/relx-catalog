@@ -1029,7 +1029,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 <div class="app-shell"><div class="app-scroll"><main>
 
 <div class="topbar">
-  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v2.3</span></div>
+  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v2.4</span></div>
   <div class="tb-right">
     <a class="tb-btn" href="javascript:void(0)" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">📞 联系门店</a>
     <div class="lang-dropdown" id="langDrop">
@@ -1178,13 +1178,13 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="footer-note"></div>
 
-<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v2.3</span></div>
+<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v2.4</span></div>
 
 </main></div>
 <div class="floating-bar" id="floatingBar">
   <button class="fb-btn fb-glossary" onclick="toggleGlossary(event)" ontouchstart="">📖 口味词典</button>
-  <button class="fb-btn fb-quiz" onclick="openQuiz()">🔍 帮我选</button>
-  <button class="fb-btn fb-cart" id="fbCart" onclick="openCart()">
+  <button class="fb-btn fb-quiz" onclick="openQuiz(event)">🔍 帮我选</button>
+  <button class="fb-btn fb-cart" id="fbCart" onclick="openCart(event)">
     选品清单 <span class="fb-badge" id="fbBadge" style="display:none">0</span>
   </button>
 </div></div><!-- /.app-shell -->
@@ -2061,8 +2061,8 @@ function updateCartBadge() {
   }
 }
 
-function openCart() {
-  // iPadOS 12 fix: 先渲染内容再改 display
+function openCart(e) {
+  e && e.stopPropagation();
   renderCartBody();
   document.getElementById('cartPanel').classList.add('show');
 }
@@ -2612,9 +2612,10 @@ function closeGlossary() {
   document.getElementById('glossaryBackdrop').classList.remove('show');
 }
 
-function openQuiz() {
+function openQuiz(e) {
+  // 完全模仿 toggleGlossary 的事件处理
+  e && e.stopPropagation();
   quizAnswers = {}; quizStep = 0;
-  // iPadOS 12 fix: 先渲染内容再改 display
   renderQuizStep();
   document.getElementById('quizOverlay').classList.add('show');
 }
@@ -2761,7 +2762,7 @@ function showQuizResult() {
     + '<div class="qr-title">🎯 为你推荐</div>'
     + deviceBanner
     + '<div class="qr-recs">' + recsHtml + '</div>'
-    + '<button class="qr-reset" onclick="openQuiz()">🔄 重新测试</button>'
+    + '<button class="qr-reset" onclick="openQuiz(event)">🔄 重新测试</button>'
     + '<button class="qr-reset" onclick="closeQuiz()" style="margin-left:12px;">✕ 关闭</button>'
     + '</div>';
 }

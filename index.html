@@ -1611,6 +1611,31 @@ function alignCardDescs() {
   updateBar();
 })();
 
+// ===== iOS 12 固定定位按钮触摸修复 =====
+// iOS 12 Safari 的 position:fixed 元素在页面底部不接收 touch/click 事件
+// 必须用原生 addEventListener('touchstart') 绕过
+(function fixIosFixedTouch() {
+  var bar = document.getElementById('floatingBar');
+  if (!bar) return;
+  bar.addEventListener('touchstart', function(e) {
+    var btn = e.target.closest('.fb-btn');
+    if (!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
+    // 模拟视觉反馈
+    btn.style.transform = 'scale(.96)';
+    setTimeout(function() { btn.style.transform = ''; }, 150);
+    // 触发对应功能
+    if (btn.classList.contains('fb-glossary')) toggleGlossary(e);
+    else if (btn.classList.contains('fb-quiz')) openQuiz();
+    else if (btn.classList.contains('fb-cart')) openCart();
+  }, { passive: false });
+  // 同时绑定 click 作为非 iOS 12 的正常触发（不过度干扰）
+  bar.addEventListener('click', function(e) {
+    // iOS 12 的 click 在此不会到达，但现代浏览器会，让它正常走 inline onclick
+  });
+})();
+
 var allProducts = [];
 function collectAll() {
   allProducts = [];

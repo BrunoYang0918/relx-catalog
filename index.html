@@ -867,10 +867,19 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
   display: none; position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
   z-index: 500; max-width: 560px; width: calc(100% - 24px);
   background: #fff; border-radius: 12px; box-shadow: 0 -4px 24px rgba(0,0,0,.15);
-  padding: 14px 16px; font-size: 12px; color: #666; line-height: 2.0;
+  padding: 16px 18px;
 }
+.glossary-popover .gp-close {
+  text-align: right; margin-bottom: 8px; cursor: pointer; font-size: 20px; color: #999;
+}
+.glossary-popover .gp-close:hover { color: var(--red); }
+.glossary-popover .gp-item {
+  font-size: 15px; color: #444; line-height: 2.0;
+  padding: 4px 0; border-bottom: 1px solid #f0f0f0;
+}
+.glossary-popover .gp-item:last-child { border-bottom: none; }
+.glossary-popover .gp-item b { color: var(--teal); font-size: 16px; }
 .glossary-popover.show { display: block; }
-.glossary-popover b { color: var(--teal); }
 .glossary-backdrop {
   display: none; position: fixed; inset: 0; z-index: 499;
 }
@@ -1041,7 +1050,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 <div class="app-shell"><div class="app-scroll"><main>
 
 <div class="topbar">
-  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v2.9</span></div>
+  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v3.0</span></div>
   <div class="tb-right">
     <a class="tb-btn" href="javascript:void(0)" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">📞 联系门店</a>
     <div class="lang-dropdown" id="langDrop">
@@ -1058,11 +1067,12 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="glossary-backdrop" id="glossaryBackdrop" onclick="closeGlossary()"></div>
 <div class="glossary-popover" id="glossaryPopover">
-  <b>劲道 ★</b>：★越多吸阻越强、击喉感越明显。老烟民建议 ★★★★ 起步<br>
-  <b>凉感</b>：入口有薄荷般清凉感，非水果味，适合喜欢清爽口感的用户<br>
-  <b>果味过渡</b>：模拟水果风味调香，适合怀念以前果味的用户过渡<br>
-  <b>击喉感</b>：烟雾接触喉咙时的刺激感和满足感，击喉越强越像真烟<br>
-  <b>国标烟草</b>：符合国家标准的烟草基底口味，安全合规但不会叫水果名
+  <div class="gp-close" onclick="closeGlossary()">✕</div>
+  <div class="gp-item"><b>劲道 ★</b>：★越多吸阻越强、击喉感越明显。老烟民建议 ★★★★ 起步</div>
+  <div class="gp-item"><b>凉感</b>：入口有薄荷般清凉感，非水果味，适合喜欢清爽口感的用户</div>
+  <div class="gp-item"><b>果味过渡</b>：模拟水果风味调香，适合怀念以前果味的用户过渡</div>
+  <div class="gp-item"><b>击喉感</b>：烟雾接触喉咙时的刺激感和满足感，击喉越强越像真烟</div>
+  <div class="gp-item"><b>国标烟草</b>：符合国家标准的烟草基底口味，安全合规但不会叫水果名</div>
 </div>
 
 <div class="quick-nav" id="quickNav">
@@ -1190,7 +1200,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="footer-note"></div>
 
-<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v2.9</span></div>
+<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v3.0</span></div>
 
 </main></div>
 <div class="floating-bar" id="floatingBar">
@@ -2077,6 +2087,8 @@ function updateCartBadge() {
 
 function openCart() {
   renderCartBody();
+  // 关闭其他弹窗
+  closeGlossary(); closeQuiz();
   document.getElementById('cartPanel').classList.add('show');
   document.getElementById('cartBackdrop').classList.add('show');
 }
@@ -2619,8 +2631,10 @@ function toggleGlossary(e) {
   var pop = document.getElementById('glossaryPopover');
   var bd = document.getElementById('glossaryBackdrop');
   var isOpen = pop.classList.contains('show');
-  if (isOpen) { closeGlossary(); }
-  else { pop.classList.add('show'); bd.classList.add('show'); }
+  if (isOpen) { closeGlossary(); return; }
+  // 关闭其他弹窗
+  closeQuiz(); closeCart();
+  pop.classList.add('show'); bd.classList.add('show');
 }
 function closeGlossary() {
   document.getElementById('glossaryPopover').classList.remove('show');
@@ -2630,6 +2644,8 @@ function closeGlossary() {
 function openQuiz() {
   quizAnswers = {}; quizStep = 0;
   renderQuizStep();
+  // 关闭其他弹窗
+  closeGlossary(); closeCart();
   document.getElementById('quizOverlay').classList.add('show');
   document.getElementById('quizBackdrop').classList.add('show');
 }
@@ -2646,7 +2662,8 @@ function renderQuizStep() {
       var sel = quizAnswers[s.key] === o.val ? ' sel' : '';
       return '<div class="q-opt' + sel + '" onclick="selectQuizOption(\'' + s.key + '\',\'' + o.val + '\',this)">' + o.label + '</div>';
     }).join('');
-    card.innerHTML = '<div class="q-title">Q' + (quizStep + 1) + '/' + QUIZ_STEPS.length + '</div>'
+    card.innerHTML = '<div style="text-align:right;margin-bottom:4px"><button onclick="closeQuiz()" style="border:none;background:none;font-size:20px;color:#999;cursor:pointer;padding:0 4px;">✕</button></div>'
+      + '<div class="q-title">Q' + (quizStep + 1) + '/' + QUIZ_STEPS.length + '</div>'
       + '<div class="q-sub">' + s.title + '</div>'
       + '<div class="q-options">' + optsHtml + '</div>'
       + '<button class="q-btn" ' + (quizAnswers[s.key] ? '' : 'disabled') + ' onclick="quizNext()">' + (quizStep === QUIZ_STEPS.length - 1 ? '🔍 查看推荐' : '下一题 →') + '</button>';

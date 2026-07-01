@@ -671,13 +671,10 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 .hero-card .hc-price { font-size: 16px; font-weight: 800; color: var(--gold); white-space: nowrap; flex-shrink: 0; }
 
 .cart-panel {
-  position: fixed; inset: 0; z-index: 3000;
-  background: rgba(0,0,0,.4); display: flex;
-  align-items: flex-end; justify-content: center;
-  /* iOS 12 兼容：用 opacity 代替 display 切换 */
-  opacity: 0; pointer-events: none; transition: opacity .15s;
+  display: none; position: fixed; inset: 0; z-index: 3000;
+  background: rgba(0,0,0,.4); align-items: flex-end; justify-content: center;
 }
-.cart-panel.show { opacity: 1; pointer-events: auto; }
+.cart-panel.show { display: flex; }
 .cart-panel .cp-sheet {
   background: #fff; border-radius: 16px 16px 0 0;
   width: 100%; max-width: 600px; max-height: 70vh;
@@ -874,12 +871,10 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 /* 口味探测器 */
 .quiz-overlay {
-  position: fixed; inset: 0; z-index: 5000;
-  background: rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center;
-  /* iOS 12 兼容：用 opacity 代替 display 切换 */
-  opacity: 0; pointer-events: none; transition: opacity .15s;
+  display: none; position: fixed; inset: 0; z-index: 5000;
+  background: rgba(0,0,0,.5); align-items: center; justify-content: center;
 }
-.quiz-overlay.show { opacity: 1; pointer-events: auto; }
+.quiz-overlay.show { display: flex; }
 .quiz-card {
   background: #fff; border-radius: 16px; padding: 24px 20px;
   width: 90%; max-width: 360px; max-height: 80vh; overflow-y: auto;
@@ -1183,7 +1178,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="footer-note"></div>
 
-<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v2.2-test</span></div>
+<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v2.3</span></div>
 
 </main></div>
 <div class="floating-bar" id="floatingBar">
@@ -2067,11 +2062,9 @@ function updateCartBadge() {
 }
 
 function openCart() {
-  // 🧪 iPad2 测试：改背景变蓝
-  document.body.style.backgroundColor = '#0000ff';
+  // iPadOS 12 fix: 先渲染内容再改 display
   renderCartBody();
-  document.getElementById('cartPanel').style.opacity = '1';
-  document.getElementById('cartPanel').style.pointerEvents = 'auto';
+  document.getElementById('cartPanel').classList.add('show');
 }
 function closeCart() {
   document.getElementById('cartPanel').classList.remove('show');
@@ -2620,14 +2613,11 @@ function closeGlossary() {
 }
 
 function openQuiz() {
-  // 🧪 iPad2 测试：函数执行则背景立刻变红
-  document.body.style.backgroundColor = '#ff0000';
   quizAnswers = {}; quizStep = 0;
-  document.getElementById('quizOverlay').style.opacity = '1';
-  document.getElementById('quizOverlay').style.pointerEvents = 'auto';
+  // iPadOS 12 fix: 先渲染内容再改 display
   renderQuizStep();
+  document.getElementById('quizOverlay').classList.add('show');
 }
-
 function closeQuiz() {
   document.getElementById('quizOverlay').classList.remove('show');
 }

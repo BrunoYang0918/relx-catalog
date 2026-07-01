@@ -52,7 +52,7 @@ main {
 }
 
 .topbar {
-  position: sticky; top: 0; z-index: 100;
+  z-index: 100;
   background: linear-gradient(135deg, var(--teal) 0%, #095155 100%);
   color: #fff; padding: 10px 16px;
   display: flex; align-items: center; justify-content: space-between;
@@ -82,12 +82,12 @@ main {
 .lang-dropdown.open .ld-menu { display: block; }
 
 .quick-nav {
-  position: sticky; top: 48px; z-index: 99;
   background: #fff; border-bottom: 1px solid var(--border);
   padding: 8px 12px; display: flex; gap: 8px;
+  overflow-x: auto; white-space: nowrap; scrollbar-width: none;
 }
+.quick-nav::-webkit-scrollbar { display: none; }
 .quick-nav a {
-  flex: 1; text-align: center; padding: 6px 0;
   font-size: 13px; font-weight: 600; color: var(--teal);
   background: #E8F4F5; border-radius: 20px;
   text-decoration: none; white-space: nowrap;
@@ -1049,10 +1049,10 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
   </div>
 </div>
 
-<div class="app-shell"><div class="app-scroll"><main>
+<div class="app-shell"><div class="app-scroll">
 
 <div class="topbar">
-  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v3.1a</span></div>
+  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v3.2</span></div>
   <div class="tb-right">
     <a class="tb-btn" href="javascript:void(0)" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">📞 联系门店</a>
     <div class="lang-dropdown" id="langDrop">
@@ -1093,6 +1093,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
   <a href="#devices">烟具选色</a>
 </div>
 
+<main>
 <div class="scene-nav" id="sceneNav">
   <span class="sp all on" data-filter="all">全部</span>
   <span class="sp" data-filter="新手入门">🌱 新手入门</span>

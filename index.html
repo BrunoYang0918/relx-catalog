@@ -671,10 +671,11 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 .hero-card .hc-price { font-size: 16px; font-weight: 800; color: var(--gold); white-space: nowrap; flex-shrink: 0; }
 
 .cart-panel {
-  display: none; position: fixed; inset: 0; z-index: 3000;
-  background: rgba(0,0,0,.4); align-items: flex-end; justify-content: center;
+  position: fixed; inset: 0; z-index: 3000;
+  background: rgba(0,0,0,.4); display: flex; align-items: flex-end; justify-content: center;
+  visibility: hidden;
 }
-.cart-panel.show { display: flex; }
+.cart-panel.show { visibility: visible; }
 .cart-panel .cp-sheet {
   background: #fff; border-radius: 16px 16px 0 0;
   width: 100%; max-width: 600px; max-height: 70vh;
@@ -871,10 +872,11 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 /* 口味探测器 */
 .quiz-overlay {
-  display: none; position: fixed; inset: 0; z-index: 5000;
-  background: rgba(0,0,0,.5); align-items: center; justify-content: center;
+  position: fixed; inset: 0; z-index: 5000;
+  background: rgba(0,0,0,.5); display: flex; align-items: center; justify-content: center;
+  visibility: hidden;
 }
-.quiz-overlay.show { display: flex; }
+.quiz-overlay.show { visibility: visible; }
 .quiz-card {
   background: #fff; border-radius: 16px; padding: 24px 20px;
   width: 90%; max-width: 360px; max-height: 80vh; overflow-y: auto;
@@ -1029,7 +1031,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 <div class="app-shell"><div class="app-scroll"><main>
 
 <div class="topbar">
-  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v2.4</span></div>
+  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v2.5</span></div>
   <div class="tb-right">
     <a class="tb-btn" href="javascript:void(0)" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">📞 联系门店</a>
     <div class="lang-dropdown" id="langDrop">
@@ -1178,7 +1180,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="footer-note"></div>
 
-<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v2.4</span></div>
+<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v2.5</span></div>
 
 </main></div>
 <div class="floating-bar" id="floatingBar">
@@ -2061,8 +2063,7 @@ function updateCartBadge() {
   }
 }
 
-function openCart(e) {
-  e && e.stopPropagation();
+function openCart() {
   renderCartBody();
   document.getElementById('cartPanel').classList.add('show');
 }
@@ -2612,9 +2613,7 @@ function closeGlossary() {
   document.getElementById('glossaryBackdrop').classList.remove('show');
 }
 
-function openQuiz(e) {
-  // 完全模仿 toggleGlossary 的事件处理
-  e && e.stopPropagation();
+function openQuiz() {
   quizAnswers = {}; quizStep = 0;
   renderQuizStep();
   document.getElementById('quizOverlay').classList.add('show');

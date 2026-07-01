@@ -1631,13 +1631,26 @@ function alignCardDescs() {
         // 视觉反馈
         btn.style.transform = 'scale(.96)';
         setTimeout(function(b) { b.style.transform = ''; }, 150, btn);
-        // 触发功能
-        if (btn.classList.contains('fb-glossary')) toggleGlossary(e);
-        else if (btn.classList.contains('fb-quiz')) openQuiz();
-        else if (btn.classList.contains('fb-cart')) openCart();
-        // 🐛 命中反馈：按钮短暂变蓝
-        btn.style.background = '#1E90FF';
-        setTimeout(function(b) { b.style.background = ''; }, 300, btn);
+        // 触发功能 — iOS 12 需要在事件循环外执行 DOM 操作
+        var fn = null;
+        if (btn.classList.contains('fb-glossary')) fn = function() { toggleGlossary(e); };
+        else if (btn.classList.contains('fb-quiz')) fn = function() { openQuiz(); };
+        else if (btn.classList.contains('fb-cart')) fn = function() { openCart(); };
+        if (fn) {
+          setTimeout(function() {
+            try {
+              fn();
+              // 成功反馈：按钮短暂变绿
+              btn.style.background = '#27AE60';
+              setTimeout(function(b) { b.style.background = ''; }, 400, btn);
+            } catch(err) {
+              // 报错反馈：按钮短暂变红
+              btn.style.background = '#C0392B';
+              btn.textContent = 'ERR:' + (err.message || '').slice(0,10);
+              setTimeout(function(b) { b.style.background = ''; b.textContent = b._origText || btn.textContent; }, 2000, btn);
+            }
+          }, 10);
+        }
         break;
       }
     }

@@ -24,7 +24,7 @@ body {
   color: var(--text);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  padding-bottom: 120px;
+  padding-bottom: 16px;
   position: relative;
   /* iPad/iOS 全局触摸优化 */
   touch-action: manipulation;
@@ -607,28 +607,30 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 @keyframes floatUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
 .floating-bar {
-  position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000;
+  position: sticky; bottom: 0;
+  z-index: 1000;
   background: #fff; border-top: 1px solid var(--border);
-  padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
-  display: flex; gap: 8px;
+  padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px));
+  display: flex;
   box-shadow: 0 -2px 12px rgba(0,0,0,.08);
-  /* iPad/iOS 兼容：阻止双击缩放干扰点击 */
+  /* iPad/iOS 兼容 */
   touch-action: manipulation;
   -webkit-touch-callout: none;
 }
 .floating-bar .fb-btn {
-  flex: 1; padding: 11px 8px; border-radius: 10px; border: none;
+  flex: 1; padding: 11px 8px; margin: 0 4px; border-radius: 10px; border: none;
   font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: none;
-  text-align: center; display: flex; align-items: center; justify-content: center; gap: 4px;
+  text-align: center; display: flex; align-items: center; justify-content: center;
   white-space: nowrap; transition: transform .15s;
   /* iPad/iOS 兼容 */
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
   user-select: none;
-  /* 确保可点击 */
   pointer-events: auto;
 }
+.floating-bar .fb-btn:first-child { margin-left: 0; }
+.floating-bar .fb-btn:last-child { margin-right: 0; }
 .floating-bar .fb-btn:active { transform: scale(.96); }
 .floating-bar .fb-glossary { background: #E8F4F5; color: var(--teal); }
 .floating-bar .fb-quiz { background: var(--gold); color: #fff; }
@@ -1184,10 +1186,6 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
   <div class="quiz-card" id="quizCard"></div>
 </div>
 
-</main>
-
-<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" ontouchstart="">↑</button>
-
 <div class="floating-bar" id="floatingBar">
   <button class="fb-btn fb-glossary" onclick="toggleGlossary(event)" ontouchstart="">📖 口味词典</button>
   <button class="fb-btn fb-quiz" onclick="openQuiz()" ontouchstart="">🔍 帮我选</button>
@@ -1195,6 +1193,10 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
     选品清单 <span class="fb-badge" id="fbBadge" style="display:none">0</span>
   </button>
 </div>
+
+</main>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" ontouchstart="">↑</button>
 
 <div class="cart-panel" id="cartPanel">
   <div class="cp-sheet">

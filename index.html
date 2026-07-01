@@ -1183,7 +1183,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="footer-note"></div>
 
-<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v2.2-flex</span></div>
+<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v2.2-ipad2</span></div>
 
 </main></div>
 <div class="floating-bar" id="floatingBar">
@@ -2067,8 +2067,11 @@ function updateCartBadge() {
 }
 
 function openCart() {
+  // 🧪 iPad2 测试：改背景变蓝
+  document.body.style.backgroundColor = '#0000ff';
   renderCartBody();
-  document.getElementById('cartPanel').classList.add('show');
+  document.getElementById('cartPanel').style.opacity = '1';
+  document.getElementById('cartPanel').style.pointerEvents = 'auto';
 }
 function closeCart() {
   document.getElementById('cartPanel').classList.remove('show');
@@ -2617,8 +2620,11 @@ function closeGlossary() {
 }
 
 function openQuiz() {
+  // 🧪 iPad2 测试：函数执行则背景立刻变红
+  document.body.style.backgroundColor = '#ff0000';
   quizAnswers = {}; quizStep = 0;
-  document.getElementById('quizOverlay').classList.add('show');
+  document.getElementById('quizOverlay').style.opacity = '1';
+  document.getElementById('quizOverlay').style.pointerEvents = 'auto';
   renderQuizStep();
 }
 

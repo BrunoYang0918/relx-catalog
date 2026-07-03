@@ -2495,8 +2495,8 @@ async function uploadFilesBatchToGitHub(files, message) {
     if (!newCommitRes.ok) throw new Error('创建 commit 失败: ' + newCommitRes.status);
     var newCommitData = await newCommitRes.json();
 
-    // 6. 更新分支指针
-    var updateRefRes = await fetch(apiBase + '/git/ref/heads/' + GIT_BRANCH, {
+    // 6. 更新分支指针（PATCH 用 refs 复数路径）
+    var updateRefRes = await fetch(apiBase + '/git/refs/heads/' + GIT_BRANCH, {
       method: 'PATCH',
       headers: headers,
       body: JSON.stringify({ sha: newCommitData.sha })

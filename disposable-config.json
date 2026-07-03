@@ -267,7 +267,8 @@
         "flags": [
           "star"
         ],
-        "status": "active"
+        "status": "active",
+        "video": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog@main/videos/匠造者-01.mp4"
       },
       {
         "id": 112,
@@ -299,7 +300,8 @@
         "flags": [
           "star"
         ],
-        "status": "active"
+        "status": "active",
+        "video": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog@main/videos/匠造者-02.mp4"
       },
       {
         "id": 113,

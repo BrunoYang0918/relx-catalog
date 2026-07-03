@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "enabled": true,
+  "tag": "🎁 特惠",
+  "items": [
+    { "id": 1, "icon": "🎁", "text": "全场满", "num": "2", "unit": "件", "highlight": "包邮", "active": true },
+    { "id": 2, "icon": "🎁", "text": "烟弹满", "num": "3", "unit": "盒", "highlight": "赠保护套", "active": true },
+    { "id": 3, "icon": "🎁", "text": "烟弹满", "num": "10", "unit": "盒", "highlight": "赠1盒", "active": true },
+    { "id": 4, "icon": "🎁", "text": "一次性满", "num": "5", "unit": "支", "highlight": "赠1支", "active": true }
+  ]
+}

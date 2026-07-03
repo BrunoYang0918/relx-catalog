@@ -123,6 +123,55 @@ main { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
 }
 .product-card:active { transform: scale(.98); }
 
+/* 新品卡片：金色加粗边框 + 渐变光晕 */
+.product-card.new-arrival {
+  border: 4px solid var(--gold);
+  overflow: visible;
+  animation: glowGold 2.5s ease-in-out infinite;
+}
+@keyframes glowGold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201,169,110,0); }
+  50% { box-shadow:
+    0 0 10px 3px rgba(201,169,110,0.4),
+    0 0 28px 8px rgba(201,169,110,0.18),
+    0 0 50px 14px rgba(201,169,110,0.06); }
+}
+.product-card.new-arrival::before {
+  content: "新品上市";
+  position: absolute; top: 6px; left: 8px;
+  background: var(--gold); color: #fff;
+  font-size: 10px; font-weight: 700; padding: 3px 10px;
+  border-radius: 10px; z-index: 2;
+  animation: pillPulse 2s ease-in-out infinite;
+}
+
+/* 爆品卡片：红色加粗边框 + 红色渐变光晕 */
+.product-card.hot-product {
+  border: 4px solid var(--red);
+  overflow: visible;
+  animation: glowRed 2.5s ease-in-out infinite;
+}
+@keyframes glowRed {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(192,57,43,0); }
+  50% { box-shadow:
+    0 0 10px 3px rgba(192,57,43,0.35),
+    0 0 28px 8px rgba(192,57,43,0.15),
+    0 0 50px 14px rgba(192,57,43,0.05); }
+}
+.product-card.hot-product::before {
+  content: "🔥 爆品";
+  position: absolute; top: 6px; left: 8px;
+  background: var(--red); color: #fff;
+  font-size: 10px; font-weight: 700; padding: 3px 10px;
+  border-radius: 10px; z-index: 2;
+  animation: pillPulse 2s ease-in-out infinite;
+}
+
+@keyframes pillPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.9; }
+}
+
 /* 窄列横向卡片（烟具 ≤2 色） */
 .product-card.horizontal {
   flex-direction: row; gap: 10px; align-items: center;
@@ -464,6 +513,15 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
   background: rgba(255,255,255,.2); border: none; color: #fff;
   padding: 6px 14px; border-radius: 6px; font-size: 13px; cursor: pointer;
 }
+.admin-panel .ap-tabs {
+  display: flex; background: #095155;
+}
+.admin-panel .ap-tabs .ap-tab {
+  flex: 1; padding: 10px 0; text-align: center; font-size: 13px; font-weight: 600;
+  color: rgba(255,255,255,.6); cursor: pointer; border-bottom: 2px solid transparent;
+  transition: all .2s;
+}
+.admin-panel .ap-tabs .ap-tab.active { color: #fff; border-bottom-color: var(--gold); }
 .admin-panel .ap-body { flex: 1; padding: 12px; overflow-y: auto; }
 .admin-panel .ap-section { margin-bottom: 16px; }
 .admin-panel .ap-section h4 {
@@ -528,8 +586,6 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 .admin-modal .am-box .am-tags span.sel-red { background: #FDEDEC; color: var(--red); }
 .admin-modal .am-box .am-tags span.sel-gold { background: #FFF8ED; color: var(--gold); }
 .admin-modal .am-box .am-tags span.sel-blue { background: #E8F4F5; color: var(--teal); }
-.admin-modal .am-box .am-flags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
-.admin-modal .am-box .am-flags label { font-size: 12px; font-weight: 400; display: flex; align-items: center; gap: 4px; cursor: pointer; }
 .admin-modal .am-box .am-btn-row { display: flex; gap: 8px; margin-top: 16px; }
 .admin-modal .am-box .am-btn-row button { flex: 1; padding: 10px; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; }
 .admin-modal .am-box .am-btn-row .btn-save { background: var(--teal); color: #fff; }
@@ -1381,32 +1437,12 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 </main></div>
 
-<!-- ===== 底部促销跑马灯 ===== -->
-<div class="marquee-banner" id="promoMarquee">
-  <div class="promo-tag"><span class="tag-inner">🎁 特惠</span></div>
+<!-- ===== 底部促销跑马灯（动态渲染） ===== -->
+<div class="marquee-banner" id="promoMarquee" style="display:none;">
+  <div class="promo-tag"><span class="tag-inner" id="promoTag">🎁 特惠</span></div>
   <button class="close-btn" onclick="document.getElementById('promoMarquee').classList.add('dismissed')">✕</button>
   <div class="marquee-track">
-    <div class="marquee-content">
-      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">全场满<span class="num-highlight">2</span>件 <span class="text-highlight">包邮</span></span></span>
-      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">烟弹满<span class="num-highlight">3</span>盒 <span class="text-highlight">赠保护套</span></span></span>
-      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">烟弹满<span class="num-highlight">10</span>盒 <span class="text-highlight">赠<span class="num-highlight">1</span>盒</span></span></span>
-      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">一次性满<span class="num-highlight">5</span>支 <span class="text-highlight">赠<span class="num-highlight">1</span>支</span></span></span>
-      <!-- 第二轮（无缝循环） -->
-      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">全场满<span class="num-highlight">2</span>件 <span class="text-highlight">包邮</span></span></span>
-      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">烟弹满<span class="num-highlight">3</span>盒 <span class="text-highlight">赠保护套</span></span></span>
-      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">烟弹满<span class="num-highlight">10</span>盒 <span class="text-highlight">赠<span class="num-highlight">1</span>盒</span></span></span>
-      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">一次性满<span class="num-highlight">5</span>支 <span class="text-highlight">赠<span class="num-highlight">1</span>支</span></span></span>
-      <!-- 第三轮 -->
-      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">全场满<span class="num-highlight">2</span>件 <span class="text-highlight">包邮</span></span></span>
-      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">烟弹满<span class="num-highlight">3</span>盒 <span class="text-highlight">赠保护套</span></span></span>
-      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">烟弹满<span class="num-highlight">10</span>盒 <span class="text-highlight">赠<span class="num-highlight">1</span>盒</span></span></span>
-      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">一次性满<span class="num-highlight">5</span>支 <span class="text-highlight">赠<span class="num-highlight">1</span>支</span></span></span>
-      <!-- 第四轮 -->
-      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">全场满<span class="num-highlight">2</span>件 <span class="text-highlight">包邮</span></span></span>
-      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">烟弹满<span class="num-highlight">3</span>盒 <span class="text-highlight">赠保护套</span></span></span>
-      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">烟弹满<span class="num-highlight">10</span>盒 <span class="text-highlight">赠<span class="num-highlight">1</span>盒</span></span></span>
-      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">一次性满<span class="num-highlight">5</span>支 <span class="text-highlight">赠<span class="num-highlight">1</span>支</span></span></span>
-    </div>
+    <div class="marquee-content" id="promoContent"></div>
   </div>
 </div>
 
@@ -1453,13 +1489,18 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 <div class="admin-overlay" id="adminOverlay">
   <div class="admin-panel">
     <div class="ap-header">
-      <h3>产品管理面板</h3>
+      <h3>管理面板</h3>
       <button onclick="closeAdmin()">✕ 关闭</button>
     </div>
+    <div class="ap-tabs">
+      <div class="ap-tab active" id="tabProducts" onclick="switchAdminTab('products')">产品管理</div>
+      <div class="ap-tab" id="tabPromo" onclick="switchAdminTab('promo')">促销管理</div>
+      <div class="ap-tab" id="tabSys" onclick="switchAdminTab('sys')">系统设置</div>
+    </div>
     <div class="ap-body" id="adminBody"></div>
-    <div class="ap-toolbar">
-      <button class="btn-add" onclick="openAddForm()">＋ 新增产品</button>
-      <button class="btn-export" onclick="exportData()">📋 导出数据</button>
+    <div class="ap-toolbar" id="adminToolbar">
+      <button class="btn-add" id="tbAddBtn" onclick="openAddForm()">＋ 新增产品</button>
+      <button class="btn-export" id="tbExportBtn" style="display:none;"></button>
     </div>
   </div>
 </div>
@@ -1541,6 +1582,19 @@ var POD_SECTIONS = {
     ]
   }
 };
+
+// 尝试从本地存储加载产品数据（优先于硬编码默认值）
+(function() {
+  try {
+    var saved = localStorage.getItem('relx_products');
+    if (saved) {
+      var data = JSON.parse(saved);
+      if (data && Object.keys(data).length > 0) {
+        POD_SECTIONS = data;
+      }
+    }
+  } catch(e) {}
+})();
 
 var DISPOSABLE_SECTIONS = {
   relx: {
@@ -1647,11 +1701,21 @@ function renderProductCard(p) {
     if (p.i18n[lang].desc) showDesc = p.i18n[lang].desc;
   }
   var cls = (p.flags || []).join(" ");
+  var isNew = (p.tags || []).some(function(t) { return t.t === '新品上市'; });
+  var isHot = (p.tags || []).some(function(t) { return t.t === '爆款'; });
+  if (isNew) cls += (cls ? ' ' : '') + 'new-arrival';
+  if (isHot) cls += (cls ? ' ' : '') + 'hot-product';
   var tagPriority = { gold: 1, red: 2, green: 3, blue: 4 };
   var sortedTags = (p.tags || []).slice().sort(function(a, b) {
     return (tagPriority[a.c] || 5) - (tagPriority[b.c] || 5);
   });
-  var tagHtml = sortedTags.map(function(tg) {
+  // 已通过角标展示的标签不再在卡片内重复
+  var filteredTags = sortedTags.filter(function(tg) {
+    if (isNew && tg.t === '新品上市') return false;
+    if (isHot && tg.t === '爆款') return false;
+    return true;
+  });
+  var tagHtml = filteredTags.map(function(tg) {
     return '<span class="tag tag-' + tg.c + '">' + tg.t + '</span>';
   }).join(" ");
   var emCls = p.descEm ? ' em ' + p.descEm : ' em';
@@ -1882,6 +1946,164 @@ function showToast(msg) {
   setTimeout(function() { t.classList.remove("show"); }, 2000);
 }
 
+// ===== 促销跑马灯配置 =====
+var PROMO_DEFAULT = {
+  version: 1,
+  enabled: true,
+  tag: "🎁 特惠",
+  items: [
+    { id:1, icon:"🎁", text:"全场满", num:"2", unit:"件", highlight:"包邮", active:true },
+    { id:2, icon:"🎁", text:"烟弹满", num:"3", unit:"盒", highlight:"赠保护套", active:true },
+    { id:3, icon:"🎁", text:"烟弹满", num:"10", unit:"盒", highlight:"赠1盒", active:true },
+    { id:4, icon:"🎁", text:"一次性满", num:"5", unit:"支", highlight:"赠1支", active:true }
+  ]
+};
+
+function loadPromoConfig() {
+  try {
+    var raw = localStorage.getItem('relx_promo');
+    if (raw) {
+      var cfg = JSON.parse(raw);
+      if (cfg && cfg.version >= 1) return cfg;
+    }
+  } catch(e) {}
+  return JSON.parse(JSON.stringify(PROMO_DEFAULT));
+}
+
+function savePromoConfig(cfg) {
+  localStorage.setItem('relx_promo', JSON.stringify(cfg));
+}
+
+function saveProductsToStorage() {
+  try { localStorage.setItem('relx_products', JSON.stringify(POD_SECTIONS)); } catch(e) {}
+}
+
+// ===== GitHub API 远程同步 =====
+var GIT_OWNER = 'BrunoYang0918';
+var GIT_REPO = 'relx-catalog';
+var GIT_BRANCH = 'main';
+// raw.githubusercontent.com 缓存 ~5分钟，远优于 jsdelivr 的 12 小时
+var RAW_BASE = 'https://raw.githubusercontent.com/' + GIT_OWNER + '/' + GIT_REPO + '/' + GIT_BRANCH + '/';
+
+function getGitToken() {
+  return localStorage.getItem('relx_git_token') || '';
+}
+function setGitToken(t) {
+  if (t) localStorage.setItem('relx_git_token', t);
+  else localStorage.removeItem('relx_git_token');
+}
+
+function fetchRemoteJSON(filename) {
+  var url = RAW_BASE + filename;
+  return fetch(url, { cache: 'no-cache' }).then(function(r) {
+    if (!r.ok) throw new Error('Fetch failed');
+    return r.json();
+  });
+}
+
+function saveToGitHub(filename, data, callback) {
+  var token = getGitToken();
+  if (!token) { if (callback) callback(false); return; }
+  var content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+  var apiUrl = 'https://api.github.com/repos/' + GIT_OWNER + '/' + GIT_REPO + '/contents/' + filename;
+  fetch(apiUrl + '?ref=' + GIT_BRANCH, {
+    headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github+json' }
+  }).then(function(r) { return r.json(); }).then(function(current) {
+    var body = { message: 'Admin update ' + filename, content: content, branch: GIT_BRANCH };
+    if (current.sha) body.sha = current.sha;
+    return fetch(apiUrl, {
+      method: 'PUT',
+      headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+  }).then(function(r) { return r.json(); }).then(function(result) {
+    if (result.content) {
+      // 写入成功后刷新 jsdelivr 缓存（备用CDN加速）
+      fetch('https://purge.jsdelivr.net/gh/' + GIT_OWNER + '/' + GIT_REPO + '@' + GIT_BRANCH + '/' + filename);
+      if (callback) callback(true);
+    } else {
+      if (callback) callback(false);
+    }
+  }).catch(function() { if (callback) callback(false); });
+}
+
+// 页面启动时，异步拉取远程产品数据
+(function() {
+  fetchRemoteJSON('pod-config.json').then(function(data) {
+    if (data && Object.keys(data).length > 0) {
+      POD_SECTIONS = data;
+      saveProductsToStorage();
+      renderAll();
+      renderHero();
+    }
+  }).catch(function() {});
+  // 同样拉取促销配置
+  fetchRemoteJSON('promo-config.json').then(function(data) {
+    if (data && data.version) {
+      savePromoConfig(data);
+      renderPromoMarquee(data);
+    }
+  }).catch(function() {});
+})();
+
+function syncAll() {
+  var token = getGitToken();
+  if (!token) { showToast('请先在系统设置中填写 GitHub Token'); return; }
+  var done = 0, total = 2;
+  function checkDone(ok) { if (ok) done++; if (--total <= 0) showToast('同步完成：' + done + '/2 个文件已上传'); }
+  saveToGitHub('pod-config.json', POD_SECTIONS, checkDone);
+  saveToGitHub('promo-config.json', loadPromoConfig(), checkDone);
+}
+
+function renderSysAdmin() {
+  var html = '<div class="ap-section"><h4>GitHub Token</h4>';
+  html += '<input type="password" id="gitTokenInput" value="' + escHtml(getGitToken()) + '" placeholder="粘贴 Fine-grained Token" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;margin-bottom:8px;" oninput="setGitToken(this.value.trim())">';
+  html += '<div style="font-size:11px;color:#999;margin-bottom:16px;">Token 仅存储在本设备，用于写入 GitHub 仓库</div>';
+  html += '</div>';
+  html += '<div class="ap-section"><h4>云端同步</h4>';
+  html += '<div style="font-size:12px;color:#666;margin-bottom:10px;">将当前产品数据和促销配置推送到 GitHub 仓库，所有设备刷新后生效</div>';
+  html += '<button onclick="syncAll()" style="background:var(--teal);color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;width:100%;">☁ 同步全部数据到云端</button>';
+  html += '</div>';
+  document.getElementById('adminBody').innerHTML = html;
+}
+
+function renderPromoMarquee(cfg) {
+  if (!cfg) cfg = loadPromoConfig();
+  var marquee = document.getElementById('promoMarquee');
+  var content = document.getElementById('promoContent');
+  var tag = document.getElementById('promoTag');
+  if (!marquee || !content) return;
+
+  if (!cfg.enabled || !cfg.items || !cfg.items.length) {
+    marquee.style.display = 'none';
+    return;
+  }
+
+  marquee.classList.remove('dismissed');
+  marquee.style.display = '';
+  tag.textContent = cfg.tag;
+
+  var activeItems = cfg.items.filter(function(it) { return it.active; });
+  if (!activeItems.length) { marquee.style.display = 'none'; return; }
+
+  var roundHtml = activeItems.map(function(it) {
+    return '<span class="promo-item">' +
+      '<span class="icon-gift">' + it.icon + '</span>' +
+      '<span class="text-main">' + it.text +
+      '<span class="num-highlight">' + it.num + '</span>' + it.unit +
+      ' <span class="text-highlight">' + it.highlight + '</span></span>' +
+    '</span>';
+  }).join('');
+
+  var rounds = [roundHtml, roundHtml, roundHtml, roundHtml].join('\n');
+  content.innerHTML = rounds;
+}
+
+(function() {
+  var cfg = loadPromoConfig();
+  renderPromoMarquee(cfg);
+})();
+
 var ADMIN_PIN_HASH = 'b6d26c100203d1bc1752ff6ee5537d1e34af47326f55ba6cb0c9b3741501b1ae';
 
 async function openAdmin() {
@@ -1894,6 +2116,14 @@ async function openAdmin() {
   var hashHex = hashArray.map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
   if (hashHex === ADMIN_PIN_HASH) {
     document.getElementById("adminOverlay").classList.add("show");
+    currentAdminTab = 'products';
+    document.getElementById('tabProducts').classList.add('active');
+    document.getElementById('tabPromo').classList.remove('active');
+    document.getElementById('tabSys').classList.remove('active');
+    document.getElementById('tbAddBtn').textContent = '＋ 新增产品';
+    document.getElementById('tbAddBtn').style.display = '';
+    document.getElementById('tbAddBtn').onclick = openAddForm;
+    document.getElementById('tbExportBtn').style.display = 'none';
     renderAdminList();
   } else {
     alert('密码错误');
@@ -1901,6 +2131,7 @@ async function openAdmin() {
 }
 function closeAdmin() {
   document.getElementById("adminOverlay").classList.remove("show");
+  currentAdminTab = 'products';
   renderAll();
   renderHero();
   refreshSelectButtons();
@@ -1925,14 +2156,164 @@ function renderAdminList() {
       + '<span class="ap-name">' + p.name + statusLabel + '</span>'
       + '<span class="ap-price">&yen;' + p.price + '</span>'
       + '<button class="btn-edit" onclick="openEditForm(' + item.idx + ')">编辑</button>'
-      + '<button class="btn-del" onclick="toggleProduct(' + item.idx + ')">' + (p.status === "off" ? '上架' : '下架') + '</button>'
+      + '<button class="btn-del" onclick="deleteProduct(' + item.idx + ')">删除</button>'
+      + '<button class="btn-del" style="background:#E8E5DF;color:#888;" onclick="toggleProduct(' + item.idx + ')">' + (p.status === "off" ? '上架' : '下架') + '</button>'
       + '</div>';
   });
   if (currentSection) html += '</div>';
   body.innerHTML = html;
 }
 
-function findProduct(idx) {
+var currentAdminTab = 'products';
+function switchAdminTab(tab) {
+  currentAdminTab = tab;
+  document.getElementById('tabProducts').classList.toggle('active', tab === 'products');
+  document.getElementById('tabPromo').classList.toggle('active', tab === 'promo');
+  document.getElementById('tabSys').classList.toggle('active', tab === 'sys');
+  if (tab === 'products') {
+    document.getElementById('tbAddBtn').textContent = '＋ 新增产品';
+    document.getElementById('tbAddBtn').onclick = openAddForm;
+    document.getElementById('tbAddBtn').style.display = '';
+    document.getElementById('tbExportBtn').style.display = 'none';
+    renderAdminList();
+  } else if (tab === 'promo') {
+    document.getElementById('tbAddBtn').textContent = '＋ 新增活动';
+    document.getElementById('tbAddBtn').onclick = openAddPromoForm;
+    document.getElementById('tbAddBtn').style.display = '';
+    document.getElementById('tbExportBtn').style.display = 'none';
+    renderPromoAdmin();
+  } else {
+    document.getElementById('tbAddBtn').style.display = 'none';
+    document.getElementById('tbExportBtn').style.display = 'none';
+    renderSysAdmin();
+  }
+}
+
+// ===== 促销管理 =====
+function renderPromoAdmin() {
+  var cfg = loadPromoConfig();
+  var body = document.getElementById('adminBody');
+  var html = '';
+
+  // 总开关 + 标签
+  html += '<div class="ap-section"><h4>基本设置</h4>';
+  html += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">';
+  html += '<label style="font-size:12px;display:flex;align-items:center;gap:6px;cursor:pointer;">';
+  html += '<input type="checkbox" ' + (cfg.enabled ? 'checked' : '') + ' onchange="promoToggleEnabled(this.checked)"> 启用跑马灯';
+  html += '</label></div>';
+  html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">';
+  html += '<span style="font-size:12px;color:#666;">标签文字:</span>';
+  html += '<input type="text" id="promoTagInput" value="' + escHtml(cfg.tag) + '" style="width:160px;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:13px;" onchange="promoUpdateTag(this.value)">';
+  html += '</div></div>';
+
+  // 活动列表
+  html += '<div class="ap-section"><h4>活动条目</h4>';
+  if (cfg.items && cfg.items.length) {
+    cfg.items.forEach(function(item, i) {
+      html += '<div class="ap-row' + (item.active ? '' : ' off') + '">';
+      html += '<span class="ap-name">' + item.icon + ' ' + item.text + item.num + item.unit + ' ' + item.highlight + (item.active ? '' : ' [已下架]') + '</span>';
+      html += '<button class="btn-edit" onclick="openEditPromoForm(' + i + ')">编辑</button>';
+      html += '<button class="btn-del" onclick="promoRemoveItem(' + i + ')">删除</button>';
+      html += '<button class="btn-del" style="background:#E8E5DF;color:#888;" onclick="promoToggleItem(' + i + ')">' + (item.active ? '下架' : '上架') + '</button>';
+      html += '</div>';
+    });
+  } else {
+    html += '<div style="font-size:12px;color:#999;padding:8px 0;">暂无活动</div>';
+  }
+  html += '</div>';
+
+  // 预览区
+  html += '<div class="ap-section"><h4>实时预览</h4>';
+  html += '<div style="background:linear-gradient(90deg,#8B2020,#C0392B,#8B2020);border-radius:8px;padding:10px 14px;color:#fff;font-size:12px;overflow:hidden;white-space:nowrap;">';
+  var preview = cfg.items.filter(function(it) { return it.active; }).map(function(it) {
+    return it.icon + ' ' + it.text + it.num + it.unit + ' ' + it.highlight;
+  }).join('  ·  ');
+  html += '<span style="display:inline-block;animation:marqueeScroll 8s linear infinite;">' + preview + '  ·  ' + preview + '</span>';
+  html += '</div></div>';
+
+  body.innerHTML = html;
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function promoToggleEnabled(val) {
+  var cfg = loadPromoConfig();
+  cfg.enabled = val;
+  savePromoConfig(cfg);
+  renderPromoMarquee(cfg);
+}
+
+function promoUpdateTag(val) {
+  var cfg = loadPromoConfig();
+  cfg.tag = val;
+  savePromoConfig(cfg);
+  document.getElementById('promoTag').textContent = val;
+}
+
+function openAddPromoForm() {
+  openEditPromoForm(-1);
+}
+
+function openEditPromoForm(idx) {
+  var cfg = loadPromoConfig();
+  var item = (idx >= 0 && cfg.items[idx]) ? cfg.items[idx] : { icon:"🎁", text:"", num:"", unit:"", highlight:"", active:true };
+  var html = '<h3>' + (idx >= 0 ? '编辑活动' : '新增活动') + '</h3>';
+  html += '<label>图标 Emoji</label><input id="pf-icon" value="' + escHtml(item.icon) + '" maxlength="4">';
+  html += '<label>正文</label><input id="pf-text" value="' + escHtml(item.text) + '" placeholder="如: 全场满">';
+  html += '<label>数字</label><input id="pf-num" value="' + escHtml(item.num) + '" placeholder="如: 2">';
+  html += '<label>单位</label><input id="pf-unit" value="' + escHtml(item.unit) + '" placeholder="如: 件">';
+  html += '<label>高亮词</label><input id="pf-highlight" value="' + escHtml(item.highlight) + '" placeholder="如: 包邮">';
+  html += '<div class="am-btn-row"><button class="btn-save" onclick="promoSaveItem(' + idx + ')">保存</button>';
+  html += '<button class="btn-cancel" onclick="closeModal()">取消</button></div>';
+  document.getElementById('adminModalBox').innerHTML = html;
+  document.getElementById('adminModal').classList.add('show');
+}
+
+function promoSaveItem(idx) {
+  var cfg = loadPromoConfig();
+  var item = {
+    id: Date.now(),
+    icon: document.getElementById('pf-icon').value || '🎁',
+    text: document.getElementById('pf-text').value,
+    num: document.getElementById('pf-num').value,
+    unit: document.getElementById('pf-unit').value,
+    highlight: document.getElementById('pf-highlight').value,
+    active: (idx >= 0 && cfg.items[idx]) ? cfg.items[idx].active : true
+  };
+  if (idx >= 0 && cfg.items[idx]) {
+    item.id = cfg.items[idx].id;
+    cfg.items[idx] = item;
+  } else {
+    cfg.items.push(item);
+  }
+  savePromoConfig(cfg);
+  renderPromoMarquee(cfg);
+  document.getElementById('adminModal').classList.remove('show');
+  renderPromoAdmin();
+  showToast('活动已保存');
+}
+
+function promoRemoveItem(idx) {
+  if (!confirm('确定删除这条活动？')) return;
+  var cfg = loadPromoConfig();
+  cfg.items.splice(idx, 1);
+  savePromoConfig(cfg);
+  renderPromoMarquee(cfg);
+  renderPromoAdmin();
+  showToast('已删除');
+}
+
+function promoToggleItem(idx) {
+  var cfg = loadPromoConfig();
+  if (!cfg.items[idx]) return;
+  cfg.items[idx].active = !cfg.items[idx].active;
+  savePromoConfig(cfg);
+  renderPromoMarquee(cfg);
+  renderPromoAdmin();
+  showToast(cfg.items[idx].active ? '已上架' : '已下架');
+}function findProduct(idx) {
   collectAll();
   return allProducts[idx];
 }
@@ -1952,7 +2333,6 @@ function openAddForm() {
     + '<div id="af-tagsPreview" style="margin-top:4px;display:flex;flex-wrap:wrap;gap:4px;"></div>'
     + '<input type="hidden" id="af-tagsData" value="[]">'
     + '<label>图片路径</label><input id="af-img" placeholder="extracted_images/pod_images/image40.jpeg">'
-    + '<label>特殊标记</label><div class="am-flags"><label><input type="checkbox" id="af-best"> 爆款 (金色边框)</label><label><input type="checkbox" id="af-hot"> 热销角标</label><label><input type="checkbox" id="af-tip"> 果味推荐 (绿色边框)</label><label><input type="checkbox" id="af-star"> 重点推荐 (红色边框)</label></div>'
     + '<div class="am-btn-row"><button class="btn-cancel" onclick="closeModal()">取消</button><button class="btn-save" onclick="saveNewProduct()">保存</button></div>';
   document.getElementById("adminModalBox").innerHTML = html;
   document.getElementById("adminModal").classList.add("show");
@@ -1975,25 +2355,15 @@ function setTagColor(el, color) {
 function refreshTagPreview() {
   var preview = document.getElementById("af-tagsPreview");
   document.getElementById("af-tagsData").value = JSON.stringify(_afTags);
-  preview.innerHTML = _afTags.map(function(tg) {
-    return '<span class="tag tag-' + tg.c + '">' + tg.t + '</span>';
+  preview.innerHTML = _afTags.map(function(tg, i) {
+    return '<span class="tag tag-' + tg.c + '" style="position:relative;display:inline-flex;align-items:center;gap:2px;">'
+      + tg.t + '<span onclick="removeTag(' + i + ')" style="cursor:pointer;font-size:10px;margin-left:2px;opacity:.6;">✕</span>'
+    + '</span>';
   }).join(" ");
 }
-
-function getFlagsFromForm() {
-  var flags = [];
-  if (document.getElementById("af-best") && document.getElementById("af-best").checked) flags.push("best");
-  if (document.getElementById("af-hot") && document.getElementById("af-hot").checked) flags.push("hot");
-  if (document.getElementById("af-tip") && document.getElementById("af-tip").checked) flags.push("tip");
-  if (document.getElementById("af-star") && document.getElementById("af-star").checked) flags.push("star");
-  return flags;
-}
-
-function setFlagsToForm(flags) {
-  if (document.getElementById("af-best")) document.getElementById("af-best").checked = flags.indexOf("best") !== -1;
-  if (document.getElementById("af-hot")) document.getElementById("af-hot").checked = flags.indexOf("hot") !== -1;
-  if (document.getElementById("af-tip")) document.getElementById("af-tip").checked = flags.indexOf("tip") !== -1;
-  if (document.getElementById("af-star")) document.getElementById("af-star").checked = flags.indexOf("star") !== -1;
+function removeTag(i) {
+  _afTags.splice(i, 1);
+  refreshTagPreview();
 }
 
 function openEditForm(idx) {
@@ -2017,16 +2387,13 @@ function openEditForm(idx) {
     + '<label>风格</label><select id="af-style">' + ['清淡','适中','偏浓','偏淡'].map(function(s){ return '<option value="'+s+'"'+(p.style===s?' selected':'')+'>'+s+'</option>'; }).join('') + '</select>'
     + '<label>标签 (输入后点选颜色)</label><input id="af-tagInput" placeholder="输入标签文字后点下面颜色"><div class="am-tags"><span onclick="setTagColor(this,\'green\')" class="sel-green">绿</span><span onclick="setTagColor(this,\'red\')" class="sel-red">红</span><span onclick="setTagColor(this,\'gold\')" class="sel-gold">金</span><span onclick="setTagColor(this,\'blue\')" class="sel-blue">蓝</span></div>'
     + '<div id="af-tagsPreview" style="margin-top:4px;display:flex;flex-wrap:wrap;gap:4px;"></div>'
-    + '<button onclick="removeLastTag()" style="margin-top:4px;font-size:11px;border:none;background:#FDEDEC;color:var(--red);padding:2px 8px;border-radius:4px;cursor:pointer;">撤销最后一个标签</button>'
     + '<input type="hidden" id="af-tagsData" value="">'
     + '<label>图片路径</label><input id="af-img" value="' + p.img + '">'
     + '<div style="margin-top:4px;">当前图片预览: <img src="' + p.img + '" style="max-width:100%;max-height:80px;border-radius:6px;border:1px solid #eee;"></div>'
-    + '<label>特殊标记</label><div class="am-flags"><label><input type="checkbox" id="af-best"> 爆款</label><label><input type="checkbox" id="af-hot"> 热销</label><label><input type="checkbox" id="af-tip"> 果味</label><label><input type="checkbox" id="af-star"> 重点</label></div>'
     + '<div class="am-btn-row"><button class="btn-cancel" onclick="closeModal()">取消</button><button class="btn-save" onclick="saveEditProduct()">保存</button></div>';
   document.getElementById("adminModalBox").innerHTML = html;
   document.getElementById("adminModal").classList.add("show");
   refreshTagPreview();
-  setFlagsToForm(p.flags || []);
 }
 
 function removeLastTag() {
@@ -2049,7 +2416,7 @@ function saveNewProduct() {
   var str = document.getElementById("af-str").value;
   var style = document.getElementById("af-style").value;
   var img = document.getElementById("af-img").value.trim();
-  var flags = getFlagsFromForm();
+  var flags = [];
   if (!name || !desc || !img) { showToast("请填写名称、描述和图片路径"); return; }
   if (_afTags.length === 0) { showToast("请至少添加一个标签"); return; }
 
@@ -2084,6 +2451,7 @@ function saveNewProduct() {
   }
   if (targetSection) {
     targetSection.products.push(newProduct);
+    saveProductsToStorage();
     showToast("已添加: " + name);
     closeModal();
     renderAdminList();
@@ -2105,7 +2473,7 @@ function saveEditProduct() {
   p.str = document.getElementById("af-str").value;
   p.style = document.getElementById("af-style").value;
   p.img = document.getElementById("af-img").value.trim();
-  p.flags = getFlagsFromForm();
+  p.flags = [];
   p.tags = JSON.parse(JSON.stringify(_afTags));
   var enName = document.getElementById("af-en-name") ? document.getElementById("af-en-name").value.trim() : "";
   var enDesc = document.getElementById("af-en-desc") ? document.getElementById("af-en-desc").value.trim() : "";
@@ -2118,6 +2486,7 @@ function saveEditProduct() {
   } else {
     if (p.i18n) { if (p.i18n.en) delete p.i18n.en; if (Object.keys(p.i18n).length === 0) delete p.i18n; }
   }
+  saveProductsToStorage();
   showToast("已更新: " + p.name);
   closeModal();
   renderAdminList();
@@ -2135,8 +2504,25 @@ function toggleProduct(idx) {
     p.status = "off";
     showToast("已下架: " + p.name);
   }
+  saveProductsToStorage();
   renderAdminList();
   renderAll();
+}
+
+function deleteProduct(idx) {
+  if (!confirm('确定删除该产品？此操作不可恢复。')) return;
+  var item = findProduct(idx);
+  if (!item) return;
+  // 确定产品所属的数据源
+  var section = POD_SECTIONS[item.section] || DISPOSABLE_SECTIONS[item.section];
+  if (!section) return;
+  var products = section.products;
+  var pos = products.indexOf(item.product);
+  if (pos >= 0) products.splice(pos, 1);
+  saveProductsToStorage();
+  renderAdminList();
+  renderAll();
+  showToast('已删除: ' + item.product.name);
 }
 
 function exportData() {
@@ -2347,6 +2733,16 @@ function changeQty(pid, delta) {
   if (!cart[pid]) return;
   cart[pid] += delta;
   if (cart[pid] < 1) { delete cart[pid]; }
+  saveCart();
+  renderCartBody();
+  updateCartBadge();
+  refreshSelectButtons();
+}
+
+function setQty(pid, value) {
+  var qty = parseInt(value);
+  if (isNaN(qty) || qty < 1) { delete cart[pid]; }
+  else { cart[pid] = qty; }
   saveCart();
   renderCartBody();
   updateCartBadge();

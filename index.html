@@ -1862,8 +1862,9 @@ function renderDeviceSection(d) {
     var starStr = '';
     for (var s = 0; s < 5; s++) starStr += s < stars ? '★' : '☆';
     var isLarge = d.colors.length >= 4;
+    var videoHtml = d.video ? '<div class="p-video-overlay" onclick="event.stopPropagation();openVideoPlayer(\'' + escHtml(d.video) + '\',\'' + escHtml(d.name) + '\')"><span class="p-video-btn">▶</span></div>' : '';
     html += '<div class="product-card' + (isNarrow ? ' horizontal' : isLarge ? ' large-img' : '') + '">'
-      + '<div class="p-img"><img src="' + c.img + '" alt="' + c.label + '"></div>'
+      + '<div class="p-img"><img src="' + c.img + '" alt="' + c.label + '">' + videoHtml + '</div>'
       + '<div class="p-info">'
         + '<div class="p-name-row"><span class="p-name">' + c.label + '</span><span class="p-price">&yen;' + d.price + '</span></div>'
         + '<div class="p-desc">适配：' + d.compat + '</div>'

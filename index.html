@@ -554,6 +554,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
   font-size: 14px; font-weight: 700; cursor: pointer;
 }
 .admin-panel .ap-toolbar .btn-add { background: var(--teal); color: #fff; }
+.admin-panel .ap-toolbar .btn-sync { background: var(--green); color: #fff; }
 .admin-panel .ap-toolbar .btn-export { background: var(--gold); color: #fff; }
 
 .admin-modal {
@@ -1612,6 +1613,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
     <div class="ap-body" id="adminBody"></div>
     <div class="ap-toolbar" id="adminToolbar">
       <button class="btn-add" id="tbAddBtn" onclick="openAddForm()">＋ 新增产品</button>
+      <button class="btn-sync" id="tbSyncBtn" style="display:none;">☁ 同步</button>
       <button class="btn-export" id="tbExportBtn" style="display:none;"></button>
     </div>
   </div>
@@ -2362,6 +2364,7 @@ function renderVideoAdmin() {
   html += '<div class="ap-section"><h4>已有媒体文件的产品</h4>';
   html += '<div id="vuMatchedList" style="font-size:12px;"></div>';
   html += '</div>';
+  html += '<div class="sync-progress" id="syncProgress" style="display:none;margin-top:10px;"></div>';
 
   document.getElementById('adminBody').innerHTML = html;
   renderMatchedMedias();
@@ -2476,7 +2479,8 @@ async function startVideoUpload() {
       }
       progressEl.innerHTML += '<div class="sync-final">逐个上传完成：' + singleSuccess + '/' + files.length + ' 成功</div>';
     }
-  progressEl.innerHTML += '<div style="margin-top:8px;font-size:12px;color:#888;">💡 请点击「系统设置 → 媒体配置」推送产品配置更新。</div>';
+  progressEl.innerHTML += '<div style="margin-top:8px;text-align:center;"><button onclick="syncMedia();this.textContent=\'✅ 已推送\';this.disabled=true;" style="background:var(--green);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">☁ 立即同步媒体配置到云端</button></div>';
+  progressEl.innerHTML += '<div style="margin-top:4px;font-size:11px;color:#888;text-align:center;">媒体文件已上传，还需推送产品配置才能在其他设备生效</div>';
 
   btnEl.disabled = false;
   btnEl.textContent = '☁ 上传全部视频到 CDN';
@@ -2800,7 +2804,8 @@ async function startImageUpload() {
     }
     progressEl.innerHTML += '<div class="sync-final">逐个上传完成：' + singleSuccess + '/' + files.length + ' 成功</div>';
   }
-  progressEl.innerHTML += '<div style="margin-top:8px;font-size:12px;color:#888;">💡 请点击「系统设置 → 媒体配置」推送产品配置更新。</div>';
+  progressEl.innerHTML += '<div style="margin-top:8px;text-align:center;"><button onclick="syncMedia();this.textContent=\'✅ 已推送\';this.disabled=true;" style="background:var(--green);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">☁ 立即同步媒体配置到云端</button></div>';
+  progressEl.innerHTML += '<div style="margin-top:4px;font-size:11px;color:#888;text-align:center;">媒体文件已上传，还需推送产品配置才能在其他设备生效</div>';
 
   btnEl.disabled = false;
   btnEl.textContent = '☁ 上传全部图片到 CDN';
@@ -2871,16 +2876,7 @@ function renderSysAdmin() {
   var html = '<div class="ap-section"><h4>GitHub Token</h4>';
   html += '<input type="password" id="gitTokenInput" value="' + escHtml(getGitToken()) + '" placeholder="粘贴 Fine-grained Token" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;margin-bottom:8px;" oninput="setGitToken(this.value.trim())">';
   html += '<div style="font-size:11px;color:#999;margin-bottom:16px;">Token 仅存储在本设备，用于写入 GitHub 仓库</div>';
-  html += '</div>';
-  html += '<div class="ap-section"><h4>云端同步</h4>';
-  html += '<div style="font-size:12px;color:#666;margin-bottom:10px;">选择要同步的数据项，推送到 GitHub 仓库后所有设备刷新即可生效</div>';
-  html += '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;">';
-  html += '<button onclick="syncProducts()" style="flex:1;min-width:100px;background:var(--teal);color:#fff;border:none;padding:12px 10px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">☁<br>产品数据</button>';
-  html += '<button onclick="syncMedia()" style="flex:1;min-width:100px;background:var(--green);color:#fff;border:none;padding:12px 10px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">☁<br>媒体配置</button>';
-  html += '<button onclick="syncPromo()" style="flex:1;min-width:100px;background:var(--gold);color:#fff;border:none;padding:12px 10px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">☁<br>促销配置</button>';
-  html += '</div>';
-  html += '<button onclick="syncAll()" style="background:#666;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;width:100%;">☁ 全部同步</button>';
-  html += '<div class="sync-progress" id="syncProgress" style="display:none;"></div>';
+  html += '<div style="font-size:12px;color:#888;">云端同步已移至各管理页底部，在对应页面直接操作即可。</div>';
   html += '</div>';
   document.getElementById('adminBody').innerHTML = html;
 }
@@ -2941,6 +2937,9 @@ async function openAdmin() {
     document.getElementById('tbAddBtn').textContent = '＋ 新增产品';
     document.getElementById('tbAddBtn').style.display = '';
     document.getElementById('tbAddBtn').onclick = openAddForm;
+    document.getElementById('tbSyncBtn').textContent = '☁ 同步产品数据';
+    document.getElementById('tbSyncBtn').style.display = '';
+    document.getElementById('tbSyncBtn').onclick = syncProducts;
     document.getElementById('tbExportBtn').style.display = 'none';
     renderAdminList();
   } else {
@@ -2979,6 +2978,7 @@ function renderAdminList() {
       + '</div>';
   });
   if (currentSection) html += '</div>';
+  html += '<div class="sync-progress" id="syncProgress" style="display:none;margin-top:10px;"></div>';
   body.innerHTML = html;
 }
 
@@ -2993,20 +2993,33 @@ function switchAdminTab(tab) {
     document.getElementById('tbAddBtn').textContent = '＋ 新增产品';
     document.getElementById('tbAddBtn').onclick = openAddForm;
     document.getElementById('tbAddBtn').style.display = '';
+    var syncBtn = document.getElementById('tbSyncBtn');
+    syncBtn.textContent = '☁ 同步产品数据';
+    syncBtn.onclick = syncProducts;
+    syncBtn.style.display = '';
     document.getElementById('tbExportBtn').style.display = 'none';
     renderAdminList();
   } else if (tab === 'promo') {
     document.getElementById('tbAddBtn').textContent = '＋ 新增活动';
     document.getElementById('tbAddBtn').onclick = openAddPromoForm;
     document.getElementById('tbAddBtn').style.display = '';
+    var syncBtn = document.getElementById('tbSyncBtn');
+    syncBtn.textContent = '☁ 同步促销配置';
+    syncBtn.onclick = syncPromo;
+    syncBtn.style.display = '';
     document.getElementById('tbExportBtn').style.display = 'none';
     renderPromoAdmin();
   } else if (tab === 'video') {
     document.getElementById('tbAddBtn').style.display = 'none';
+    var syncBtn = document.getElementById('tbSyncBtn');
+    syncBtn.textContent = '☁ 同步媒体配置';
+    syncBtn.onclick = syncMedia;
+    syncBtn.style.display = '';
     document.getElementById('tbExportBtn').style.display = 'none';
     renderVideoAdmin();
   } else {
     document.getElementById('tbAddBtn').style.display = 'none';
+    document.getElementById('tbSyncBtn').style.display = 'none';
     document.getElementById('tbExportBtn').style.display = 'none';
     renderSysAdmin();
   }
@@ -3053,6 +3066,7 @@ function renderPromoAdmin() {
   }).join('  ·  ');
   html += '<span style="display:inline-block;animation:marqueeScroll 8s linear infinite;">' + preview + '  ·  ' + preview + '</span>';
   html += '</div></div>';
+  html += '<div class="sync-progress" id="syncProgress" style="display:none;margin-top:10px;"></div>';
 
   body.innerHTML = html;
 }

@@ -1,0 +1,328 @@
+{
+  "relx": {
+    "title": "悦刻 RELX",
+    "products": [
+      {
+        "id": 101,
+        "name": "满园茵茵",
+        "price": 139,
+        "tags": [
+          {
+            "t": "拿铁温润",
+            "c": "blue"
+          }
+        ],
+        "desc": "烤烟可可奶香",
+        "descEm": null,
+        "str": "★★★☆☆",
+        "style": "适中",
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/disposable_images/image2.jpeg?v=2",
+        "flags": [],
+        "status": "active"
+      },
+      {
+        "id": 102,
+        "name": "金光奕奕",
+        "price": 139,
+        "tags": [
+          {
+            "t": "果味过渡",
+            "c": "green"
+          },
+          {
+            "t": "凤梨果香",
+            "c": "green"
+          }
+        ],
+        "desc": "凤梨果香+烤烟",
+        "descEm": "gr",
+        "str": "★★★☆☆",
+        "style": "适中",
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/disposable_images/image1.jpeg?v=2",
+        "flags": [
+          "tip"
+        ],
+        "status": "active"
+      },
+      {
+        "id": 103,
+        "name": "飞马环游",
+        "price": 139,
+        "tags": [
+          {
+            "t": "檀香高级",
+            "c": "blue"
+          }
+        ],
+        "desc": "木质沉香",
+        "descEm": null,
+        "str": "★★★☆☆",
+        "style": "适中",
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/disposable_images/image3.jpeg?v=2",
+        "flags": [],
+        "status": "active"
+      }
+    ]
+  },
+  "poolan": {
+    "title": "铂岚 POOLAN",
+    "products": [
+      {
+        "id": 104,
+        "name": "敬亭山",
+        "price": 139,
+        "tags": [
+          {
+            "t": "茶系推荐",
+            "c": "blue"
+          }
+        ],
+        "desc": "木质清香 · 品茶雅致",
+        "descEm": null,
+        "str": "★★☆☆☆",
+        "style": "清淡",
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/disposable_images/image5.jpeg?v=2",
+        "flags": [],
+        "status": "active"
+      },
+      {
+        "id": 105,
+        "name": "念关山",
+        "price": 139,
+        "tags": [
+          {
+            "t": "香槟气泡",
+            "c": "blue"
+          },
+          {
+            "t": "女生首选",
+            "c": "blue"
+          }
+        ],
+        "desc": "清甜香槟 · 气泡轻盈",
+        "descEm": null,
+        "str": "★★☆☆☆",
+        "style": "清淡",
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/disposable_images/image6.jpeg?v=2",
+        "flags": [],
+        "status": "active"
+      }
+    ]
+  },
+  "mirui": {
+    "title": "迷睿",
+    "products": [
+      {
+        "id": 106,
+        "name": "夏暮",
+        "price": 129,
+        "tags": [
+          {
+            "t": "伯爵红茶",
+            "c": "blue"
+          },
+          {
+            "t": "茶香醇和",
+            "c": "blue"
+          }
+        ],
+        "desc": "伯爵红茶 · 佛手柑清香 茶韵醇和",
+        "descEm": null,
+        "str": "★★☆☆☆",
+        "style": "清淡",
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/disposable_images/image7.jpeg?v=2",
+        "flags": [],
+        "status": "active"
+      },
+      {
+        "id": 107,
+        "name": "金缕",
+        "price": 129,
+        "tags": [
+          {
+            "t": "清新绿茶",
+            "c": "green"
+          },
+          {
+            "t": "淡雅清爽",
+            "c": "blue"
+          }
+        ],
+        "desc": "清新绿茶 · 淡雅茶香 清爽回甘",
+        "descEm": null,
+        "str": "★★☆☆☆",
+        "style": "清淡",
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/disposable_images/image8.jpeg?v=2",
+        "flags": [],
+        "status": "active"
+      },
+      {
+        "id": 108,
+        "name": "见山",
+        "price": 129,
+        "tags": [
+          {
+            "t": "蓝莓牛奶",
+            "c": "green"
+          },
+          {
+            "t": "果味过渡",
+            "c": "green"
+          },
+          {
+            "t": "柔和顺滑",
+            "c": "blue"
+          }
+        ],
+        "desc": "蓝莓牛奶 · 莓果奶香 柔和顺滑",
+        "descEm": null,
+        "str": "★★☆☆☆",
+        "style": "清淡",
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/disposable_images/image9.jpeg?v=2",
+        "flags": [],
+        "status": "active"
+      },
+      {
+        "id": 109,
+        "name": "白岸",
+        "price": 129,
+        "tags": [
+          {
+            "t": "果味过渡",
+            "c": "green"
+          },
+          {
+            "t": "酸甜柑橘",
+            "c": "green"
+          },
+          {
+            "t": "清爽提神",
+            "c": "blue"
+          }
+        ],
+        "desc": "酸甜柑橘 · 柑橘清香 酸甜适口",
+        "descEm": null,
+        "str": "★★☆☆☆",
+        "style": "清淡",
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/disposable_images/image10.jpeg?v=2",
+        "flags": [],
+        "status": "active"
+      }
+    ]
+  },
+  "other": {
+    "title": "Voopoo · 美深威 · HQD",
+    "products": [
+      {
+        "id": 110,
+        "name": "山雾秋",
+        "price": 129,
+        "tags": [
+          {
+            "t": "解瘾强",
+            "c": "red"
+          },
+          {
+            "t": "层次丰富",
+            "c": "blue"
+          }
+        ],
+        "desc": "花香果香",
+        "descEm": "rd",
+        "str": "★★★★☆",
+        "style": "偏浓",
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/disposable_images/image4.jpeg?v=2",
+        "flags": [
+          "best"
+        ],
+        "status": "active"
+      },
+      {
+        "id": 111,
+        "name": "匠造者-01",
+        "price": 149,
+        "tags": [
+          {
+            "t": "新品上市",
+            "c": "blue"
+          },
+          {
+            "t": "爆款",
+            "c": "gold"
+          },
+          {
+            "t": "超大容量",
+            "c": "blue"
+          },
+          {
+            "t": "四重层次",
+            "c": "blue"
+          }
+        ],
+        "desc": "豆香坚果咖啡蛋糕",
+        "descEm": "rd",
+        "str": "★★★☆☆",
+        "style": "偏淡",
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/disposable_images/image12.jpeg?v=2",
+        "flags": [
+          "star"
+        ],
+        "status": "active"
+      },
+      {
+        "id": 112,
+        "name": "匠造者-02",
+        "price": 149,
+        "tags": [
+          {
+            "t": "新品上市",
+            "c": "blue"
+          },
+          {
+            "t": "解瘾强",
+            "c": "red"
+          },
+          {
+            "t": "爆款",
+            "c": "gold"
+          },
+          {
+            "t": "超大容量",
+            "c": "blue"
+          }
+        ],
+        "desc": "浓香烟草+可可+生巧 黑森林",
+        "descEm": "rd",
+        "str": "★★★★☆",
+        "style": "偏浓",
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/disposable_images/image13.jpeg?v=2",
+        "flags": [
+          "star"
+        ],
+        "status": "active"
+      },
+      {
+        "id": 113,
+        "name": "霜月",
+        "price": 129,
+        "tags": [
+          {
+            "t": "果味过渡",
+            "c": "green"
+          },
+          {
+            "t": "蓝莓烤烟",
+            "c": "blue"
+          }
+        ],
+        "desc": "温润不燥",
+        "descEm": null,
+        "str": "★★★☆☆",
+        "style": "适中",
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/disposable_images/image14.jpeg?v=2",
+        "flags": [],
+        "status": "active"
+      }
+    ]
+  }
+}

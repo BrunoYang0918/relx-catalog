@@ -2446,7 +2446,25 @@ async function startVideoUpload() {
       if (matched) matchedCount++;
       progressEl.innerHTML += '<div class="sync-step done">✅ ' + escHtml(productName) + (matched ? ' 已匹配' : ' 未匹配同名产品') + '</div>';
     });
-    progressEl.innerHTML += '<div class="sync-final">🎉 ' + total + ' 个视频已打包到同一个 GitHub 提交，避免重复部署</div>';
+    progressEl.innerHTML += '<div class="sync-final">🎉 ' + total + ' 个视频已打包提交</div>';
+
+    // 等待 GitHub Pages 部署视频文件
+    progressEl.innerHTML += '<div class="sync-step active" id="deployPollStatus">⏳ 正在检测素材部署状态...</div>';
+    var depStatus = await waitForGitHubDeployment(240000, files[0].path, function(pollNum, text) {
+      var el = document.getElementById('deployPollStatus');
+      if (el) el.textContent = '⏳ ' + text + '（第 ' + pollNum + ' 次检测）';
+    });
+    var pollEl = document.getElementById('deployPollStatus');
+    if (pollEl) pollEl.remove();
+
+    if (depStatus === 'success') {
+      progressEl.innerHTML += '<div class="sync-step done">✅ 素材部署完成</div>';
+      progressEl.innerHTML += '<div style="margin-top:8px;text-align:center;"><button onclick="syncMediaFromProgress(\'vuProgress\',this)" style="background:var(--green);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">☁ 立即同步媒体配置到云端</button></div>';
+      progressEl.innerHTML += '<div style="margin-top:4px;font-size:11px;color:#888;text-align:center;">素材已部署，点击同步推送产品配置</div>';
+    } else {
+      progressEl.innerHTML += '<div class="sync-step done">⚠️ 部署状态: ' + depStatus + '</div>';
+      progressEl.innerHTML += '<div style="margin-top:8px;text-align:center;"><button onclick="syncMediaFromProgress(\'vuProgress\',this)" style="background:var(--green);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">☁ 手动同步媒体配置到云端</button></div>';
+    }
   } else {
       progressEl.innerHTML += '<div class="sync-step fail">❌ 批量提交失败，切换为逐个上传并等待部署</div>';
       // 智能逐个上传：每上传一个文件，等待 GitHub Pages 部署完成再传下一个
@@ -2478,9 +2496,10 @@ async function startVideoUpload() {
         }
       }
       progressEl.innerHTML += '<div class="sync-final">逐个上传完成：' + singleSuccess + '/' + files.length + ' 成功</div>';
+      progressEl.innerHTML += '<div style="margin-top:8px;text-align:center;"><button onclick="syncMediaFromProgress(\'vuProgress\',this)" style="background:var(--green);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">☁ 立即同步媒体配置到云端</button></div>';
+      progressEl.innerHTML += '<div style="margin-top:4px;font-size:11px;color:#888;text-align:center;">视频已逐一部署，点击同步推送产品配置</div>';
     }
-  progressEl.innerHTML += '<div style="margin-top:8px;text-align:center;"><button onclick="syncMedia();this.textContent=\'✅ 已推送\';this.disabled=true;" style="background:var(--green);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">☁ 立即同步媒体配置到云端</button></div>';
-  progressEl.innerHTML += '<div style="margin-top:4px;font-size:11px;color:#888;text-align:center;">媒体文件已上传，还需推送产品配置才能在其他设备生效</div>';
+  // Note: batch success path already has its own sync button
 
   btnEl.disabled = false;
   btnEl.textContent = '☁ 上传全部视频到 CDN';
@@ -2607,16 +2626,19 @@ async function uploadFilesBatchToGitHub(files, message) {
 
 // 轮询 GitHub Pages 部署状态，最多等待 maxWaitMs 毫秒
 // deployedFilePath: 可选，如果传了，API 超时后会直接轮询部署文件 URL
-async function waitForGitHubDeployment(maxWaitMs, deployedFilePath) {
+// onPoll: 可选回调 function(pollNum, statusText)，每轮轮询后调用，用于实时更新 UI
+async function waitForGitHubDeployment(maxWaitMs, deployedFilePath, onPoll) {
   var token = getGitToken();
   if (!token) return 'no_token';
   maxWaitMs = maxWaitMs || 120000;
   var start = Date.now();
   var apiUrl = 'https://api.github.com/repos/' + GIT_OWNER + '/' + GIT_REPO + '/pages/deployments?per_page=1';
   var lastStatus = 'unknown';
+  var pollNum = 0;
 
   // 1. 先通过 GitHub Pages Deployments API 轮询
   while (Date.now() - start < maxWaitMs) {
+    pollNum++;
     try {
       var res = await fetch(apiUrl, {
         headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github+json' }
@@ -2628,26 +2650,30 @@ async function waitForGitHubDeployment(maxWaitMs, deployedFilePath) {
           var latest = deployments[0];
           lastStatus = latest.status || 'unknown';
           var st = String(lastStatus).toLowerCase();
-          // GitHub API 可能返回 success / succeeded / built / active 等成功状态
+          if (onPoll) onPoll(pollNum, 'API 检测到部署状态: ' + lastStatus);
           if (st === 'success' || st === 'successful' || st === 'succeeded' || st === 'built' || st === 'active') return 'success';
           if (st === 'error' || st === 'failed' || st === 'failure' || st === 'errored' || st === 'canceled' || st === 'cancelled') return 'failed';
         } else {
           lastStatus = 'empty';
+          if (onPoll) onPoll(pollNum, 'API 返回空，等待部署开始...');
         }
       } else {
         console.log('Pages deployments API not ok:', res.status);
         lastStatus = 'api_' + res.status;
+        if (onPoll) onPoll(pollNum, 'API 不可用 (status ' + res.status + ')，等待重试...');
       }
     } catch (e) {
       console.log('Polling Pages API error:', e);
+      if (onPoll) onPoll(pollNum, '网络波动，等待重试...');
     }
     await new Promise(function(r) { setTimeout(r, 3000); });
   }
 
   // 2. API 轮询超时，尝试直接轮询部署文件 URL
   if (deployedFilePath) {
+    if (onPoll) onPoll(pollNum, 'API 超时，切换到直连文件检测...');
     var remaining = Math.max(30000, maxWaitMs - (Date.now() - start));
-    var fileResult = await waitForFileDeployed(deployedFilePath, remaining);
+    var fileResult = await waitForFileDeployed(deployedFilePath, remaining, onPoll ? function(pn, txt) { onPoll(pn + pollNum, txt); } : null);
     if (fileResult === 'success') return 'success';
     return 'timeout (last status: ' + lastStatus + ')';
   }
@@ -2656,22 +2682,26 @@ async function waitForGitHubDeployment(maxWaitMs, deployedFilePath) {
 }
 
 // 直接轮询已部署文件 URL（CDN 或 raw.githubusercontent.com）
-async function waitForFileDeployed(filePath, maxWaitMs) {
+async function waitForFileDeployed(filePath, maxWaitMs, onPoll) {
   var start = Date.now();
   var urls = [
     'https://cdn.jsdelivr.net/gh/' + GIT_OWNER + '/' + GIT_REPO + '@' + GIT_BRANCH + '/' + filePath,
     'https://raw.githubusercontent.com/' + GIT_OWNER + '/' + GIT_REPO + '/' + GIT_BRANCH + '/' + filePath
   ];
+  var pollNum = 0;
 
   while (Date.now() - start < maxWaitMs) {
+    pollNum++;
     for (var i = 0; i < urls.length; i++) {
       try {
         var url = urls[i] + '?_t=' + Date.now();
         var res = await fetch(url, { method: 'HEAD' });
         console.log('URL polling status:', url, res.status);
+        if (onPoll) onPoll(pollNum, 'HEAD ' + (i === 0 ? 'CDN ' : 'Raw ') + '→ ' + res.status);
         if (res.status === 200) return 'success';
       } catch (e) {
         console.log('URL polling error:', urls[i], e);
+        if (onPoll) onPoll(pollNum, '网络波动（第 ' + pollNum + ' 次重试）...');
       }
     }
     await new Promise(function(r) { setTimeout(r, 3000); });
@@ -2769,7 +2799,25 @@ async function startImageUpload() {
       if (matched) matchedCount++;
       progressEl.innerHTML += '<div class="sync-step done">✅ ' + escHtml(productName) + (matched ? ' 已替换图片' : ' 未匹配同名产品') + '</div>';
     });
-    progressEl.innerHTML += '<div class="sync-final">🎉 ' + total + ' 张图片已打包到同一个 GitHub 提交，避免重复部署</div>';
+    progressEl.innerHTML += '<div class="sync-final">🎉 ' + total + ' 张图片已打包提交</div>';
+
+    // 等待 GitHub Pages 部署图片文件
+    progressEl.innerHTML += '<div class="sync-step active" id="deployPollStatus">⏳ 正在检测素材部署状态...</div>';
+    var depStatus = await waitForGitHubDeployment(240000, files[0].path, function(pollNum, text) {
+      var el = document.getElementById('deployPollStatus');
+      if (el) el.textContent = '⏳ ' + text + '（第 ' + pollNum + ' 次检测）';
+    });
+    var pollEl = document.getElementById('deployPollStatus');
+    if (pollEl) pollEl.remove();
+
+    if (depStatus === 'success') {
+      progressEl.innerHTML += '<div class="sync-step done">✅ 素材部署完成</div>';
+      progressEl.innerHTML += '<div style="margin-top:8px;text-align:center;"><button onclick="syncMediaFromProgress(\'vuImgProgress\',this)" style="background:var(--green);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">☁ 立即同步媒体配置到云端</button></div>';
+      progressEl.innerHTML += '<div style="margin-top:4px;font-size:11px;color:#888;text-align:center;">素材已部署，点击同步推送产品配置</div>';
+    } else {
+      progressEl.innerHTML += '<div class="sync-step done">⚠️ 部署状态: ' + depStatus + '</div>';
+      progressEl.innerHTML += '<div style="margin-top:8px;text-align:center;"><button onclick="syncMediaFromProgress(\'vuImgProgress\',this)" style="background:var(--green);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">☁ 手动同步媒体配置到云端</button></div>';
+    }
   } else {
     progressEl.innerHTML += '<div class="sync-step fail">❌ 批量提交失败，切换为逐个上传并等待部署</div>';
     // 智能逐个上传
@@ -2803,11 +2851,10 @@ async function startImageUpload() {
       }
     }
     progressEl.innerHTML += '<div class="sync-final">逐个上传完成：' + singleSuccess + '/' + files.length + ' 成功</div>';
+    progressEl.innerHTML += '<div style="margin-top:8px;text-align:center;"><button onclick="syncMediaFromProgress(\'vuImgProgress\',this)" style="background:var(--green);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">☁ 立即同步媒体配置到云端</button></div>';
+    progressEl.innerHTML += '<div style="margin-top:4px;font-size:11px;color:#888;text-align:center;">图片已逐一部署，点击同步推送产品配置</div>';
   }
-  progressEl.innerHTML += '<div style="margin-top:8px;text-align:center;"><button onclick="syncMedia();this.textContent=\'✅ 已推送\';this.disabled=true;" style="background:var(--green);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">☁ 立即同步媒体配置到云端</button></div>';
-  progressEl.innerHTML += '<div style="margin-top:4px;font-size:11px;color:#888;text-align:center;">媒体文件已上传，还需推送产品配置才能在其他设备生效</div>';
-
-  btnEl.disabled = false;
+  // Note: batch success path already has its own sync button  btnEl.disabled = false;
   btnEl.textContent = '☁ 上传全部图片到 CDN';
   _vuImgFiles = [];
   document.getElementById('vuImgFileList').innerHTML = '';
@@ -2834,6 +2881,27 @@ function matchProductAndSetImage(productName, cdnUrl) {
   });
   if (matched) saveProductsToStorage();
   return matched;
+}
+
+// 从上传进度区直接同步媒体配置，增量反馈到上传进度条
+function syncMediaFromProgress(progressId, btnEl) {
+  var progressEl = document.getElementById(progressId);
+  if (!progressEl) return;
+  if (btnEl) { btnEl.textContent = '⏳ 正在推送...'; btnEl.disabled = true; }
+
+  progressEl.innerHTML += '<div class="sync-step active">⏳ 正在推送产品配置 (pod-config.json) 到 GitHub...</div>';
+
+  saveToGitHub('pod-config.json', POD_SECTIONS, function(ok, errMsg) {
+    if (ok) {
+      progressEl.innerHTML += '<div class="sync-step done">✅ 产品配置推送成功</div>';
+      progressEl.innerHTML += '<div class="sync-final">🎉 全部完成！其他设备刷新后即可看到媒体内容。</div>';
+    } else {
+      var msg = errMsg || '未知错误';
+      progressEl.innerHTML += '<div class="sync-step fail">❌ 推送失败: ' + escHtml(msg) + '</div>';
+      progressEl.innerHTML += '<button onclick="syncMediaFromProgress(\'' + progressId + '\',null)" style="margin-top:6px;background:var(--green);color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;">🔄 重试推送</button>';
+      if (btnEl) { btnEl.textContent = '🔄 重试'; btnEl.disabled = false; }
+    }
+  });
 }
 
 function renderMatchedMedias() {

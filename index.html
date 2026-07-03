@@ -2635,6 +2635,7 @@ async function waitForGitHubDeployment(maxWaitMs, deployedFilePath, onPoll) {
   var apiUrl = 'https://api.github.com/repos/' + GIT_OWNER + '/' + GIT_REPO + '/pages/deployments?per_page=1';
   var lastStatus = 'unknown';
   var pollNum = 0;
+  var apiConsecutive404 = 0;
 
   // 1. 先通过 GitHub Pages Deployments API 轮询
   while (Date.now() - start < maxWaitMs) {
@@ -2644,6 +2645,7 @@ async function waitForGitHubDeployment(maxWaitMs, deployedFilePath, onPoll) {
         headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github+json' }
       });
       if (res.ok) {
+        apiConsecutive404 = 0;
         var deployments = await res.json();
         console.log('GitHub Pages deployments response:', deployments);
         if (deployments && deployments.length > 0) {
@@ -2660,12 +2662,20 @@ async function waitForGitHubDeployment(maxWaitMs, deployedFilePath, onPoll) {
       } else {
         console.log('Pages deployments API not ok:', res.status);
         lastStatus = 'api_' + res.status;
+        if (res.status === 404) apiConsecutive404++;
         if (onPoll) onPoll(pollNum, 'API 不可用 (status ' + res.status + ')，等待重试...');
       }
     } catch (e) {
       console.log('Polling Pages API error:', e);
       if (onPoll) onPoll(pollNum, '网络波动，等待重试...');
     }
+
+    // 连续 3 次 404 说明 Token 没有 pages 权限，直接跳到文件 URL 检测
+    if (apiConsecutive404 >= 3 && deployedFilePath) {
+      if (onPoll) onPoll(pollNum, 'API 无权限 (404x3)，切换到直连文件检测...');
+      break;
+    }
+
     await new Promise(function(r) { setTimeout(r, 3000); });
   }
 
@@ -2854,7 +2864,8 @@ async function startImageUpload() {
     progressEl.innerHTML += '<div style="margin-top:8px;text-align:center;"><button onclick="syncMediaFromProgress(\'vuImgProgress\',this)" style="background:var(--green);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">☁ 立即同步媒体配置到云端</button></div>';
     progressEl.innerHTML += '<div style="margin-top:4px;font-size:11px;color:#888;text-align:center;">图片已逐一部署，点击同步推送产品配置</div>';
   }
-  // Note: batch success path already has its own sync button  btnEl.disabled = false;
+  // Note: batch success path already has its own sync button
+  btnEl.disabled = false;
   btnEl.textContent = '☁ 上传全部图片到 CDN';
   _vuImgFiles = [];
   document.getElementById('vuImgFileList').innerHTML = '';
@@ -2889,11 +2900,27 @@ function syncMediaFromProgress(progressId, btnEl) {
   if (!progressEl) return;
   if (btnEl) { btnEl.textContent = '⏳ 正在推送...'; btnEl.disabled = true; }
 
+  // 推送前检查：当前 POD_SECTIONS 是否包含视频/图片映射
+  var hasMedia = false, mediaCount = 0;
+  Object.keys(POD_SECTIONS).forEach(function(k) {
+    POD_SECTIONS[k].products.forEach(function(p) {
+      if (p.video) { hasMedia = true; mediaCount++; console.log('📹 将推送视频:', p.name, p.video.substring(0,60)); }
+    });
+  });
+  console.log('📦 推送 pod-config.json, 含视频的产品数:', mediaCount, ', 总分区数:', Object.keys(POD_SECTIONS).length);
+
+  if (!hasMedia) {
+    progressEl.innerHTML += '<div class="sync-step fail">⚠️ 当前产品数据中未检测到视频/图片映射</div>';
+    progressEl.innerHTML += '<div style="font-size:11px;color:#888;margin-top:2px;">请先上传视频文件，等待文件名匹配成功（显示"✅ 已匹配"）后再同步</div>';
+    if (btnEl) { btnEl.textContent = '☁ 重新同步'; btnEl.disabled = false; }
+    return;
+  }
+
   progressEl.innerHTML += '<div class="sync-step active">⏳ 正在推送产品配置 (pod-config.json) 到 GitHub...</div>';
 
   saveToGitHub('pod-config.json', POD_SECTIONS, function(ok, errMsg) {
     if (ok) {
-      progressEl.innerHTML += '<div class="sync-step done">✅ 产品配置推送成功</div>';
+      progressEl.innerHTML += '<div class="sync-step done">✅ 产品配置推送成功 (' + mediaCount + ' 个媒体映射)</div>';
       progressEl.innerHTML += '<div class="sync-final">🎉 全部完成！其他设备刷新后即可看到媒体内容。</div>';
     } else {
       var msg = errMsg || '未知错误';

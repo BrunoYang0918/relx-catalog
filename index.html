@@ -613,6 +613,75 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 }
 @keyframes floatUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
+/* ===== 底部促销跑马灯 ===== */
+.marquee-banner {
+  position: relative; width: 100%; height: 48px;
+  background: linear-gradient(90deg, #8B2020 0%, #C0392B 40%, #8B2020 100%);
+  overflow: hidden; flex-shrink: 0;
+  transition: height 0.35s ease, opacity 0.35s ease;
+}
+.marquee-banner.dismissed { height: 0; opacity: 0; overflow: hidden; }
+.marquee-banner .close-btn {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%); z-index: 10;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); border: none;
+  color: rgba(255,255,255,0.7); font-size: 12px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.marquee-banner .close-btn:active { background: rgba(255,255,255,0.25); color: #fff; }
+.marquee-banner .promo-tag {
+  position: absolute; left: 0; top: 0; bottom: 0; z-index: 5;
+  display: flex; align-items: center; padding: 0 14px 0 16px;
+  background: linear-gradient(90deg, #8B2020 50%, transparent); pointer-events: none;
+}
+.marquee-banner .promo-tag .tag-inner {
+  background: #C9A96E; color: #fff; font-size: 11px; font-weight: 700;
+  padding: 3px 8px; border-radius: 4px; white-space: nowrap; position: relative;
+  overflow: hidden; animation: tagPulse 2s ease-in-out infinite;
+}
+.marquee-banner .promo-tag .tag-inner::after {
+  content: ''; position: absolute; top: 0; left: -60%; width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+  transform: skewX(-20deg); animation: tagShimmer 2.5s ease-in-out infinite;
+}
+@keyframes tagPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+@keyframes tagShimmer {
+  0% { left: -60%; }
+  100% { left: 130%; }
+}
+.marquee-track {
+  position: absolute; left: 80px; right: 38px; top: 0; bottom: 0; overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 3%, #000 97%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 3%, #000 97%, transparent 100%);
+}
+.marquee-content {
+  display: flex; align-items: center; height: 100%; white-space: nowrap;
+  animation: marqueeScroll 24s linear infinite;
+}
+.marquee-banner:hover .marquee-content,
+.marquee-banner:active .marquee-content { animation-play-state: paused; }
+@keyframes marqueeScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.promo-item {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 0 22px; height: 100%; color: #fff; font-size: 13px; position: relative;
+}
+.promo-item::after {
+  content: ''; position: absolute; right: 0; top: 14px; bottom: 14px;
+  width: 1px; background: rgba(255,255,255,0.15);
+}
+.promo-item:last-child::after { display: none; }
+.promo-item .icon-gift { font-size: 16px; }
+.promo-item .text-main { font-weight: 500; line-height: 1.3; }
+.promo-item .text-highlight { color: #F7DC6F; font-weight: 700; font-size: 15px; }
+.promo-item .text-sub { font-size: 11px; opacity: 0.75; font-weight: 400; }
+.promo-item .num-highlight { color: #F7DC6F; font-size: 16px; font-weight: 700; }
+
 .floating-bar {
   flex-shrink: 0;
   background: #fff; border-top: 1px solid var(--border);
@@ -1158,7 +1227,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 <div class="app-shell"><div class="app-scroll"><main>
 
 <div class="topbar">
-  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v3.2</span></div>
+  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v3.3</span></div>
   <div class="tb-right">
     <a class="tb-btn" href="javascript:void(0)" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">📞 联系门店</a>
     <div class="lang-dropdown" id="langDrop">
@@ -1308,9 +1377,29 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="footer-note"></div>
 
-<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v3.0</span></div>
+<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v3.3</span></div>
 
 </main></div>
+
+<!-- ===== 底部促销跑马灯 ===== -->
+<div class="marquee-banner" id="promoMarquee">
+  <div class="promo-tag"><span class="tag-inner">🎁 特惠</span></div>
+  <button class="close-btn" onclick="document.getElementById('promoMarquee').classList.add('dismissed')">✕</button>
+  <div class="marquee-track">
+    <div class="marquee-content">
+      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">全场满<span class="num-highlight">2</span>件 <span class="text-highlight">包邮</span></span></span>
+      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">烟弹满<span class="num-highlight">3</span>盒 <span class="text-highlight">赠保护套</span></span></span>
+      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">烟弹满<span class="num-highlight">10</span>盒 <span class="text-highlight">赠<span class="num-highlight">1</span>盒</span></span></span>
+      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">一次性满<span class="num-highlight">5</span>支 <span class="text-highlight">赠<span class="num-highlight">1</span>支</span></span></span>
+      <!-- 第二轮（无缝循环） -->
+      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">全场满<span class="num-highlight">2</span>件 <span class="text-highlight">包邮</span></span></span>
+      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">烟弹满<span class="num-highlight">3</span>盒 <span class="text-highlight">赠保护套</span></span></span>
+      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">烟弹满<span class="num-highlight">10</span>盒 <span class="text-highlight">赠<span class="num-highlight">1</span>盒</span></span></span>
+      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">一次性满<span class="num-highlight">5</span>支 <span class="text-highlight">赠<span class="num-highlight">1</span>支</span></span></span>
+    </div>
+  </div>
+</div>
+
 <div class="floating-bar" id="floatingBar">
   <button class="fb-btn fb-glossary" onclick="toggleGlossary(event)" ontouchstart="">📖 口味词典</button>
   <button class="fb-btn fb-quiz" onclick="openQuiz(event)">🔍 帮我选</button>

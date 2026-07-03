@@ -2359,52 +2359,41 @@ async function startVideoUpload() {
   btnEl.textContent = '⏳ 正在上传...';
 
   var total = _vuFiles.length;
-  var success = 0, fail = 0;
-
   progressEl.innerHTML = '<div class="sync-step active">⏳ 准备上传 ' + total + ' 个视频...</div>';
 
+  // 先读取所有文件为 base64
+  var files = [];
   for (var i = 0; i < _vuFiles.length; i++) {
     var file = _vuFiles[i];
-    var filename = 'videos/' + file.name;
-    progressEl.innerHTML = '<div class="sync-step active">⏳ 上传中 (' + (i+1) + '/' + total + '): ' + escHtml(file.name) + '</div>';
-
-    // 每两个文件之间等待 800ms，避免 GitHub API 并发冲突
-    if (i > 0) await new Promise(function(r) { setTimeout(r, 800); });
-
-    var uploaded = false;
-    for (var attempt = 0; attempt < 2 && !uploaded; attempt++) {
-      if (attempt > 0) {
-        progressEl.innerHTML = '<div class="sync-step active">⏳ 重试中 (' + (i+1) + '/' + total + '): ' + escHtml(file.name) + '</div>';
-        await new Promise(function(r) { setTimeout(r, 1200); });
-      }
-      try {
-        var base64 = await readFileAsBase64(file);
-        var ok = await saveBinaryToGitHub(filename, base64);
-        if (ok) {
-          uploaded = true;
-          success++;
-          // 自动匹配产品
-          var productName = file.name.replace(/\.mp4$/i, '');
-          var matched = matchProductAndSetVideo(productName, filename);
-          var matchInfo = matched ? ' ✅ 已匹配产品"' + productName + '"' : ' ⚠️ 未找到同名产品（视频已上传，请在编辑页手动填入）';
-          progressEl.innerHTML = '<div class="sync-step done">✅ (' + (i+1) + '/' + total + ') ' + escHtml(file.name) + ' 上传成功' + matchInfo + '</div>';
-        }
-      } catch(e) {
-        if (attempt === 1) {
-          fail++;
-          progressEl.innerHTML = '<div class="sync-step fail">❌ (' + (i+1) + '/' + total + ') ' + escHtml(file.name) + ' 上传出错: ' + e.message + '</div>';
-        }
-      }
+    progressEl.innerHTML = '<div class="sync-step active">⏳ 读取中 (' + (i+1) + '/' + total + '): ' + escHtml(file.name) + '</div>';
+    try {
+      var base64 = await readFileAsBase64(file);
+      files.push({ path: 'videos/' + file.name, content: base64 });
+    } catch (e) {
+      progressEl.innerHTML = '<div class="sync-step fail">❌ 读取文件失败: ' + escHtml(file.name) + '</div>';
+      btnEl.disabled = false;
+      btnEl.textContent = '☁ 上传全部视频到 CDN';
+      return;
     }
-    if (!uploaded) fail++;
   }
 
-  // 最终状态
-  var finalMsg = success > 0 && fail === 0
-    ? '🎉 全部上传成功！' + success + '/' + total + ' 个视频已推送到 CDN'
-    : '⚠️ 上传完成：' + success + '/' + total + ' 成功，' + fail + ' 失败';
-  progressEl.innerHTML += '<div class="sync-final">' + finalMsg + '</div>';
-  progressEl.innerHTML += '<div style="margin-top:8px;font-size:12px;color:#888;">💡 已自动匹配的产品视频地址已保存，请点击「系统设置 → 同步全部数据到云端」推送更新。</div>';
+  // 批量上传到同一个 commit
+  progressEl.innerHTML = '<div class="sync-step active">⏳ 正在打包 ' + total + ' 个视频到同一个 GitHub 提交...</div>';
+  var result = await uploadFilesBatchToGitHub(files, 'Upload ' + total + ' video(s)');
+
+  if (result.success) {
+    var matchedCount = 0;
+    files.forEach(function(f) {
+      var productName = f.path.replace(/^videos\//, '').replace(/\.mp4$/i, '');
+      var matched = matchProductAndSetVideo(productName, f.path);
+      if (matched) matchedCount++;
+      progressEl.innerHTML += '<div class="sync-step done">✅ ' + escHtml(productName) + (matched ? ' 已匹配' : ' 未匹配同名产品') + '</div>';
+    });
+    progressEl.innerHTML += '<div class="sync-final">🎉 ' + total + ' 个视频已打包到同一个 GitHub 提交，避免重复部署</div>';
+  } else {
+    progressEl.innerHTML += '<div class="sync-step fail">❌ 批量上传失败: ' + (result.error || '未知错误') + '</div>';
+  }
+  progressEl.innerHTML += '<div style="margin-top:8px;font-size:12px;color:#888;">💡 请点击「系统设置 → 同步全部数据到云端」推送产品配置更新。</div>';
 
   btnEl.disabled = false;
   btnEl.textContent = '☁ 上传全部视频到 CDN';
@@ -2438,6 +2427,95 @@ function saveBinaryToGitHub(filename, base64Content) {
       }
     }).catch(function() { resolve(false); });
   });
+}
+
+// 批量上传多个文件到同一个 GitHub commit（避免 GitHub Pages 多次部署冲突）
+// files: [{path: 'videos/xxx.mp4', content: base64String}, ...]
+async function uploadFilesBatchToGitHub(files, message) {
+  var token = getGitToken();
+  if (!token) return { success: false, error: 'GitHub Token 未设置', urls: {} };
+
+  var apiBase = 'https://api.github.com/repos/' + GIT_OWNER + '/' + GIT_REPO;
+  var headers = {
+    'Authorization': 'token ' + token,
+    'Accept': 'application/vnd.github+json',
+    'Content-Type': 'application/json'
+  };
+
+  try {
+    // 1. 获取当前分支 ref
+    var refRes = await fetch(apiBase + '/git/ref/heads/' + GIT_BRANCH, { headers: headers });
+    if (!refRes.ok) throw new Error('获取分支信息失败: ' + refRes.status);
+    var refData = await refRes.json();
+    var baseCommitSha = refData.object.sha;
+
+    // 2. 获取 base commit 的 tree
+    var commitRes = await fetch(apiBase + '/git/commits/' + baseCommitSha, { headers: headers });
+    if (!commitRes.ok) throw new Error('获取提交信息失败: ' + commitRes.status);
+    var commitData = await commitRes.json();
+    var baseTreeSha = commitData.tree.sha;
+
+    // 3. 为每个文件创建 blob
+    var blobs = [];
+    for (var i = 0; i < files.length; i++) {
+      var blobRes = await fetch(apiBase + '/git/blobs', {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify({ content: files[i].content, encoding: 'base64' })
+      });
+      if (!blobRes.ok) throw new Error('创建文件 blob 失败: ' + files[i].path + ' (status ' + blobRes.status + ')');
+      var blobData = await blobRes.json();
+      blobs.push({ path: files[i].path, sha: blobData.sha });
+    }
+
+    // 4. 创建新 tree
+    var treeRes = await fetch(apiBase + '/git/trees', {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify({
+        base_tree: baseTreeSha,
+        tree: blobs.map(function(b) {
+          return { path: b.path, mode: '100644', type: 'blob', sha: b.sha };
+        })
+      })
+    });
+    if (!treeRes.ok) throw new Error('创建 tree 失败: ' + treeRes.status);
+    var treeData = await treeRes.json();
+
+    // 5. 创建新 commit
+    var newCommitRes = await fetch(apiBase + '/git/commits', {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify({
+        message: message,
+        tree: treeData.sha,
+        parents: [baseCommitSha]
+      })
+    });
+    if (!newCommitRes.ok) throw new Error('创建 commit 失败: ' + newCommitRes.status);
+    var newCommitData = await newCommitRes.json();
+
+    // 6. 更新分支指针
+    var updateRefRes = await fetch(apiBase + '/git/ref/heads/' + GIT_BRANCH, {
+      method: 'PATCH',
+      headers: headers,
+      body: JSON.stringify({ sha: newCommitData.sha })
+    });
+    if (!updateRefRes.ok) throw new Error('更新分支失败: ' + updateRefRes.status);
+
+    // 7. 刷新 jsdelivr 缓存
+    var urls = {};
+    files.forEach(function(f) {
+      var cdnUrl = 'https://cdn.jsdelivr.net/gh/' + GIT_OWNER + '/' + GIT_REPO + '@' + GIT_BRANCH + '/' + f.path;
+      urls[f.path] = cdnUrl;
+      fetch('https://purge.jsdelivr.net/gh/' + GIT_OWNER + '/' + GIT_REPO + '@' + GIT_BRANCH + '/' + f.path);
+    });
+
+    return { success: true, urls: urls };
+  } catch (e) {
+    console.error('批量上传失败:', e);
+    return { success: false, error: e.message, urls: {} };
+  }
 }
 
 function matchProductAndSetVideo(productName, gitFilePath) {
@@ -2498,54 +2576,43 @@ async function startImageUpload() {
   btnEl.textContent = '⏳ 正在上传...';
 
   var total = _vuImgFiles.length;
-  var success = 0, fail = 0;
-
   progressEl.innerHTML = '<div class="sync-step active">⏳ 准备上传 ' + total + ' 张图片...</div>';
 
+  // 先读取所有文件为 base64
+  var files = [];
   for (var i = 0; i < _vuImgFiles.length; i++) {
     var file = _vuImgFiles[i];
-    // 上传到 GitHub: extracted_images/pod_images/产品名.扩展名
-    var filename = 'extracted_images/pod_images/' + file.name;
-    progressEl.innerHTML = '<div class="sync-step active">⏳ 上传中 (' + (i+1) + '/' + total + '): ' + escHtml(file.name) + '</div>';
-
-    // 每两个文件之间等待 800ms
-    if (i > 0) await new Promise(function(r) { setTimeout(r, 800); });
-
-    var uploaded = false;
-    for (var attempt = 0; attempt < 2 && !uploaded; attempt++) {
-      if (attempt > 0) {
-        progressEl.innerHTML = '<div class="sync-step active">⏳ 重试中 (' + (i+1) + '/' + total + '): ' + escHtml(file.name) + '</div>';
-        await new Promise(function(r) { setTimeout(r, 1200); });
-      }
-      try {
-        var base64 = await readFileAsBase64(file);
-        var ok = await saveBinaryToGitHub(filename, base64);
-        if (ok) {
-          uploaded = true;
-          success++;
-          // 自动匹配产品并更新图片
-          var productName = file.name.replace(/\.(jpg|jpeg|png|webp)$/i, '');
-          var ts = Date.now();
-          var cdnUrl = 'https://cdn.jsdelivr.net/gh/' + GIT_OWNER + '/' + GIT_REPO + '@' + GIT_BRANCH + '/' + filename + '?v=' + ts;
-          var matched = matchProductAndSetImage(productName, cdnUrl);
-          var matchInfo = matched ? ' ✅ 已替换产品"' + productName + '"的图片' : ' ⚠️ 未找到同名产品（图片已上传，请在产品编辑页手动填写地址）';
-          progressEl.innerHTML = '<div class="sync-step done">✅ (' + (i+1) + '/' + total + ') ' + escHtml(file.name) + ' 上传成功' + matchInfo + '</div>';
-        }
-      } catch(e) {
-        if (attempt === 1) {
-          fail++;
-          progressEl.innerHTML = '<div class="sync-step fail">❌ (' + (i+1) + '/' + total + ') ' + escHtml(file.name) + ' 上传出错: ' + e.message + '</div>';
-        }
-      }
+    progressEl.innerHTML = '<div class="sync-step active">⏳ 读取中 (' + (i+1) + '/' + total + '): ' + escHtml(file.name) + '</div>';
+    try {
+      var base64 = await readFileAsBase64(file);
+      files.push({ path: 'extracted_images/pod_images/' + file.name, content: base64 });
+    } catch (e) {
+      progressEl.innerHTML = '<div class="sync-step fail">❌ 读取文件失败: ' + escHtml(file.name) + '</div>';
+      btnEl.disabled = false;
+      btnEl.textContent = '☁ 上传全部图片到 CDN';
+      return;
     }
-    if (!uploaded) fail++;
   }
 
-  var finalMsg = success > 0 && fail === 0
-    ? '🎉 全部上传成功！' + success + '/' + total + ' 张图片已推送到 CDN'
-    : '⚠️ 上传完成：' + success + '/' + total + ' 成功，' + fail + ' 失败';
-  progressEl.innerHTML += '<div class="sync-final">' + finalMsg + '</div>';
-  progressEl.innerHTML += '<div style="margin-top:8px;font-size:12px;color:#888;">💡 已替换的产品图片已保存，请点击「系统设置 → 同步全部数据到云端」推送更新。</div>';
+  // 批量上传到同一个 commit
+  progressEl.innerHTML = '<div class="sync-step active">⏳ 正在打包 ' + total + ' 张图片到同一个 GitHub 提交...</div>';
+  var result = await uploadFilesBatchToGitHub(files, 'Upload ' + total + ' image(s)');
+
+  if (result.success) {
+    var matchedCount = 0;
+    files.forEach(function(f) {
+      var productName = f.path.replace(/^extracted_images\/pod_images\//, '').replace(/\.(jpg|jpeg|png|webp)$/i, '');
+      var ts = Date.now();
+      var cdnUrl = 'https://cdn.jsdelivr.net/gh/' + GIT_OWNER + '/' + GIT_REPO + '@' + GIT_BRANCH + '/' + f.path + '?v=' + ts;
+      var matched = matchProductAndSetImage(productName, cdnUrl);
+      if (matched) matchedCount++;
+      progressEl.innerHTML += '<div class="sync-step done">✅ ' + escHtml(productName) + (matched ? ' 已替换图片' : ' 未匹配同名产品') + '</div>';
+    });
+    progressEl.innerHTML += '<div class="sync-final">🎉 ' + total + ' 张图片已打包到同一个 GitHub 提交，避免重复部署</div>';
+  } else {
+    progressEl.innerHTML += '<div class="sync-step fail">❌ 批量上传失败: ' + (result.error || '未知错误') + '</div>';
+  }
+  progressEl.innerHTML += '<div style="margin-top:8px;font-size:12px;color:#888;">💡 请点击「系统设置 → 同步全部数据到云端」推送产品配置更新。</div>';
 
   btnEl.disabled = false;
   btnEl.textContent = '☁ 上传全部图片到 CDN';

@@ -2430,33 +2430,6 @@ function matchProductAndSetVideo(productName, gitFilePath) {
   return matched;
 }
 
-function renderMatchedVideos() {
-  var el = document.getElementById('vuMatchedList');
-  if (!el) return;
-  var hasVideo = [];
-  Object.keys(POD_SECTIONS).forEach(function(k) {
-    POD_SECTIONS[k].products.forEach(function(p) {
-      if (p.video) hasVideo.push({ name: p.name, video: p.video, section: POD_SECTIONS[k].title });
-    });
-  });
-  Object.keys(DISPOSABLE_SECTIONS).forEach(function(k) {
-    DISPOSABLE_SECTIONS[k].products.forEach(function(p) {
-      if (p.video) hasVideo.push({ name: p.name, video: p.video, section: DISPOSABLE_SECTIONS[k].title });
-    });
-  });
-  if (hasVideo.length === 0) {
-    el.innerHTML = '<div style="color:#999;padding:8px 0;">暂无已配置视频的产品</div>';
-    return;
-  }
-  var html = '';
-  hasVideo.forEach(function(item) {
-    html += '<div class="vu-matched-item">'
-      + '<span>🎬 ' + escHtml(item.name) + '</span>'
-      + '<span style="font-size:10px;color:#999;">' + escHtml(item.section) + '</span>'
-      + '</div>';
-  });
-}
-
 // ===== 图片上传（媒体管理） =====
 var _vuImgFiles = [];
 

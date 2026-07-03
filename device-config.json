@@ -1,0 +1,129 @@
+[
+  {
+    "name": "青羽 · 入门首选",
+    "price": 218,
+    "battery": 350,
+    "compat": "青羽/幻影/小众",
+    "i18nKey": "dev_qingyu",
+    "colors": [
+      {
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/device_colors/qingyu_black.png?v=2",
+        "label": "乡爱墨"
+      },
+      {
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/device_colors/qingyu_silver.png?v=2",
+        "label": "玩伴银"
+      }
+    ],
+    "spec": null
+  },
+  {
+    "name": "大千 · 量大管饱",
+    "price": 258,
+    "battery": 800,
+    "compat": "大千系列专属",
+    "i18nKey": "dev_daqian",
+    "colors": [
+      {
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/device_colors/daqian_black.png?v=2",
+        "label": "夜宴"
+      }
+    ],
+    "spec": null
+  },
+  {
+    "name": "幻影五代 · 经典选择",
+    "price": 328,
+    "battery": 380,
+    "compat": "Pro/幻影/青羽",
+    "i18nKey": "dev_h5",
+    "colors": [
+      {
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/device_colors/h5_green.png?v=2",
+        "label": "寒山夜"
+      },
+      {
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/device_colors/h5_silver.png?v=2",
+        "label": "晨霜绿"
+      },
+      {
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/device_colors/h5_black.png?v=2",
+        "label": "皎月银"
+      },
+      {
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/device_colors/h5_purple.png?v=2",
+        "label": "赤炎云"
+      },
+      {
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/device_colors/h5_gold.png?v=2",
+        "label": "紫霞星"
+      }
+    ],
+    "spec": null
+  },
+  {
+    "name": "御影S · 新生代王者",
+    "price": 368,
+    "battery": 440,
+    "compat": "幻影系+铂岚",
+    "i18nKey": "dev_yuying",
+    "colors": [
+      {
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/device_colors/yuying_grey.png?v=2",
+        "label": "雅灰"
+      }
+    ],
+    "spec": {
+      "whyKey": "yuying_why",
+      "noteKey": "yuying_note",
+      "features": [
+        "电量实时显示",
+        "3档功率调节",
+        "口数精准记录",
+        "Type-C充电"
+      ]
+    }
+  },
+  {
+    "name": "幻影Pro · 高端体验",
+    "price": 428,
+    "battery": 440,
+    "compat": "Pro/幻影/青羽",
+    "i18nKey": "dev_pro",
+    "colors": [
+      {
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/device_colors/pro_silver.png?v=2",
+        "label": "侠行山林"
+      },
+      {
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/device_colors/pro_white.png?v=2",
+        "label": "浮云映白"
+      },
+      {
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/device_colors/pro_pink.png?v=2",
+        "label": "极地冰刃"
+      },
+      {
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/device_colors/pro_black.png?v=2",
+        "label": "闪光银剑"
+      }
+    ],
+    "spec": null
+  },
+  {
+    "name": "宙斯 · 奢华顶配",
+    "price": 888,
+    "battery": 800,
+    "compat": "宙斯专属+转接",
+    "i18nKey": "dev_zeus",
+    "colors": [
+      {
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/device_colors/zeus_black.png?v=2",
+        "label": "破界"
+      }
+    ],
+    "spec": {
+      "specKey": "zeus_spec"
+    }
+  }
+]

@@ -1755,21 +1755,25 @@ var DEVICES = [
   { name:"宙斯 · 奢华顶配", price:888, battery:800, compat:"宙斯专属+转接", i18nKey:"dev_zeus", colors:[{img:"https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/device_colors/zeus_black.png?v=2",label:"破界"}], spec:{specKey:"zeus_spec"} }
 ];
 
-var DEVICE_PRODUCTS = [];
-var _dpId = 200;
-DEVICES.forEach(function(d) {
-  d.colors.forEach(function(c) {
-    DEVICE_PRODUCTS.push({
-      id: ++_dpId,
-      name: d.name + '杆 · ' + c.label + '色',
-      price: d.price,
-      img: c.img,
-      section: '烟具',
-      status: 'active',
-      tags: [{t: d.name, c: 'blue'}]
+function rebuildDeviceProducts() {
+  DEVICE_PRODUCTS = [];
+  var _dpId = 200;
+  DEVICES.forEach(function(d) {
+    d.colors.forEach(function(c) {
+      DEVICE_PRODUCTS.push({
+        id: ++_dpId,
+        name: d.name + '杆 · ' + c.label + '色',
+        price: d.price,
+        img: c.img,
+        section: '烟具',
+        status: 'active',
+        tags: [{t: d.name, c: 'blue'}]
+      });
     });
   });
-});
+}
+var DEVICE_PRODUCTS = [];
+rebuildDeviceProducts();
 
 var cart = {};
 try {
@@ -2122,6 +2126,9 @@ function saveProductsToStorage() {
 function saveDisposableToStorage() {
   try { localStorage.setItem('relx_disposable', JSON.stringify(DISPOSABLE_SECTIONS)); } catch(e) {}
 }
+function saveDevicesToStorage() {
+  try { localStorage.setItem('relx_devices', JSON.stringify(DEVICES)); } catch(e) {}
+}
 
 // ===== GitHub API 远程同步 =====
 var GIT_OWNER = 'BrunoYang0918';
@@ -2211,6 +2218,13 @@ function saveToGitHub(filename, data, callback) {
       renderHero();
     }
   } catch(e) {}
+  try {
+    var localDevices = JSON.parse(localStorage.getItem('relx_devices'));
+    if (localDevices && localDevices.length > 0) {
+      DEVICES = localDevices;
+      rebuildDeviceProducts();
+    }
+  } catch(e) {}
 
   // 再从远程拉取最新数据，覆盖本地（GitHub Pages 同域加载，缓存与部署完全同步）
   fetchRemoteJSON('pod-config.json').then(function(data) {
@@ -2240,6 +2254,18 @@ function saveToGitHub(filename, data, callback) {
     }
   }).catch(function() {
     console.log('远程 disposable-config.json 加载失败，使用本地缓存');
+  });
+  // 拉取烟杆配置
+  fetchRemoteJSON('device-config.json').then(function(data) {
+    if (data && data.length > 0) {
+      DEVICES = data;
+      saveDevicesToStorage();
+      rebuildDeviceProducts();
+      renderAll();
+      renderHero();
+    }
+  }).catch(function() {
+    console.log('远程 device-config.json 加载失败，使用本地缓存');
   });
 })();
 
@@ -2321,6 +2347,12 @@ function syncDisposable() {
   var token = getGitToken();
   if (!token) { showToast('请先在系统设置中填写 GitHub Token'); return; }
   syncSingle('disposable-config.json', '一次性产品配置 (disposable-config.json)', DISPOSABLE_SECTIONS);
+}
+
+function syncDevices() {
+  var token = getGitToken();
+  if (!token) { showToast('请先在系统设置中填写 GitHub Token'); return; }
+  syncSingle('device-config.json', '烟杆配置 (device-config.json)', DEVICES);
 }
 
 function syncMedia() {
@@ -2767,8 +2799,18 @@ function matchProductAndSetVideo(productName, gitFilePath) {
       }
     });
   });
+  // 匹配烟杆（按设备名称匹配）
+  var matchedDevice = false;
+  DEVICES.forEach(function(d) {
+    if (d.name === productName) {
+      d.video = cdnUrl;
+      matched = true;
+      matchedDevice = true;
+    }
+  });
   if (matched) saveProductsToStorage();
   if (matchedDisposable) saveDisposableToStorage();
+  if (matchedDevice) saveDevicesToStorage();
   return matched;
 }
 
@@ -2920,7 +2962,16 @@ function matchProductAndSetImage(productName, cdnUrl) {
       }
     });
   });
+  // 匹配烟杆（按设备名称或颜色标签匹配）
+  var matchedDevice = false;
+  DEVICES.forEach(function(d) {
+    if (d.name === productName) { matched = true; matchedDevice = true; }
+    else d.colors.forEach(function(c) {
+      if (c.label === productName) { matched = true; matchedDevice = true; }
+    });
+  });
   if (matched) saveProductsToStorage();
+  if (matchedDevice) saveDevicesToStorage();
   return matched;
 }
 
@@ -2930,23 +2981,24 @@ function syncMediaFromProgress(progressId, btnEl) {
   if (!progressEl) return;
   if (btnEl) { btnEl.textContent = '⏳ 正在推送...'; btnEl.disabled = true; }
 
-  // 检查烟弹产品 (POD_SECTIONS) 和一次性产品 (DISPOSABLE_SECTIONS) 中的视频映射
-  var podMedia = 0, disposableMedia = 0;
+  // 检查烟弹、一次性产品和烟杆中的视频映射
+  var podMedia = 0, disposableMedia = 0, deviceMedia = 0;
   Object.keys(POD_SECTIONS).forEach(function(k) {
     POD_SECTIONS[k].products.forEach(function(p) { if (p.video) podMedia++; });
   });
   Object.keys(DISPOSABLE_SECTIONS).forEach(function(k) {
     DISPOSABLE_SECTIONS[k].products.forEach(function(p) { if (p.video) disposableMedia++; });
   });
-  console.log('📦 同步检查: 烟弹 ' + podMedia + ' 个视频, 一次性 ' + disposableMedia + ' 个视频');
-  if (podMedia === 0 && disposableMedia === 0) {
+  DEVICES.forEach(function(d) { if (d.video) deviceMedia++; });
+  console.log('📦 同步检查: 烟弹 ' + podMedia + ', 一次性 ' + disposableMedia + ', 烟杆 ' + deviceMedia + ' 个视频');
+  if (podMedia === 0 && disposableMedia === 0 && deviceMedia === 0) {
     progressEl.innerHTML += '<div class="sync-step fail">⚠️ 当前产品数据中未检测到视频/图片映射</div>';
     progressEl.innerHTML += '<div style="font-size:11px;color:#888;margin-top:2px;">请先上传视频文件，等待文件名匹配成功后再同步</div>';
     if (btnEl) { btnEl.textContent = '☁ 重新同步'; btnEl.disabled = false; }
     return;
   }
 
-  var total = (podMedia > 0 ? 1 : 0) + (disposableMedia > 0 ? 1 : 0);
+  var total = (podMedia > 0 ? 1 : 0) + (disposableMedia > 0 ? 1 : 0) + (deviceMedia > 0 ? 1 : 0);
   var done = 0;
 
   function syncDone() {
@@ -2979,6 +3031,18 @@ function syncMediaFromProgress(progressId, btnEl) {
       syncDone();
     });
   }
+
+  if (deviceMedia > 0) {
+    progressEl.innerHTML += '<div class="sync-step active">⏳ 推送烟杆配置 (device-config.json, ' + deviceMedia + ' 个视频)...</div>';
+    saveToGitHub('device-config.json', DEVICES, function(ok, errMsg) {
+      if (ok) {
+        progressEl.innerHTML += '<div class="sync-step done">✅ 烟杆配置推送成功 (' + deviceMedia + ' 个视频)</div>';
+      } else {
+        progressEl.innerHTML += '<div class="sync-step fail">❌ 烟杆推送失败: ' + escHtml(errMsg || '未知') + '</div>';
+      }
+      syncDone();
+    });
+  }
 }
 
 function renderMatchedMedias() {
@@ -3000,6 +3064,11 @@ function renderMatchedMedias() {
       if (p.img) info.img = true;
       if (info.video) hasMedia.push(info);
     });
+  });
+  DEVICES.forEach(function(d) {
+    var info = { name: d.name, section: '烟杆' };
+    if (d.video) info.video = true;
+    if (info.video) hasMedia.push(info);
   });
   if (hasMedia.length === 0) {
     el.innerHTML = '<div style="color:#999;padding:8px 0;">暂无已配置媒体文件的产品</div>';

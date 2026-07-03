@@ -1394,7 +1394,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 <div class="app-shell"><div class="app-scroll"><main>
 
 <div class="topbar">
-  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v3.4</span></div>
+  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v3.5</span></div>
   <div class="tb-right">
     <a class="tb-btn" href="javascript:void(0)" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">📞 联系门店</a>
     <div class="lang-dropdown" id="langDrop">
@@ -1544,7 +1544,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="footer-note"></div>
 
-<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v3.4</span></div>
+<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v3.5</span></div>
 
 </main></div>
 
@@ -2264,6 +2264,43 @@ function syncAll() {
   });
 }
 
+function syncProducts() {
+  var token = getGitToken();
+  if (!token) { showToast('请先在系统设置中填写 GitHub Token'); return; }
+  syncSingle('pod-config.json', '产品数据 (pod-config.json)', POD_SECTIONS);
+}
+
+function syncPromo() {
+  var token = getGitToken();
+  if (!token) { showToast('请先在系统设置中填写 GitHub Token'); return; }
+  syncSingle('promo-config.json', '促销配置 (promo-config.json)', loadPromoConfig());
+}
+
+function syncMedia() {
+  var token = getGitToken();
+  if (!token) { showToast('请先在系统设置中填写 GitHub Token'); return; }
+  syncSingle('pod-config.json', '媒体配置 (pod-config.json)', POD_SECTIONS);
+}
+
+function syncSingle(filename, label, data) {
+  var progressEl = document.getElementById('syncProgress');
+  progressEl.innerHTML = '<div class="sync-step active">⏳ 正在同步 ' + label + '...</div>';
+  progressEl.style.display = 'block';
+
+  saveToGitHub(filename, data, function(ok, errMsg) {
+    if (ok) {
+      progressEl.innerHTML = '<div class="sync-step done">✅ ' + label + ' 同步成功</div>'
+        + '<div class="sync-final">🎉 数据已上传至云端</div>'
+        + '<button class="sync-dismiss" onclick="document.getElementById(\'syncProgress\').style.display=\'none\'">确 定</button>';
+    } else {
+      progressEl.innerHTML = '<div class="sync-step fail">❌ ' + label + ' 同步失败</div>'
+        + (errMsg ? '<div style="font-size:11px;color:#888;margin-top:2px;padding-left:20px;">💡 ' + escHtml(errMsg) + '</div>' : '')
+        + '<div class="sync-final">请检查 GitHub Token 是否有效</div>'
+        + '<button class="sync-dismiss" onclick="document.getElementById(\'syncProgress\').style.display=\'none\'">确 定</button>';
+    }
+  });
+}
+
 // ===== 视频管理 =====
 function renderVideoAdmin() {
   var html = '';
@@ -2271,7 +2308,7 @@ function renderVideoAdmin() {
   // ===== 图片上传区 =====
   html += '<div class="ap-section"><h4>📷 上传 / 替换产品图片</h4>';
   html += '<div style="font-size:12px;color:#888;margin-bottom:12px;line-height:1.6;">';
-  html += '📌 选择产品图片 → 自动上传到 CDN → 按文件名匹配产品 → 替换图片地址，点击「同步全部数据」后生效<br>';
+  html += '📌 选择产品图片 → 自动上传到 CDN → 按文件名匹配产品 → 替换图片地址，点击「同步产品数据」后生效<br>';
   html += '💡 文件名规则：<b>产品名称.jpg</b>，如 <code>红运滚滚.jpg</code>、<code>绿扇盈盈.jpg</code>（支持 .jpg/.png/.webp）<br>';
   html += '⚠️ 建议 500KB 以内，正方形比例最佳';
   html += '</div>';
@@ -2403,7 +2440,7 @@ async function startVideoUpload() {
           if (singleOk) {
             matchProductAndSetVideo(spn, sf.path);
             progressEl.innerHTML += '<div class="sync-step done">✅ ' + escHtml(spn) + ' 上传成功，等待部署...</div>';
-            var depStatus = await waitForGitHubDeployment(180000);
+            var depStatus = await waitForGitHubDeployment(180000, sf.path);
             if (depStatus === 'success') {
               singleSuccess++;
               progressEl.innerHTML += '<div class="sync-step done">✅ ' + escHtml(spn) + ' 部署完成</div>';
@@ -2422,7 +2459,7 @@ async function startVideoUpload() {
       }
       progressEl.innerHTML += '<div class="sync-final">逐个上传完成：' + singleSuccess + '/' + files.length + ' 成功</div>';
     }
-  progressEl.innerHTML += '<div style="margin-top:8px;font-size:12px;color:#888;">💡 请点击「系统设置 → 同步全部数据到云端」推送产品配置更新。</div>';
+  progressEl.innerHTML += '<div style="margin-top:8px;font-size:12px;color:#888;">💡 请点击「系统设置 → 媒体配置」推送产品配置更新。</div>';
 
   btnEl.disabled = false;
   btnEl.textContent = '☁ 上传全部视频到 CDN';
@@ -2548,13 +2585,16 @@ async function uploadFilesBatchToGitHub(files, message) {
 }
 
 // 轮询 GitHub Pages 部署状态，最多等待 maxWaitMs 毫秒
-async function waitForGitHubDeployment(maxWaitMs) {
+// deployedFilePath: 可选，如果传了，API 超时后会直接轮询部署文件 URL
+async function waitForGitHubDeployment(maxWaitMs, deployedFilePath) {
   var token = getGitToken();
   if (!token) return 'no_token';
   maxWaitMs = maxWaitMs || 120000;
   var start = Date.now();
   var apiUrl = 'https://api.github.com/repos/' + GIT_OWNER + '/' + GIT_REPO + '/pages/deployments?per_page=1';
+  var lastStatus = 'unknown';
 
+  // 1. 先通过 GitHub Pages Deployments API 轮询
   while (Date.now() - start < maxWaitMs) {
     try {
       var res = await fetch(apiUrl, {
@@ -2562,14 +2602,58 @@ async function waitForGitHubDeployment(maxWaitMs) {
       });
       if (res.ok) {
         var deployments = await res.json();
+        console.log('GitHub Pages deployments response:', deployments);
         if (deployments && deployments.length > 0) {
           var latest = deployments[0];
-          if (latest.status === 'success') return 'success';
-          if (latest.status === 'error' || latest.status === 'failed') return 'failed';
+          lastStatus = latest.status || 'unknown';
+          var st = String(lastStatus).toLowerCase();
+          // GitHub API 可能返回 success / succeeded / built / active 等成功状态
+          if (st === 'success' || st === 'successful' || st === 'succeeded' || st === 'built' || st === 'active') return 'success';
+          if (st === 'error' || st === 'failed' || st === 'failure' || st === 'errored' || st === 'canceled' || st === 'cancelled') return 'failed';
+        } else {
+          lastStatus = 'empty';
         }
+      } else {
+        console.log('Pages deployments API not ok:', res.status);
+        lastStatus = 'api_' + res.status;
       }
-    } catch (e) { /* 忽略网络波动，继续轮询 */ }
-    await new Promise(function(r) { setTimeout(r, 5000); });
+    } catch (e) {
+      console.log('Polling Pages API error:', e);
+    }
+    await new Promise(function(r) { setTimeout(r, 3000); });
+  }
+
+  // 2. API 轮询超时，尝试直接轮询部署文件 URL
+  if (deployedFilePath) {
+    var remaining = Math.max(30000, maxWaitMs - (Date.now() - start));
+    var fileResult = await waitForFileDeployed(deployedFilePath, remaining);
+    if (fileResult === 'success') return 'success';
+    return 'timeout (last status: ' + lastStatus + ')';
+  }
+
+  return 'timeout (last status: ' + lastStatus + ')';
+}
+
+// 直接轮询已部署文件 URL（CDN 或 raw.githubusercontent.com）
+async function waitForFileDeployed(filePath, maxWaitMs) {
+  var start = Date.now();
+  var urls = [
+    'https://cdn.jsdelivr.net/gh/' + GIT_OWNER + '/' + GIT_REPO + '@' + GIT_BRANCH + '/' + filePath,
+    'https://raw.githubusercontent.com/' + GIT_OWNER + '/' + GIT_REPO + '/' + GIT_BRANCH + '/' + filePath
+  ];
+
+  while (Date.now() - start < maxWaitMs) {
+    for (var i = 0; i < urls.length; i++) {
+      try {
+        var url = urls[i] + '?_t=' + Date.now();
+        var res = await fetch(url, { method: 'HEAD' });
+        console.log('URL polling status:', url, res.status);
+        if (res.status === 200) return 'success';
+      } catch (e) {
+        console.log('URL polling error:', urls[i], e);
+      }
+    }
+    await new Promise(function(r) { setTimeout(r, 3000); });
   }
   return 'timeout';
 }
@@ -2680,7 +2764,7 @@ async function startImageUpload() {
           var cdnUrl = 'https://cdn.jsdelivr.net/gh/' + GIT_OWNER + '/' + GIT_REPO + '@' + GIT_BRANCH + '/' + sf.path + '?v=' + ts;
           matchProductAndSetImage(spn, cdnUrl);
           progressEl.innerHTML += '<div class="sync-step done">✅ ' + escHtml(spn) + ' 上传成功，等待部署...</div>';
-          var depStatus = await waitForGitHubDeployment(180000);
+          var depStatus = await waitForGitHubDeployment(180000, sf.path);
           if (depStatus === 'success') {
             singleSuccess++;
             progressEl.innerHTML += '<div class="sync-step done">✅ ' + escHtml(spn) + ' 部署完成</div>';
@@ -2699,7 +2783,7 @@ async function startImageUpload() {
     }
     progressEl.innerHTML += '<div class="sync-final">逐个上传完成：' + singleSuccess + '/' + files.length + ' 成功</div>';
   }
-  progressEl.innerHTML += '<div style="margin-top:8px;font-size:12px;color:#888;">💡 请点击「系统设置 → 同步全部数据到云端」推送产品配置更新。</div>';
+  progressEl.innerHTML += '<div style="margin-top:8px;font-size:12px;color:#888;">💡 请点击「系统设置 → 媒体配置」推送产品配置更新。</div>';
 
   btnEl.disabled = false;
   btnEl.textContent = '☁ 上传全部图片到 CDN';
@@ -2772,8 +2856,13 @@ function renderSysAdmin() {
   html += '<div style="font-size:11px;color:#999;margin-bottom:16px;">Token 仅存储在本设备，用于写入 GitHub 仓库</div>';
   html += '</div>';
   html += '<div class="ap-section"><h4>云端同步</h4>';
-  html += '<div style="font-size:12px;color:#666;margin-bottom:10px;">将当前产品数据和促销配置推送到 GitHub 仓库，所有设备刷新后生效</div>';
-  html += '<button onclick="syncAll()" style="background:var(--teal);color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;width:100%;">☁ 同步全部数据到云端</button>';
+  html += '<div style="font-size:12px;color:#666;margin-bottom:10px;">选择要同步的数据项，推送到 GitHub 仓库后所有设备刷新即可生效</div>';
+  html += '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;">';
+  html += '<button onclick="syncProducts()" style="flex:1;min-width:100px;background:var(--teal);color:#fff;border:none;padding:12px 10px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">☁<br>产品数据</button>';
+  html += '<button onclick="syncMedia()" style="flex:1;min-width:100px;background:var(--green);color:#fff;border:none;padding:12px 10px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">☁<br>媒体配置</button>';
+  html += '<button onclick="syncPromo()" style="flex:1;min-width:100px;background:var(--gold);color:#fff;border:none;padding:12px 10px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">☁<br>促销配置</button>';
+  html += '</div>';
+  html += '<button onclick="syncAll()" style="background:#666;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;width:100%;">☁ 全部同步</button>';
   html += '<div class="sync-progress" id="syncProgress" style="display:none;"></div>';
   html += '</div>';
   document.getElementById('adminBody').innerHTML = html;

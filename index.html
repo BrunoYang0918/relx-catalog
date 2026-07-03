@@ -2119,6 +2119,9 @@ function savePromoConfig(cfg) {
 function saveProductsToStorage() {
   try { localStorage.setItem('relx_products', JSON.stringify(POD_SECTIONS)); } catch(e) {}
 }
+function saveDisposableToStorage() {
+  try { localStorage.setItem('relx_disposable', JSON.stringify(DISPOSABLE_SECTIONS)); } catch(e) {}
+}
 
 // ===== GitHub API 远程同步 =====
 var GIT_OWNER = 'BrunoYang0918';
@@ -2200,6 +2203,14 @@ function saveToGitHub(filename, data, callback) {
       renderHero();
     }
   } catch(e) {}
+  try {
+    var localDisposable = JSON.parse(localStorage.getItem('relx_disposable'));
+    if (localDisposable && Object.keys(localDisposable).length > 0) {
+      DISPOSABLE_SECTIONS = localDisposable;
+      renderAll();
+      renderHero();
+    }
+  } catch(e) {}
 
   // 再从远程拉取最新数据，覆盖本地（GitHub Pages 同域加载，缓存与部署完全同步）
   fetchRemoteJSON('pod-config.json').then(function(data) {
@@ -2212,13 +2223,24 @@ function saveToGitHub(filename, data, callback) {
   }).catch(function() {
     console.log('远程 pod-config.json 加载失败，使用本地缓存');
   });
-  // 同样拉取促销配置
+  // 拉取促销配置
   fetchRemoteJSON('promo-config.json').then(function(data) {
     if (data && data.version) {
       savePromoConfig(data);
       renderPromoMarquee(data);
     }
   }).catch(function() {});
+  // 拉取一次性产品配置
+  fetchRemoteJSON('disposable-config.json').then(function(data) {
+    if (data && Object.keys(data).length > 0) {
+      DISPOSABLE_SECTIONS = data;
+      saveDisposableToStorage();
+      renderAll();
+      renderHero();
+    }
+  }).catch(function() {
+    console.log('远程 disposable-config.json 加载失败，使用本地缓存');
+  });
 })();
 
 function syncAll() {
@@ -2293,6 +2315,12 @@ function syncPromo() {
   var token = getGitToken();
   if (!token) { showToast('请先在系统设置中填写 GitHub Token'); return; }
   syncSingle('promo-config.json', '促销配置 (promo-config.json)', loadPromoConfig());
+}
+
+function syncDisposable() {
+  var token = getGitToken();
+  if (!token) { showToast('请先在系统设置中填写 GitHub Token'); return; }
+  syncSingle('disposable-config.json', '一次性产品配置 (disposable-config.json)', DISPOSABLE_SECTIONS);
 }
 
 function syncMedia() {
@@ -2721,7 +2749,7 @@ async function waitForFileDeployed(filePath, maxWaitMs, onPoll) {
 
 function matchProductAndSetVideo(productName, gitFilePath) {
   var cdnUrl = 'https://cdn.jsdelivr.net/gh/' + GIT_OWNER + '/' + GIT_REPO + '@' + GIT_BRANCH + '/' + gitFilePath;
-  var matched = false;
+  var matched = false, matchedDisposable = false;
   Object.keys(POD_SECTIONS).forEach(function(k) {
     POD_SECTIONS[k].products.forEach(function(p) {
       if (p.name === productName) {
@@ -2735,10 +2763,12 @@ function matchProductAndSetVideo(productName, gitFilePath) {
       if (p.name === productName) {
         p.video = cdnUrl;
         matched = true;
+        matchedDisposable = true;
       }
     });
   });
   if (matched) saveProductsToStorage();
+  if (matchedDisposable) saveDisposableToStorage();
   return matched;
 }
 
@@ -2900,35 +2930,55 @@ function syncMediaFromProgress(progressId, btnEl) {
   if (!progressEl) return;
   if (btnEl) { btnEl.textContent = '⏳ 正在推送...'; btnEl.disabled = true; }
 
-  // 推送前检查：当前 POD_SECTIONS 是否包含视频/图片映射
-  var hasMedia = false, mediaCount = 0;
+  // 检查烟弹产品 (POD_SECTIONS) 和一次性产品 (DISPOSABLE_SECTIONS) 中的视频映射
+  var podMedia = 0, disposableMedia = 0;
   Object.keys(POD_SECTIONS).forEach(function(k) {
-    POD_SECTIONS[k].products.forEach(function(p) {
-      if (p.video) { hasMedia = true; mediaCount++; console.log('📹 将推送视频:', p.name, p.video.substring(0,60)); }
-    });
+    POD_SECTIONS[k].products.forEach(function(p) { if (p.video) podMedia++; });
   });
-  console.log('📦 推送 pod-config.json, 含视频的产品数:', mediaCount, ', 总分区数:', Object.keys(POD_SECTIONS).length);
-
-  if (!hasMedia) {
+  Object.keys(DISPOSABLE_SECTIONS).forEach(function(k) {
+    DISPOSABLE_SECTIONS[k].products.forEach(function(p) { if (p.video) disposableMedia++; });
+  });
+  console.log('📦 同步检查: 烟弹 ' + podMedia + ' 个视频, 一次性 ' + disposableMedia + ' 个视频');
+  if (podMedia === 0 && disposableMedia === 0) {
     progressEl.innerHTML += '<div class="sync-step fail">⚠️ 当前产品数据中未检测到视频/图片映射</div>';
-    progressEl.innerHTML += '<div style="font-size:11px;color:#888;margin-top:2px;">请先上传视频文件，等待文件名匹配成功（显示"✅ 已匹配"）后再同步</div>';
+    progressEl.innerHTML += '<div style="font-size:11px;color:#888;margin-top:2px;">请先上传视频文件，等待文件名匹配成功后再同步</div>';
     if (btnEl) { btnEl.textContent = '☁ 重新同步'; btnEl.disabled = false; }
     return;
   }
 
-  progressEl.innerHTML += '<div class="sync-step active">⏳ 正在推送产品配置 (pod-config.json) 到 GitHub...</div>';
+  var total = (podMedia > 0 ? 1 : 0) + (disposableMedia > 0 ? 1 : 0);
+  var done = 0;
 
-  saveToGitHub('pod-config.json', POD_SECTIONS, function(ok, errMsg) {
-    if (ok) {
-      progressEl.innerHTML += '<div class="sync-step done">✅ 产品配置推送成功 (' + mediaCount + ' 个媒体映射)</div>';
+  function syncDone() {
+    done++;
+    if (done >= total) {
       progressEl.innerHTML += '<div class="sync-final">🎉 全部完成！其他设备刷新后即可看到媒体内容。</div>';
-    } else {
-      var msg = errMsg || '未知错误';
-      progressEl.innerHTML += '<div class="sync-step fail">❌ 推送失败: ' + escHtml(msg) + '</div>';
-      progressEl.innerHTML += '<button onclick="syncMediaFromProgress(\'' + progressId + '\',null)" style="margin-top:6px;background:var(--green);color:#fff;border:none;padding:8px 16px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;">🔄 重试推送</button>';
-      if (btnEl) { btnEl.textContent = '🔄 重试'; btnEl.disabled = false; }
     }
-  });
+  }
+
+  if (podMedia > 0) {
+    progressEl.innerHTML += '<div class="sync-step active">⏳ 推送烟弹配置 (pod-config.json, ' + podMedia + ' 个视频)...</div>';
+    saveToGitHub('pod-config.json', POD_SECTIONS, function(ok, errMsg) {
+      if (ok) {
+        progressEl.innerHTML += '<div class="sync-step done">✅ 烟弹配置推送成功 (' + podMedia + ' 个视频)</div>';
+      } else {
+        progressEl.innerHTML += '<div class="sync-step fail">❌ 烟弹推送失败: ' + escHtml(errMsg || '未知') + '</div>';
+      }
+      syncDone();
+    });
+  }
+
+  if (disposableMedia > 0) {
+    progressEl.innerHTML += '<div class="sync-step active">⏳ 推送一次性产品配置 (disposable-config.json, ' + disposableMedia + ' 个视频)...</div>';
+    saveToGitHub('disposable-config.json', DISPOSABLE_SECTIONS, function(ok, errMsg) {
+      if (ok) {
+        progressEl.innerHTML += '<div class="sync-step done">✅ 一次性产品配置推送成功 (' + disposableMedia + ' 个视频)</div>';
+      } else {
+        progressEl.innerHTML += '<div class="sync-step fail">❌ 一次性产品推送失败: ' + escHtml(errMsg || '未知') + '</div>';
+      }
+      syncDone();
+    });
+  }
 }
 
 function renderMatchedMedias() {

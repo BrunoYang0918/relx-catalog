@@ -2368,24 +2368,35 @@ async function startVideoUpload() {
     var filename = 'videos/' + file.name;
     progressEl.innerHTML = '<div class="sync-step active">⏳ 上传中 (' + (i+1) + '/' + total + '): ' + escHtml(file.name) + '</div>';
 
-    try {
-      var base64 = await readFileAsBase64(file);
-      var ok = await saveBinaryToGitHub(filename, base64);
-      if (ok) {
-        success++;
-        // 自动匹配产品
-        var productName = file.name.replace(/\.mp4$/i, '');
-        var matched = matchProductAndSetVideo(productName, filename);
-        var matchInfo = matched ? ' ✅ 已匹配产品"' + productName + '"' : ' ⚠️ 未找到同名产品（视频已上传，请在编辑页手动填入）';
-        progressEl.innerHTML = '<div class="sync-step done">✅ (' + (i+1) + '/' + total + ') ' + escHtml(file.name) + ' 上传成功' + matchInfo + '</div>';
-      } else {
-        fail++;
-        progressEl.innerHTML = '<div class="sync-step fail">❌ (' + (i+1) + '/' + total + ') ' + escHtml(file.name) + ' 上传失败</div>';
+    // 每两个文件之间等待 800ms，避免 GitHub API 并发冲突
+    if (i > 0) await new Promise(function(r) { setTimeout(r, 800); });
+
+    var uploaded = false;
+    for (var attempt = 0; attempt < 2 && !uploaded; attempt++) {
+      if (attempt > 0) {
+        progressEl.innerHTML = '<div class="sync-step active">⏳ 重试中 (' + (i+1) + '/' + total + '): ' + escHtml(file.name) + '</div>';
+        await new Promise(function(r) { setTimeout(r, 1200); });
       }
-    } catch(e) {
-      fail++;
-      progressEl.innerHTML = '<div class="sync-step fail">❌ (' + (i+1) + '/' + total + ') ' + escHtml(file.name) + ' 上传出错: ' + e.message + '</div>';
+      try {
+        var base64 = await readFileAsBase64(file);
+        var ok = await saveBinaryToGitHub(filename, base64);
+        if (ok) {
+          uploaded = true;
+          success++;
+          // 自动匹配产品
+          var productName = file.name.replace(/\.mp4$/i, '');
+          var matched = matchProductAndSetVideo(productName, filename);
+          var matchInfo = matched ? ' ✅ 已匹配产品"' + productName + '"' : ' ⚠️ 未找到同名产品（视频已上传，请在编辑页手动填入）';
+          progressEl.innerHTML = '<div class="sync-step done">✅ (' + (i+1) + '/' + total + ') ' + escHtml(file.name) + ' 上传成功' + matchInfo + '</div>';
+        }
+      } catch(e) {
+        if (attempt === 1) {
+          fail++;
+          progressEl.innerHTML = '<div class="sync-step fail">❌ (' + (i+1) + '/' + total + ') ' + escHtml(file.name) + ' 上传出错: ' + e.message + '</div>';
+        }
+      }
     }
+    if (!uploaded) fail++;
   }
 
   // 最终状态
@@ -2497,26 +2508,37 @@ async function startImageUpload() {
     var filename = 'extracted_images/pod_images/' + file.name;
     progressEl.innerHTML = '<div class="sync-step active">⏳ 上传中 (' + (i+1) + '/' + total + '): ' + escHtml(file.name) + '</div>';
 
-    try {
-      var base64 = await readFileAsBase64(file);
-      var ok = await saveBinaryToGitHub(filename, base64);
-      if (ok) {
-        success++;
-        // 自动匹配产品并更新图片
-        var productName = file.name.replace(/\.(jpg|jpeg|png|webp)$/i, '');
-        var ts = Date.now();
-        var cdnUrl = 'https://cdn.jsdelivr.net/gh/' + GIT_OWNER + '/' + GIT_REPO + '@' + GIT_BRANCH + '/' + filename + '?v=' + ts;
-        var matched = matchProductAndSetImage(productName, cdnUrl);
-        var matchInfo = matched ? ' ✅ 已替换产品"' + productName + '"的图片' : ' ⚠️ 未找到同名产品（图片已上传，请在产品编辑页手动填写地址）';
-        progressEl.innerHTML = '<div class="sync-step done">✅ (' + (i+1) + '/' + total + ') ' + escHtml(file.name) + ' 上传成功' + matchInfo + '</div>';
-      } else {
-        fail++;
-        progressEl.innerHTML = '<div class="sync-step fail">❌ (' + (i+1) + '/' + total + ') ' + escHtml(file.name) + ' 上传失败</div>';
+    // 每两个文件之间等待 800ms
+    if (i > 0) await new Promise(function(r) { setTimeout(r, 800); });
+
+    var uploaded = false;
+    for (var attempt = 0; attempt < 2 && !uploaded; attempt++) {
+      if (attempt > 0) {
+        progressEl.innerHTML = '<div class="sync-step active">⏳ 重试中 (' + (i+1) + '/' + total + '): ' + escHtml(file.name) + '</div>';
+        await new Promise(function(r) { setTimeout(r, 1200); });
       }
-    } catch(e) {
-      fail++;
-      progressEl.innerHTML = '<div class="sync-step fail">❌ (' + (i+1) + '/' + total + ') ' + escHtml(file.name) + ' 上传出错: ' + e.message + '</div>';
+      try {
+        var base64 = await readFileAsBase64(file);
+        var ok = await saveBinaryToGitHub(filename, base64);
+        if (ok) {
+          uploaded = true;
+          success++;
+          // 自动匹配产品并更新图片
+          var productName = file.name.replace(/\.(jpg|jpeg|png|webp)$/i, '');
+          var ts = Date.now();
+          var cdnUrl = 'https://cdn.jsdelivr.net/gh/' + GIT_OWNER + '/' + GIT_REPO + '@' + GIT_BRANCH + '/' + filename + '?v=' + ts;
+          var matched = matchProductAndSetImage(productName, cdnUrl);
+          var matchInfo = matched ? ' ✅ 已替换产品"' + productName + '"的图片' : ' ⚠️ 未找到同名产品（图片已上传，请在产品编辑页手动填写地址）';
+          progressEl.innerHTML = '<div class="sync-step done">✅ (' + (i+1) + '/' + total + ') ' + escHtml(file.name) + ' 上传成功' + matchInfo + '</div>';
+        }
+      } catch(e) {
+        if (attempt === 1) {
+          fail++;
+          progressEl.innerHTML = '<div class="sync-step fail">❌ (' + (i+1) + '/' + total + ') ' + escHtml(file.name) + ' 上传出错: ' + e.message + '</div>';
+        }
+      }
     }
+    if (!uploaded) fail++;
   }
 
   var finalMsg = success > 0 && fail === 0

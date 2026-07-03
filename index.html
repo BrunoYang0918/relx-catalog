@@ -658,14 +658,14 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
   mask-image: linear-gradient(90deg, transparent 0%, #000 3%, #000 97%, transparent 100%);
 }
 .marquee-content {
-  display: flex; align-items: center; height: 100%; white-space: nowrap;
-  animation: marqueeScroll 24s linear infinite;
+  display: inline-flex; align-items: center; height: 100%; white-space: nowrap;
+  animation: marqueeScroll 12s linear infinite;
 }
 .marquee-banner:hover .marquee-content,
 .marquee-banner:active .marquee-content { animation-play-state: paused; }
 @keyframes marqueeScroll {
   0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  100% { transform: translateX(-25%); }
 }
 .promo-item {
   display: inline-flex; align-items: center; gap: 8px;
@@ -1392,6 +1392,16 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
       <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">烟弹满<span class="num-highlight">10</span>盒 <span class="text-highlight">赠<span class="num-highlight">1</span>盒</span></span></span>
       <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">一次性满<span class="num-highlight">5</span>支 <span class="text-highlight">赠<span class="num-highlight">1</span>支</span></span></span>
       <!-- 第二轮（无缝循环） -->
+      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">全场满<span class="num-highlight">2</span>件 <span class="text-highlight">包邮</span></span></span>
+      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">烟弹满<span class="num-highlight">3</span>盒 <span class="text-highlight">赠保护套</span></span></span>
+      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">烟弹满<span class="num-highlight">10</span>盒 <span class="text-highlight">赠<span class="num-highlight">1</span>盒</span></span></span>
+      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">一次性满<span class="num-highlight">5</span>支 <span class="text-highlight">赠<span class="num-highlight">1</span>支</span></span></span>
+      <!-- 第三轮 -->
+      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">全场满<span class="num-highlight">2</span>件 <span class="text-highlight">包邮</span></span></span>
+      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">烟弹满<span class="num-highlight">3</span>盒 <span class="text-highlight">赠保护套</span></span></span>
+      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">烟弹满<span class="num-highlight">10</span>盒 <span class="text-highlight">赠<span class="num-highlight">1</span>盒</span></span></span>
+      <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">一次性满<span class="num-highlight">5</span>支 <span class="text-highlight">赠<span class="num-highlight">1</span>支</span></span></span>
+      <!-- 第四轮 -->
       <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">全场满<span class="num-highlight">2</span>件 <span class="text-highlight">包邮</span></span></span>
       <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">烟弹满<span class="num-highlight">3</span>盒 <span class="text-highlight">赠保护套</span></span></span>
       <span class="promo-item"><span class="icon-gift">🎁</span><span class="text-main">烟弹满<span class="num-highlight">10</span>盒 <span class="text-highlight">赠<span class="num-highlight">1</span>盒</span></span></span>

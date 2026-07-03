@@ -1394,7 +1394,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 <div class="app-shell"><div class="app-scroll"><main>
 
 <div class="topbar">
-  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v3.5</span></div>
+  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v3.6</span></div>
   <div class="tb-right">
     <a class="tb-btn" href="javascript:void(0)" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">📞 联系门店</a>
     <div class="lang-dropdown" id="langDrop">
@@ -1544,7 +1544,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="footer-note"></div>
 
-<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v3.5</span></div>
+<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v3.6</span></div>
 
 </main></div>
 
@@ -2122,9 +2122,6 @@ function saveProductsToStorage() {
 var GIT_OWNER = 'BrunoYang0918';
 var GIT_REPO = 'relx-catalog';
 var GIT_BRANCH = 'main';
-// raw.githubusercontent.com 缓存 ~5分钟，远优于 jsdelivr 的 12 小时
-var RAW_BASE = 'https://raw.githubusercontent.com/' + GIT_OWNER + '/' + GIT_REPO + '/' + GIT_BRANCH + '/';
-
 function getGitToken() {
   return localStorage.getItem('relx_git_token') || '';
 }
@@ -2134,7 +2131,14 @@ function setGitToken(t) {
 }
 
 function fetchRemoteJSON(filename) {
-  var url = RAW_BASE + filename;
+  var url;
+  if (location.hostname === GIT_OWNER + '.github.io') {
+    // GitHub Pages 同域加载，缓存与部署完全同步，每 5 分钟换一次缓存破坏参数
+    url = '/' + GIT_REPO + '/' + filename + '?_t=' + Math.floor(Date.now() / 300000);
+  } else {
+    // 本地文件或其他环境，用 raw.githubusercontent.com（缓存 ~5 分钟）
+    url = 'https://raw.githubusercontent.com/' + GIT_OWNER + '/' + GIT_REPO + '/' + GIT_BRANCH + '/' + filename;
+  }
   return fetch(url, { cache: 'no-cache' }).then(function(r) {
     if (!r.ok) throw new Error('Fetch failed');
     return r.json();
@@ -2185,6 +2189,17 @@ function saveToGitHub(filename, data, callback) {
 
 // 页面启动时，异步拉取远程产品数据
 (function() {
+  // 先从 localStorage 快速展示本地数据
+  try {
+    var localData = JSON.parse(localStorage.getItem('relx_products'));
+    if (localData && Object.keys(localData).length > 0) {
+      POD_SECTIONS = localData;
+      renderAll();
+      renderHero();
+    }
+  } catch(e) {}
+
+  // 再从远程拉取最新数据，覆盖本地（GitHub Pages 同域加载，缓存与部署完全同步）
   fetchRemoteJSON('pod-config.json').then(function(data) {
     if (data && Object.keys(data).length > 0) {
       POD_SECTIONS = data;
@@ -2192,7 +2207,9 @@ function saveToGitHub(filename, data, callback) {
       renderAll();
       renderHero();
     }
-  }).catch(function() {});
+  }).catch(function() {
+    console.log('远程 pod-config.json 加载失败，使用本地缓存');
+  });
   // 同样拉取促销配置
   fetchRemoteJSON('promo-config.json').then(function(data) {
     if (data && data.version) {

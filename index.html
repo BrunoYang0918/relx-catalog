@@ -2971,7 +2971,7 @@ function renderSysAdmin() {
   var html = '<div class="ap-section"><h4>GitHub Token</h4>';
   html += '<input type="password" id="gitTokenInput" value="' + escHtml(getGitToken()) + '" placeholder="粘贴 Fine-grained Token" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px;margin-bottom:8px;" oninput="setGitToken(this.value.trim())">';
   html += '<div style="font-size:11px;color:#999;margin-bottom:16px;">Token 仅存储在本设备，用于写入 GitHub 仓库</div>';
-  html += '<div style="font-size:11px;color:#999;">云端同步已移至各管理页底部工具栏。</div>';
+  html += '<div style="font-size:11px;color:#999;">云端同步在工具栏，对应页面底部操作即可。</div>';
   html += '</div>';
   document.getElementById('adminBody').innerHTML = html;
 }

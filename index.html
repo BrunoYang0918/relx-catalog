@@ -2143,8 +2143,19 @@ function fetchRemoteJSON(filename) {
 
 function saveToGitHub(filename, data, callback) {
   var token = getGitToken();
-  if (!token) { if (callback) callback(false); return; }
-  var content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+  if (!token) { if (callback) callback(false, 'GitHub Token 未设置'); return; }
+  var content;
+  try {
+    var json = JSON.stringify(data, null, 2);
+    var bytes = new TextEncoder().encode(json);
+    var binary = '';
+    for (var i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+    content = btoa(binary);
+  } catch (e) {
+    console.error('JSON 编码失败:', e);
+    if (callback) callback(false, '数据编码失败: ' + e.message);
+    return;
+  }
   var apiUrl = 'https://api.github.com/repos/' + GIT_OWNER + '/' + GIT_REPO + '/contents/' + filename;
   fetch(apiUrl + '?ref=' + GIT_BRANCH, {
     headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github+json' }
@@ -2160,11 +2171,16 @@ function saveToGitHub(filename, data, callback) {
     if (result.content) {
       // 写入成功后刷新 jsdelivr 缓存（备用CDN加速）
       fetch('https://purge.jsdelivr.net/gh/' + GIT_OWNER + '/' + GIT_REPO + '@' + GIT_BRANCH + '/' + filename);
-      if (callback) callback(true);
+      if (callback) callback(true, '');
     } else {
-      if (callback) callback(false);
+      console.error('GitHub 返回错误:', result);
+      var errMsg = (result && result.message) ? result.message : 'GitHub 写入失败';
+      if (callback) callback(false, errMsg);
     }
-  }).catch(function() { if (callback) callback(false); });
+  }).catch(function(e) {
+    console.error('同步异常:', e);
+    if (callback) callback(false, e && e.message ? e.message : '网络请求失败');
+  });
 }
 
 // 页面启动时，异步拉取远程产品数据
@@ -2196,6 +2212,7 @@ function syncAll() {
 
   var total = 2;
   var results = {};
+  var errors = {};
   var files = ['pod-config.json', 'promo-config.json'];
   var labels = {
     'pod-config.json': '产品数据 (pod-config.json)',
@@ -2207,8 +2224,10 @@ function syncAll() {
     files.forEach(function(f) {
       if (f in results) {
         var ok = results[f];
+        var errMsg = errors[f] || '';
         html += '<div class="sync-step ' + (ok ? 'done' : 'fail') + '">'
              + (ok ? '✅' : '❌') + ' ' + labels[f] + (ok ? ' 同步成功' : ' 同步失败')
+             + (errMsg ? '<div style="font-size:11px;color:#888;margin-top:2px;padding-left:20px;">💡 ' + escHtml(errMsg) + '</div>' : '')
              + '</div>';
       }
     });
@@ -2227,17 +2246,20 @@ function syncAll() {
         ? '🎉 全部同步完成！' + successCount + '/' + total + ' 个文件已上传至云端'
         : '⚠️ 部分文件同步失败，' + successCount + '/' + total + ' 个文件已上传';
       html += '<div class="sync-final">' + finalMsg + '</div>';
+      html += '<div style="font-size:11px;color:#888;margin-top:6px;">如果失败与 Token 或 API 限制有关，请检查 GitHub Token 是否有效，或稍后重试。</div>';
       html += '<button class="sync-dismiss" onclick="document.getElementById(\'syncProgress\').style.display=\'none\'">确 定</button>';
       progressEl.innerHTML = html;
     }
   }
 
-  saveToGitHub('pod-config.json', POD_SECTIONS, function(ok) {
+  saveToGitHub('pod-config.json', POD_SECTIONS, function(ok, errMsg) {
     results['pod-config.json'] = ok;
+    if (errMsg) errors['pod-config.json'] = errMsg;
     renderAll();
   });
-  saveToGitHub('promo-config.json', loadPromoConfig(), function(ok) {
+  saveToGitHub('promo-config.json', loadPromoConfig(), function(ok, errMsg) {
     results['promo-config.json'] = ok;
+    if (errMsg) errors['promo-config.json'] = errMsg;
     renderAll();
   });
 }

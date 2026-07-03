@@ -599,10 +599,73 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 }
 .admin-toast.show { opacity: 1; }
 
-.newbie-hint {
-  text-align: center; padding: 2px 12px 6px;
-  font-size: 11px; color: #999;
+/* 同步进度面板 */
+.sync-progress {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.8;
+  background: #f8f8f8;
+  border: 1px solid var(--border);
+  text-align: left;
 }
+.sync-step {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 0;
+}
+.sync-step.done { color: var(--green, #27ae60); }
+.sync-step.fail { color: #c0392b; }
+.sync-step.active { color: #888; }
+.sync-final {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed #ddd;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--teal, #0D7377);
+}
+.sync-dismiss {
+  margin-top: 10px;
+  padding: 5px 18px;
+  border: 1px solid var(--border, #ddd);
+  background: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #555;
+}
+.sync-dismiss:hover { background: #f0f0f0; }
+
+/* ===== 视频管理面板 ===== */
+.vu-upload-zone {
+  border: 2px dashed var(--border, #ddd);
+  border-radius: 12px; padding: 30px 20px;
+  text-align: center; cursor: pointer;
+  transition: background .2s, border-color .2s;
+  background: #fafafa;
+}
+.vu-upload-zone:hover { background: #f0f0f0; border-color: var(--teal, #0D7377); }
+.vu-upload-icon { font-size: 42px; margin-bottom: 8px; }
+.vu-upload-text { font-size: 14px; color: #333; font-weight: 600; }
+.vu-upload-hint { font-size: 12px; color: #999; margin-top: 6px; }
+.vu-file-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px; margin-bottom: 6px;
+  background: #f8f8f8; border-radius: 8px;
+  font-size: 13px;
+}
+.vu-file-icon { font-size: 16px; }
+.vu-file-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vu-file-size { font-size: 11px; color: #888; }
+.vu-matched-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 0; border-bottom: 1px solid #f0f0f0;
+  font-size: 13px; color: #333;
+}
+.newbie-hint { text-align: center; padding: 2px 12px 6px; font-size: 11px; color: #999; }
 .newbie-hint b { color: var(--teal); font-weight: 600; }
 
 .scene-nav {
@@ -824,6 +887,54 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 }
 .cart-panel .cp-body { flex: 1; overflow-y: auto; padding: 8px 16px; }
 .cart-panel .cp-empty { text-align: center; color: #999; padding: 40px 0; font-size: 14px; }
+
+/* ===== 产品卡片视频叠加 ===== */
+.p-img { position: relative; }
+.p-video-overlay {
+  position: absolute; top: 6px; right: 6px;
+  width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.55); color: #fff;
+  border-radius: 50%; cursor: pointer;
+  opacity: 0.9; transition: opacity .2s, transform .2s, background .2s;
+  pointer-events: auto;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+.p-video-overlay:hover { opacity: 1; transform: scale(1.08); background: rgba(0,0,0,0.75); }
+.p-video-btn { font-size: 12px; margin-left: 2px; }
+
+/* 视频播放弹窗 */
+.video-modal {
+  position: fixed; inset: 0; z-index: 15000;
+  background: rgba(0,0,0,0.85);
+  display: flex; align-items: center; justify-content: center;
+  animation: vm-fadein .25s;
+}
+@keyframes vm-fadein { from { opacity: 0; } to { opacity: 1; } }
+.video-modal .vm-content {
+  max-width: 90vw; max-height: 85vh;
+  display: flex; flex-direction: column; align-items: center;
+}
+.video-modal video {
+  max-width: 90vw; max-height: 75vh;
+  border-radius: 10px; box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+  background: #000;
+}
+.video-modal .vm-name {
+  margin-top: 12px; color: #fff; font-size: 14px;
+  text-align: center; opacity: 0.8;
+}
+.video-modal .vm-close {
+  position: absolute; top: 16px; right: 20px;
+  color: #fff; font-size: 32px; cursor: pointer;
+  opacity: 0.7; transition: opacity .2s; line-height: 1;
+}
+.video-modal .vm-close:hover { opacity: 1; }
+.video-modal .vm-hint {
+  margin-top: 8px; color: rgba(255,255,255,0.5);
+  font-size: 12px; text-align: center;
+}
+
 .cart-panel .cp-item {
   display: flex; align-items: center; gap: 10px;
   padding: 10px 0; border-bottom: 1px solid #f5f5f5;
@@ -1283,7 +1394,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 <div class="app-shell"><div class="app-scroll"><main>
 
 <div class="topbar">
-  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v3.3</span></div>
+  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v3.4</span></div>
   <div class="tb-right">
     <a class="tb-btn" href="javascript:void(0)" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">📞 联系门店</a>
     <div class="lang-dropdown" id="langDrop">
@@ -1433,7 +1544,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="footer-note"></div>
 
-<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v3.3</span></div>
+<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v3.4</span></div>
 
 </main></div>
 
@@ -1495,6 +1606,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
     <div class="ap-tabs">
       <div class="ap-tab active" id="tabProducts" onclick="switchAdminTab('products')">产品管理</div>
       <div class="ap-tab" id="tabPromo" onclick="switchAdminTab('promo')">促销管理</div>
+      <div class="ap-tab" id="tabVideo" onclick="switchAdminTab('video')">媒体管理</div>
       <div class="ap-tab" id="tabSys" onclick="switchAdminTab('sys')">系统设置</div>
     </div>
     <div class="ap-body" id="adminBody"></div>
@@ -1517,7 +1629,7 @@ var POD_SECTIONS = {
   pro: {
     title: "幻影Pro系列",
     products: [
-      { id:1, name:"蓝田暖阳", price:129, series:"pro", tags:[{t:"陈皮甘香",c:"blue"},{t:"新手友好",c:"blue"}], desc:"陈皮甘香 · 焦糖烤烟", descEm:null, str:"★★★☆☆", style:"适中", img:"https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/pod_images/image1.jpeg?v=2", flags:[], status:"active" },
+      { id:1, name:"蓝田暖阳", price:129, series:"pro", video:"", tags:[{t:"陈皮甘香",c:"blue"},{t:"新手友好",c:"blue"}], desc:"陈皮甘香 · 焦糖烤烟", descEm:null, str:"★★★☆☆", style:"适中", img:"https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/pod_images/image1.jpeg?v=2", flags:[], status:"active" },
       { id:2, name:"森林复兴", price:129, series:"pro", tags:[{t:"解瘾强",c:"red"},{t:"劲道最强",c:"red"},{t:"老烟枪首选",c:"blue"}], desc:"木柴麦香烤烟 · 劲大解瘾 击喉极强", descEm:"rd", str:"★★★★★", style:"偏浓", img:"https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/pod_images/image2.jpeg?v=2", flags:[], status:"active" },
       { id:3, name:"传家宝藏", price:129, series:"pro", tags:[{t:"清透干净",c:"blue"},{t:"新手友好",c:"blue"}], desc:"檀香木香烤烟 · 淡雅不腻", descEm:null, str:"★★☆☆☆", style:"清淡", img:"https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/pod_images/image3.jpeg?v=2", flags:[], status:"active" },
       { id:4, name:"红运滚滚", price:129, series:"pro", tags:[{t:"解瘾强",c:"red"},{t:"爆款",c:"gold"},{t:"红枣香",c:"blue"}], desc:"红枣香烤烟 · 入口柔顺 大烟雾", descEm:"rd", str:"★★★★☆", style:"偏浓", img:"https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/pod_images/image4.jpeg?v=2", flags:["best"], status:"active" },
@@ -1722,7 +1834,9 @@ function renderProductCard(p) {
   var staffPick = (p.flags || []).indexOf('best') !== -1 ? '<span class="staff-pick">👤 店长推荐</span>' : '';
   var puffs = getPuffs(p);
   return '<div class="product-card' + (cls ? ' ' + cls : '') + '">'
-    + '<div class="p-img"><img src="' + p.img + '" alt="' + showName + '"></div>'
+    + '<div class="p-img"><img src="' + p.img + '" alt="' + showName + '">'
+    + (p.video ? '<div class="p-video-overlay" onclick="event.stopPropagation();openVideoPlayer(\'' + escHtml(p.video) + '\',\'' + escHtml(showName) + '\')"><span class="p-video-btn">▶</span></div>' : '')
+    + '</div>'
     + '<div class="p-name-row"><span class="p-name">' + showName + staffPick + '</span><span class="p-price">&yen;' + p.price + '</span></div>'
     + '<div class="p-tags-row">' + tagHtml + '</div>'
     + '<div class="p-desc"><span class="' + emCls + '">' + showDesc + '</span></div>'
@@ -1923,6 +2037,32 @@ function alignCardDescs() {
   updateBar();
 })();
 
+// ===== 产品视频播放 =====
+function openVideoPlayer(url, name) {
+  var old = document.querySelector('.video-modal');
+  if (old) old.remove();
+
+  var modal = document.createElement('div');
+  modal.className = 'video-modal';
+  modal.innerHTML =
+    '<span class="vm-close">&times;</span>' +
+    '<div class="vm-content">' +
+      '<video controls autoplay playsinline preload="auto" src="' + escHtml(url) + '"></video>' +
+      '<div class="vm-name">' + escHtml(name) + '</div>' +
+      '<div class="vm-hint">点击视频外部或 ✕ 关闭</div>' +
+    '</div>';
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal || e.target.classList.contains('vm-close')) {
+      var video = modal.querySelector('video');
+      if (video) { video.pause(); video.removeAttribute('src'); video.load(); }
+      modal.remove();
+      document.body.style.overflow = '';
+    }
+  });
+  document.body.appendChild(modal);
+  document.body.style.overflow = 'hidden';
+}
+
 var allProducts = [];
 function collectAll() {
   allProducts = [];
@@ -2049,10 +2189,410 @@ function saveToGitHub(filename, data, callback) {
 function syncAll() {
   var token = getGitToken();
   if (!token) { showToast('请先在系统设置中填写 GitHub Token'); return; }
-  var done = 0, total = 2;
-  function checkDone(ok) { if (ok) done++; if (--total <= 0) showToast('同步完成：' + done + '/2 个文件已上传'); }
-  saveToGitHub('pod-config.json', POD_SECTIONS, checkDone);
-  saveToGitHub('promo-config.json', loadPromoConfig(), checkDone);
+
+  var progressEl = document.getElementById('syncProgress');
+  progressEl.innerHTML = '<div class="sync-step active">⏳ 准备同步数据...</div>';
+  progressEl.style.display = 'block';
+
+  var total = 2;
+  var results = {};
+  var files = ['pod-config.json', 'promo-config.json'];
+  var labels = {
+    'pod-config.json': '产品数据 (pod-config.json)',
+    'promo-config.json': '促销配置 (promo-config.json)'
+  };
+
+  function renderAll() {
+    var html = '';
+    files.forEach(function(f) {
+      if (f in results) {
+        var ok = results[f];
+        html += '<div class="sync-step ' + (ok ? 'done' : 'fail') + '">'
+             + (ok ? '✅' : '❌') + ' ' + labels[f] + (ok ? ' 同步成功' : ' 同步失败')
+             + '</div>';
+      }
+    });
+
+    var finishedCount = Object.keys(results).length;
+    if (finishedCount < total) {
+      html += '<div class="sync-step active">⏳ 正在同步... (' + finishedCount + '/' + total + ')</div>';
+    }
+
+    progressEl.innerHTML = html;
+
+    if (finishedCount >= total) {
+      var successCount = 0;
+      for (var k in results) { if (results[k]) successCount++; }
+      var finalMsg = successCount === total
+        ? '🎉 全部同步完成！' + successCount + '/' + total + ' 个文件已上传至云端'
+        : '⚠️ 部分文件同步失败，' + successCount + '/' + total + ' 个文件已上传';
+      html += '<div class="sync-final">' + finalMsg + '</div>';
+      html += '<button class="sync-dismiss" onclick="document.getElementById(\'syncProgress\').style.display=\'none\'">确 定</button>';
+      progressEl.innerHTML = html;
+    }
+  }
+
+  saveToGitHub('pod-config.json', POD_SECTIONS, function(ok) {
+    results['pod-config.json'] = ok;
+    renderAll();
+  });
+  saveToGitHub('promo-config.json', loadPromoConfig(), function(ok) {
+    results['promo-config.json'] = ok;
+    renderAll();
+  });
+}
+
+// ===== 视频管理 =====
+function renderVideoAdmin() {
+  var html = '';
+
+  // ===== 图片上传区 =====
+  html += '<div class="ap-section"><h4>📷 上传 / 替换产品图片</h4>';
+  html += '<div style="font-size:12px;color:#888;margin-bottom:12px;line-height:1.6;">';
+  html += '📌 选择产品图片 → 自动上传到 CDN → 按文件名匹配产品 → 替换图片地址，点击「同步全部数据」后生效<br>';
+  html += '💡 文件名规则：<b>产品名称.jpg</b>，如 <code>红运滚滚.jpg</code>、<code>绿扇盈盈.jpg</code>（支持 .jpg/.png/.webp）<br>';
+  html += '⚠️ 建议 500KB 以内，正方形比例最佳';
+  html += '</div>';
+  html += '<div class="vu-upload-zone" onclick="document.getElementById(\'vuImgInput\').click()">';
+  html += '  <div class="vu-upload-icon">🖼️</div>';
+  html += '  <div class="vu-upload-text">点击选择产品图片文件（可多选）</div>';
+  html += '  <div class="vu-upload-hint">支持 JPG / PNG / WebP</div>';
+  html += '  <input type="file" id="vuImgInput" accept="image/jpeg,image/png,image/webp" multiple style="display:none;" onchange="onImgFilesSelected(this.files)">';
+  html += '</div>';
+  html += '<div id="vuImgFileList" style="margin-top:12px;"></div>';
+  html += '<button class="btn-save" id="vuImgUploadBtn" style="margin-top:12px;display:none;width:100%;" onclick="startImageUpload()">☁ 上传全部图片到 CDN</button>';
+  html += '<div id="vuImgProgress" style="margin-top:12px;"></div>';
+  html += '</div>';
+
+  // ===== 视频上传区 =====
+  html += '<div class="ap-section"><h4>🎬 上传产品视频</h4>';
+  html += '<div style="font-size:12px;color:#888;margin-bottom:12px;line-height:1.6;">';
+  html += '📌 选择 MP4 视频文件 → 自动上传到 GitHub/CDN → 按文件名匹配产品 → 填入视频地址<br>';
+  html += '💡 文件名规则：<b>产品名称.mp4</b>，如 <code>蓝田暖阳.mp4</code>、<code>绿扇盈盈.mp4</code><br>';
+  html += '⚠️ 视频大小限制：单文件 ≤ 20MB，推荐 720p、15-30 秒';
+  html += '</div>';
+  html += '<div class="vu-upload-zone" onclick="document.getElementById(\'vuVideoInput\').click()">';
+  html += '  <div class="vu-upload-icon">📹</div>';
+  html += '  <div class="vu-upload-text">点击选择视频文件（可多选）</div>';
+  html += '  <div class="vu-upload-hint">支持 .mp4 格式</div>';
+  html += '  <input type="file" id="vuVideoInput" accept="video/mp4" multiple style="display:none;" onchange="onVideoFilesSelected(this.files)">';
+  html += '</div>';
+  html += '<div id="vuFileList" style="margin-top:12px;"></div>';
+  html += '<button class="btn-save" id="vuUploadBtn" style="margin-top:12px;display:none;width:100%;" onclick="startVideoUpload()">☁ 上传全部视频到 CDN</button>';
+  html += '<div id="vuProgress" style="margin-top:12px;"></div>';
+  html += '</div>';
+
+  // ===== 已匹配列表 =====
+  html += '<div class="ap-section"><h4>已有媒体文件的产品</h4>';
+  html += '<div id="vuMatchedList" style="font-size:12px;"></div>';
+  html += '</div>';
+
+  document.getElementById('adminBody').innerHTML = html;
+  renderMatchedMedias();
+}
+
+var _vuFiles = [];
+
+function onVideoFilesSelected(files) {
+  _vuFiles = [];
+  var listEl = document.getElementById('vuFileList');
+  var btnEl = document.getElementById('vuUploadBtn');
+  if (!files || files.length === 0) { listEl.innerHTML = ''; btnEl.style.display = 'none'; return; }
+  var html = '<div style="font-size:13px;font-weight:700;margin-bottom:8px;">已选择 ' + files.length + ' 个视频：</div>';
+  for (var i = 0; i < files.length; i++) {
+    var f = files[i];
+    _vuFiles.push(f);
+    var sizeStr = (f.size / 1024 / 1024).toFixed(1) + 'MB';
+    html += '<div class="vu-file-item">'
+      + '<span class="vu-file-icon">🎬</span>'
+      + '<span class="vu-file-name">' + escHtml(f.name) + '</span>'
+      + '<span class="vu-file-size">' + sizeStr + '</span>'
+      + '</div>';
+  }
+  listEl.innerHTML = html;
+  btnEl.style.display = 'block';
+  document.getElementById('vuProgress').innerHTML = '';
+}
+
+function readFileAsBase64(file) {
+  return new Promise(function(resolve, reject) {
+    var reader = new FileReader();
+    reader.onload = function() {
+      var base64 = reader.result.split(',')[1];
+      resolve(base64);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function startVideoUpload() {
+  var token = getGitToken();
+  if (!token) { showToast('请先在系统设置中填写 GitHub Token'); return; }
+  if (_vuFiles.length === 0) { showToast('请先选择视频文件'); return; }
+
+  var progressEl = document.getElementById('vuProgress');
+  var btnEl = document.getElementById('vuUploadBtn');
+  btnEl.disabled = true;
+  btnEl.textContent = '⏳ 正在上传...';
+
+  var total = _vuFiles.length;
+  var success = 0, fail = 0;
+
+  progressEl.innerHTML = '<div class="sync-step active">⏳ 准备上传 ' + total + ' 个视频...</div>';
+
+  for (var i = 0; i < _vuFiles.length; i++) {
+    var file = _vuFiles[i];
+    var filename = 'videos/' + file.name;
+    progressEl.innerHTML = '<div class="sync-step active">⏳ 上传中 (' + (i+1) + '/' + total + '): ' + escHtml(file.name) + '</div>';
+
+    try {
+      var base64 = await readFileAsBase64(file);
+      var ok = await saveBinaryToGitHub(filename, base64);
+      if (ok) {
+        success++;
+        // 自动匹配产品
+        var productName = file.name.replace(/\.mp4$/i, '');
+        var matched = matchProductAndSetVideo(productName, filename);
+        var matchInfo = matched ? ' ✅ 已匹配产品"' + productName + '"' : ' ⚠️ 未找到同名产品（视频已上传，请在编辑页手动填入）';
+        progressEl.innerHTML = '<div class="sync-step done">✅ (' + (i+1) + '/' + total + ') ' + escHtml(file.name) + ' 上传成功' + matchInfo + '</div>';
+      } else {
+        fail++;
+        progressEl.innerHTML = '<div class="sync-step fail">❌ (' + (i+1) + '/' + total + ') ' + escHtml(file.name) + ' 上传失败</div>';
+      }
+    } catch(e) {
+      fail++;
+      progressEl.innerHTML = '<div class="sync-step fail">❌ (' + (i+1) + '/' + total + ') ' + escHtml(file.name) + ' 上传出错: ' + e.message + '</div>';
+    }
+  }
+
+  // 最终状态
+  var finalMsg = success > 0 && fail === 0
+    ? '🎉 全部上传成功！' + success + '/' + total + ' 个视频已推送到 CDN'
+    : '⚠️ 上传完成：' + success + '/' + total + ' 成功，' + fail + ' 失败';
+  progressEl.innerHTML += '<div class="sync-final">' + finalMsg + '</div>';
+  progressEl.innerHTML += '<div style="margin-top:8px;font-size:12px;color:#888;">💡 已自动匹配的产品视频地址已保存，请点击「系统设置 → 同步全部数据到云端」推送更新。</div>';
+
+  btnEl.disabled = false;
+  btnEl.textContent = '☁ 上传全部视频到 CDN';
+  _vuFiles = [];
+  document.getElementById('vuFileList').innerHTML = '';
+  renderMatchedMedias();
+}
+
+function saveBinaryToGitHub(filename, base64Content) {
+  return new Promise(function(resolve, reject) {
+    var token = getGitToken();
+    if (!token) { resolve(false); return; }
+    var apiUrl = 'https://api.github.com/repos/' + GIT_OWNER + '/' + GIT_REPO + '/contents/' + filename;
+    fetch(apiUrl + '?ref=' + GIT_BRANCH, {
+      headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github+json' }
+    }).then(function(r) { return r.json(); }).then(function(current) {
+      var body = { message: 'Upload video ' + filename, content: base64Content, branch: GIT_BRANCH };
+      if (current.sha) body.sha = current.sha;
+      return fetch(apiUrl, {
+        method: 'PUT',
+        headers: { 'Authorization': 'token ' + token, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+    }).then(function(r) { return r.json(); }).then(function(result) {
+      if (result.content) {
+        // 刷新 jsdelivr 缓存
+        fetch('https://purge.jsdelivr.net/gh/' + GIT_OWNER + '/' + GIT_REPO + '@' + GIT_BRANCH + '/' + filename);
+        resolve(true);
+      } else {
+        resolve(false);
+      }
+    }).catch(function() { resolve(false); });
+  });
+}
+
+function matchProductAndSetVideo(productName, gitFilePath) {
+  var cdnUrl = 'https://cdn.jsdelivr.net/gh/' + GIT_OWNER + '/' + GIT_REPO + '@' + GIT_BRANCH + '/' + gitFilePath;
+  var matched = false;
+  Object.keys(POD_SECTIONS).forEach(function(k) {
+    POD_SECTIONS[k].products.forEach(function(p) {
+      if (p.name === productName) {
+        p.video = cdnUrl;
+        matched = true;
+      }
+    });
+  });
+  Object.keys(DISPOSABLE_SECTIONS).forEach(function(k) {
+    DISPOSABLE_SECTIONS[k].products.forEach(function(p) {
+      if (p.name === productName) {
+        p.video = cdnUrl;
+        matched = true;
+      }
+    });
+  });
+  if (matched) saveProductsToStorage();
+  return matched;
+}
+
+function renderMatchedVideos() {
+  var el = document.getElementById('vuMatchedList');
+  if (!el) return;
+  var hasVideo = [];
+  Object.keys(POD_SECTIONS).forEach(function(k) {
+    POD_SECTIONS[k].products.forEach(function(p) {
+      if (p.video) hasVideo.push({ name: p.name, video: p.video, section: POD_SECTIONS[k].title });
+    });
+  });
+  Object.keys(DISPOSABLE_SECTIONS).forEach(function(k) {
+    DISPOSABLE_SECTIONS[k].products.forEach(function(p) {
+      if (p.video) hasVideo.push({ name: p.name, video: p.video, section: DISPOSABLE_SECTIONS[k].title });
+    });
+  });
+  if (hasVideo.length === 0) {
+    el.innerHTML = '<div style="color:#999;padding:8px 0;">暂无已配置视频的产品</div>';
+    return;
+  }
+  var html = '';
+  hasVideo.forEach(function(item) {
+    html += '<div class="vu-matched-item">'
+      + '<span>🎬 ' + escHtml(item.name) + '</span>'
+      + '<span style="font-size:10px;color:#999;">' + escHtml(item.section) + '</span>'
+      + '</div>';
+  });
+}
+
+// ===== 图片上传（媒体管理） =====
+var _vuImgFiles = [];
+
+function onImgFilesSelected(files) {
+  _vuImgFiles = [];
+  var listEl = document.getElementById('vuImgFileList');
+  var btnEl = document.getElementById('vuImgUploadBtn');
+  if (!files || files.length === 0) { listEl.innerHTML = ''; btnEl.style.display = 'none'; return; }
+  var html = '<div style="font-size:13px;font-weight:700;margin-bottom:8px;">已选择 ' + files.length + ' 张图片：</div>';
+  for (var i = 0; i < files.length; i++) {
+    var f = files[i];
+    _vuImgFiles.push(f);
+    var sizeStr = (f.size / 1024).toFixed(0) + 'KB';
+    html += '<div class="vu-file-item">'
+      + '<span class="vu-file-icon">🖼️</span>'
+      + '<span class="vu-file-name">' + escHtml(f.name) + '</span>'
+      + '<span class="vu-file-size">' + sizeStr + '</span>'
+      + '</div>';
+  }
+  listEl.innerHTML = html;
+  btnEl.style.display = 'block';
+  document.getElementById('vuImgProgress').innerHTML = '';
+}
+
+async function startImageUpload() {
+  var token = getGitToken();
+  if (!token) { showToast('请先在系统设置中填写 GitHub Token'); return; }
+  if (_vuImgFiles.length === 0) { showToast('请先选择图片文件'); return; }
+
+  var progressEl = document.getElementById('vuImgProgress');
+  var btnEl = document.getElementById('vuImgUploadBtn');
+  btnEl.disabled = true;
+  btnEl.textContent = '⏳ 正在上传...';
+
+  var total = _vuImgFiles.length;
+  var success = 0, fail = 0;
+
+  progressEl.innerHTML = '<div class="sync-step active">⏳ 准备上传 ' + total + ' 张图片...</div>';
+
+  for (var i = 0; i < _vuImgFiles.length; i++) {
+    var file = _vuImgFiles[i];
+    // 上传到 GitHub: extracted_images/pod_images/产品名.扩展名
+    var filename = 'extracted_images/pod_images/' + file.name;
+    progressEl.innerHTML = '<div class="sync-step active">⏳ 上传中 (' + (i+1) + '/' + total + '): ' + escHtml(file.name) + '</div>';
+
+    try {
+      var base64 = await readFileAsBase64(file);
+      var ok = await saveBinaryToGitHub(filename, base64);
+      if (ok) {
+        success++;
+        // 自动匹配产品并更新图片
+        var productName = file.name.replace(/\.(jpg|jpeg|png|webp)$/i, '');
+        var ts = Date.now();
+        var cdnUrl = 'https://cdn.jsdelivr.net/gh/' + GIT_OWNER + '/' + GIT_REPO + '@' + GIT_BRANCH + '/' + filename + '?v=' + ts;
+        var matched = matchProductAndSetImage(productName, cdnUrl);
+        var matchInfo = matched ? ' ✅ 已替换产品"' + productName + '"的图片' : ' ⚠️ 未找到同名产品（图片已上传，请在产品编辑页手动填写地址）';
+        progressEl.innerHTML = '<div class="sync-step done">✅ (' + (i+1) + '/' + total + ') ' + escHtml(file.name) + ' 上传成功' + matchInfo + '</div>';
+      } else {
+        fail++;
+        progressEl.innerHTML = '<div class="sync-step fail">❌ (' + (i+1) + '/' + total + ') ' + escHtml(file.name) + ' 上传失败</div>';
+      }
+    } catch(e) {
+      fail++;
+      progressEl.innerHTML = '<div class="sync-step fail">❌ (' + (i+1) + '/' + total + ') ' + escHtml(file.name) + ' 上传出错: ' + e.message + '</div>';
+    }
+  }
+
+  var finalMsg = success > 0 && fail === 0
+    ? '🎉 全部上传成功！' + success + '/' + total + ' 张图片已推送到 CDN'
+    : '⚠️ 上传完成：' + success + '/' + total + ' 成功，' + fail + ' 失败';
+  progressEl.innerHTML += '<div class="sync-final">' + finalMsg + '</div>';
+  progressEl.innerHTML += '<div style="margin-top:8px;font-size:12px;color:#888;">💡 已替换的产品图片已保存，请点击「系统设置 → 同步全部数据到云端」推送更新。</div>';
+
+  btnEl.disabled = false;
+  btnEl.textContent = '☁ 上传全部图片到 CDN';
+  _vuImgFiles = [];
+  document.getElementById('vuImgFileList').innerHTML = '';
+  renderMatchedMedias();
+}
+
+function matchProductAndSetImage(productName, cdnUrl) {
+  var matched = false;
+  Object.keys(POD_SECTIONS).forEach(function(k) {
+    POD_SECTIONS[k].products.forEach(function(p) {
+      if (p.name === productName) {
+        p.img = cdnUrl;
+        matched = true;
+      }
+    });
+  });
+  Object.keys(DISPOSABLE_SECTIONS).forEach(function(k) {
+    DISPOSABLE_SECTIONS[k].products.forEach(function(p) {
+      if (p.name === productName) {
+        p.img = cdnUrl;
+        matched = true;
+      }
+    });
+  });
+  if (matched) saveProductsToStorage();
+  return matched;
+}
+
+function renderMatchedMedias() {
+  var el = document.getElementById('vuMatchedList');
+  if (!el) return;
+  var hasMedia = [];
+  Object.keys(POD_SECTIONS).forEach(function(k) {
+    POD_SECTIONS[k].products.forEach(function(p) {
+      var info = { name: p.name, section: POD_SECTIONS[k].title };
+      if (p.video) info.video = true;
+      if (p.img) info.img = true;
+      if (info.video) hasMedia.push(info);
+    });
+  });
+  Object.keys(DISPOSABLE_SECTIONS).forEach(function(k) {
+    DISPOSABLE_SECTIONS[k].products.forEach(function(p) {
+      var info = { name: p.name, section: DISPOSABLE_SECTIONS[k].title };
+      if (p.video) info.video = true;
+      if (p.img) info.img = true;
+      if (info.video) hasMedia.push(info);
+    });
+  });
+  if (hasMedia.length === 0) {
+    el.innerHTML = '<div style="color:#999;padding:8px 0;">暂无已配置媒体文件的产品</div>';
+    return;
+  }
+  var html = '';
+  hasMedia.forEach(function(item) {
+    var icons = '';
+    if (item.video) icons += '🎬 ';
+    html += '<div class="vu-matched-item">'
+      + '<span>' + icons + escHtml(item.name) + '</span>'
+      + '<span style="font-size:10px;color:#999;">' + escHtml(item.section) + '</span>'
+      + '</div>';
+  });
+  el.innerHTML = html;
 }
 
 function renderSysAdmin() {
@@ -2063,6 +2603,7 @@ function renderSysAdmin() {
   html += '<div class="ap-section"><h4>云端同步</h4>';
   html += '<div style="font-size:12px;color:#666;margin-bottom:10px;">将当前产品数据和促销配置推送到 GitHub 仓库，所有设备刷新后生效</div>';
   html += '<button onclick="syncAll()" style="background:var(--teal);color:#fff;border:none;padding:12px 28px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;width:100%;">☁ 同步全部数据到云端</button>';
+  html += '<div class="sync-progress" id="syncProgress" style="display:none;"></div>';
   html += '</div>';
   document.getElementById('adminBody').innerHTML = html;
 }
@@ -2169,6 +2710,7 @@ function switchAdminTab(tab) {
   currentAdminTab = tab;
   document.getElementById('tabProducts').classList.toggle('active', tab === 'products');
   document.getElementById('tabPromo').classList.toggle('active', tab === 'promo');
+  document.getElementById('tabVideo').classList.toggle('active', tab === 'video');
   document.getElementById('tabSys').classList.toggle('active', tab === 'sys');
   if (tab === 'products') {
     document.getElementById('tbAddBtn').textContent = '＋ 新增产品';
@@ -2182,6 +2724,10 @@ function switchAdminTab(tab) {
     document.getElementById('tbAddBtn').style.display = '';
     document.getElementById('tbExportBtn').style.display = 'none';
     renderPromoAdmin();
+  } else if (tab === 'video') {
+    document.getElementById('tbAddBtn').style.display = 'none';
+    document.getElementById('tbExportBtn').style.display = 'none';
+    renderVideoAdmin();
   } else {
     document.getElementById('tbAddBtn').style.display = 'none';
     document.getElementById('tbExportBtn').style.display = 'none';
@@ -2333,6 +2879,8 @@ function openAddForm() {
     + '<div id="af-tagsPreview" style="margin-top:4px;display:flex;flex-wrap:wrap;gap:4px;"></div>'
     + '<input type="hidden" id="af-tagsData" value="[]">'
     + '<label>图片路径</label><input id="af-img" placeholder="extracted_images/pod_images/image40.jpeg">'
+    + '<label>视频 URL（选填，mp4 链接）</label><input id="af-video" placeholder="https://example.com/video.mp4">'
+    + '<div style="margin-top:4px;color:#888;font-size:11px;">填写视频地址后，产品图片右上角会显示播放按钮</div>'
     + '<div class="am-btn-row"><button class="btn-cancel" onclick="closeModal()">取消</button><button class="btn-save" onclick="saveNewProduct()">保存</button></div>';
   document.getElementById("adminModalBox").innerHTML = html;
   document.getElementById("adminModal").classList.add("show");
@@ -2390,6 +2938,8 @@ function openEditForm(idx) {
     + '<input type="hidden" id="af-tagsData" value="">'
     + '<label>图片路径</label><input id="af-img" value="' + p.img + '">'
     + '<div style="margin-top:4px;">当前图片预览: <img src="' + p.img + '" style="max-width:100%;max-height:80px;border-radius:6px;border:1px solid #eee;"></div>'
+    + '<label>视频 URL（选填，mp4 链接）</label><input id="af-video" value="' + (p.video || '') + '">'
+    + '<div style="margin-top:4px;color:#888;font-size:11px;">填写视频地址后，产品图片右上角会显示播放按钮</div>'
     + '<div class="am-btn-row"><button class="btn-cancel" onclick="closeModal()">取消</button><button class="btn-save" onclick="saveEditProduct()">保存</button></div>';
   document.getElementById("adminModalBox").innerHTML = html;
   document.getElementById("adminModal").classList.add("show");
@@ -2416,6 +2966,7 @@ function saveNewProduct() {
   var str = document.getElementById("af-str").value;
   var style = document.getElementById("af-style").value;
   var img = document.getElementById("af-img").value.trim();
+  var video = document.getElementById("af-video").value.trim();
   var flags = [];
   if (!name || !desc || !img) { showToast("请填写名称、描述和图片路径"); return; }
   if (_afTags.length === 0) { showToast("请至少添加一个标签"); return; }
@@ -2435,6 +2986,7 @@ function saveNewProduct() {
     str: str, style: style, img: img,
     flags: flags, status: "active"
   };
+  if (video) newProduct.video = video;
   var enName = document.getElementById("af-en-name") ? document.getElementById("af-en-name").value.trim() : "";
   var enDesc = document.getElementById("af-en-desc") ? document.getElementById("af-en-desc").value.trim() : "";
   if (enName || enDesc) {
@@ -2473,6 +3025,8 @@ function saveEditProduct() {
   p.str = document.getElementById("af-str").value;
   p.style = document.getElementById("af-style").value;
   p.img = document.getElementById("af-img").value.trim();
+  var video = document.getElementById("af-video").value.trim();
+  if (video) p.video = video; else delete p.video;
   p.flags = [];
   p.tags = JSON.parse(JSON.stringify(_afTags));
   var enName = document.getElementById("af-en-name") ? document.getElementById("af-en-name").value.trim() : "";
@@ -2545,7 +3099,7 @@ function exportData() {
       var tagsStr = JSON.stringify(p.tags);
       var descEmStr = p.descEm ? '"' + p.descEm + '"' : "null";
       var comma = pi < sec.products.length - 1 ? "," : "";
-      podLines.push("      { id:" + p.id + ", name:\"" + p.name + "\", price:" + p.price + ", series:\"" + p.series + "\", tags:" + tagsStr + ", desc:\"" + p.desc + "\", descEm:" + descEmStr + ", str:\"" + p.str + "\", style:\"" + p.style + "\", img:\"" + p.img + "\", flags:" + flagsStr + ", status:\"" + p.status + "\"" + i18nStr(p) + " }" + comma);
+      podLines.push("      { id:" + p.id + ", name:\"" + p.name + "\", price:" + p.price + ", series:\"" + p.series + "\", tags:" + tagsStr + ", desc:\"" + p.desc + "\", descEm:" + descEmStr + ", str:\"" + p.str + "\", style:\"" + p.style + "\", img:\"" + p.img + "\"" + (p.video ? ', video:"' + p.video + '"' : '') + ", flags:" + flagsStr + ", status:\"" + p.status + "\"" + i18nStr(p) + " }" + comma);
     });
     podLines.push("    ]");
     var comma2 = ki < Object.keys(POD_SECTIONS).length - 1 ? "," : "";
@@ -2565,7 +3119,7 @@ function exportData() {
       var tagsStr = JSON.stringify(p.tags);
       var descEmStr = p.descEm ? '"' + p.descEm + '"' : "null";
       var comma = pi < sec.products.length - 1 ? "," : "";
-      dispLines.push("      { id:" + p.id + ", name:\"" + p.name + "\", price:" + p.price + ", tags:" + tagsStr + ", desc:\"" + p.desc + "\", descEm:" + descEmStr + ", str:\"" + p.str + "\", style:\"" + p.style + "\", img:\"" + p.img + "\", flags:" + flagsStr + ", status:\"" + p.status + "\"" + i18nStr(p) + " }" + comma);
+      dispLines.push("      { id:" + p.id + ", name:\"" + p.name + "\", price:" + p.price + ", tags:" + tagsStr + ", desc:\"" + p.desc + "\", descEm:" + descEmStr + ", str:\"" + p.str + "\", style:\"" + p.style + "\", img:\"" + p.img + "\"" + (p.video ? ', video:"' + p.video + '"' : '') + ", flags:" + flagsStr + ", status:\"" + p.status + "\"" + i18nStr(p) + " }" + comma);
     });
     dispLines.push("    ]");
     var comma2 = ki < Object.keys(DISPOSABLE_SECTIONS).length - 1 ? "," : "";
@@ -2839,6 +3393,25 @@ function showMarketingTips(items) {
   }
 }
 
+function computeGiftInfo(items) {
+  var podCount = 0, dispCount = 0;
+  items.forEach(function(i) {
+    var sec = i.section || '';
+    if (['幻影Pro系列','幻影系列','青羽系列','大千系列','宙斯系列','小众精选'].indexOf(sec) !== -1) {
+      podCount += i.qty;
+    } else if (sec !== '烟具') {
+      dispCount += i.qty;
+    }
+  });
+  var totalItems = podCount + dispCount;
+  var gifts = [];
+  if (totalItems >= 2) gifts.push('🎁 全场满2件 · 包邮');
+  if (podCount >= 3) gifts.push('🎁 烟弹满3盒 · 赠保护套（幻影系列适配，随机款式）');
+  if (podCount >= 10) gifts.push('🎁 烟弹满10盒 · 赠1盒');
+  if (dispCount >= 5) gifts.push('🎁 一次性满5支 · 赠1支');
+  return gifts;
+}
+
 function copyCart() {
   var items = getCartItems();
   if (items.length === 0) { showToast('请先选品'); return; }
@@ -2851,8 +3424,13 @@ function copyCart() {
   });
   lines.push('━━━━━━━━━━━━━━━━');
   lines.push('合计参考 ¥' + total);
-  var totalPuffs = items.reduce(function(s, i) { return s + getPuffs(i.product) * i.qty; }, 0);
-  if (totalPuffs > 0) lines.push('约 ' + totalPuffs + ' 口 · ≈' + Math.round(totalPuffs / 160) + ' 包烟（估算仅供参考）');
+  var gifts = computeGiftInfo(items);
+  if (gifts.length > 0) {
+    lines.push('');
+    gifts.forEach(function(g) { lines.push(g); });
+  }
+  lines.push('');
+  lines.push('💡 请提供您的配送地址，以便安排发货');
   lines.push('');
   lines.push('请帮我确认库存和适配，谢谢！');
   var text = lines.join('\n');
@@ -2870,19 +3448,34 @@ function exportCartPNG() {
   if (items.length === 0) { showToast('请先选品'); return; }
   var total = items.reduce(function(s, i) { return s + i.product.price * i.qty; }, 0);
   var canvas = document.createElement('canvas');
+  var scale = 2;
   var cw = 400, pad = 20;
   var itemH = 38, y = pad + 16;
-  canvas.width = cw;
-  canvas.height = pad * 2 + 16 + 28 + 32 + items.length * itemH + 20 + 50;
+  var gifts = computeGiftInfo(items);
+  var giftLines = gifts.length;
+  // 根据实际内容动态计算高度，避免底部文字被截断
+  var baseH = 70          // 标题/店名起始位置
+    + 36                  // 店名 + 客服信息
+    + 18                  // 金色分隔线
+    + items.length * itemH // 商品列表
+    + 8                   // 分隔线
+    + 20                  // 合计
+    + (giftLines > 0 ? 14 + giftLines * 22 + 14 : 0)  // 赠品区（分隔+内容+间距）
+    + 22                  // 配送地址提醒
+    + 30                  // 底部提示 + padding
+    ;
+  canvas.width = cw * scale;
+  canvas.height = baseH * scale;
   var ctx = canvas.getContext('2d');
-  ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, cw, canvas.height);
+  ctx.scale(scale, scale);
+  ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, cw, baseH);
   ctx.fillStyle = '#0D7377'; ctx.fillRect(0, 0, cw, 52);
   ctx.fillStyle = '#fff'; ctx.font = 'bold 16px "PingFang SC","Microsoft YaHei",sans-serif';
   ctx.fillText('悦刻 · 选购清单', pad, 34);
   y = 70; ctx.fillStyle = '#095155'; ctx.font = 'bold 13px "PingFang SC","Microsoft YaHei",sans-serif';
   ctx.fillText('长寿路189弄购物中心店', pad, y); y += 4;
   ctx.fillStyle = '#999'; ctx.font = '11px "PingFang SC","Microsoft YaHei",sans-serif';
-  ctx.fillText('企微客服 18939741711', pad, y + 14);
+  ctx.fillText('⏰ 10:00-22:00 可发货 · 同城当日达', pad, y + 14);
   y += 36; ctx.strokeStyle = '#C9A96E'; ctx.lineWidth = 1;
   ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(cw - pad, y); ctx.stroke();
   y += 18;
@@ -2899,7 +3492,24 @@ function exportCartPNG() {
   y += 8; ctx.strokeStyle = '#C9A96E'; ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(cw - pad, y); ctx.stroke();
   y += 20; ctx.fillStyle = '#C0392B'; ctx.font = 'bold 16px "PingFang SC","Microsoft YaHei",sans-serif';
   ctx.textAlign = 'right'; ctx.fillText('合计 ¥' + total, cw - pad, y); ctx.textAlign = 'left';
-  y += 24; ctx.fillStyle = '#999'; ctx.font = '11px "PingFang SC","Microsoft YaHei",sans-serif';
+
+  // 赠品信息
+  if (giftLines > 0) {
+    y += 14;
+    ctx.strokeStyle = '#eee'; ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(cw - pad, y); ctx.stroke();
+    y += 14;
+    ctx.fillStyle = '#27AE60'; ctx.font = 'bold 12px "PingFang SC","Microsoft YaHei",sans-serif';
+    gifts.forEach(function(g) {
+      y += 22;
+      ctx.fillText(g, pad, y);
+    });
+  }
+
+  // 配送地址提醒
+  y += 22;
+  ctx.fillStyle = '#C0392B'; ctx.font = 'bold 12px "PingFang SC","Microsoft YaHei",sans-serif';
+  ctx.textAlign = 'center'; ctx.fillText('💡 请提供配送地址，以便安排发货', cw / 2, y); ctx.textAlign = 'left';
+  y += 20; ctx.fillStyle = '#999'; ctx.font = '11px "PingFang SC","Microsoft YaHei",sans-serif';
   ctx.textAlign = 'center'; ctx.fillText('请将清单发给企业微信客服确认', cw / 2, y); ctx.textAlign = 'left';
   closeCart();
 

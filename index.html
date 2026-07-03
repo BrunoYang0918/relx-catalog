@@ -2130,7 +2130,7 @@ function saveDevicesToStorage() {
   try { localStorage.setItem('relx_devices', JSON.stringify(DEVICES)); } catch(e) {}
 }
 
-// ===== GitHub API 远程同步 =====
+// v3.6 同步体系: pod-config.json + disposable-config.json + device-config.json
 var GIT_OWNER = 'BrunoYang0918';
 var GIT_REPO = 'relx-catalog';
 var GIT_BRANCH = 'main';

@@ -3,10 +3,47 @@
     "title": "悦刻 RELX",
     "products": [
       {
+        "id": 114,
+        "name": "生花好事",
+        "price": 149,
+        "tags": [
+          {
+            "t": "新品上市",
+            "c": "blue"
+          },
+          {
+            "t": "解瘾强",
+            "c": "red"
+          },
+          {
+            "t": "焦糖坚果",
+            "c": "blue"
+          },
+          {
+            "t": "12ml大容量",
+            "c": "gold"
+          }
+        ],
+        "desc": "焦糖坚果豆香 · 强击喉 奶油蜂蜜香",
+        "descEm": "rd",
+        "str": "★★★★☆",
+        "style": "偏浓",
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/disposable_images/生花好事.png?v=2",
+        "flags": [
+          "star"
+        ],
+        "status": "active",
+        "video": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/videos/生花好事.mp4"
+      },
+      {
         "id": 101,
         "name": "满园茵茵",
         "price": 139,
         "tags": [
+          {
+            "t": "9.6ml",
+            "c": "blue"
+          },
           {
             "t": "拿铁温润",
             "c": "blue"
@@ -25,6 +62,10 @@
         "name": "金光奕奕",
         "price": 139,
         "tags": [
+          {
+            "t": "9.6ml",
+            "c": "blue"
+          },
           {
             "t": "果味过渡",
             "c": "green"
@@ -49,6 +90,10 @@
         "name": "飞马环游",
         "price": 139,
         "tags": [
+          {
+            "t": "9.6ml",
+            "c": "blue"
+          },
           {
             "t": "檀香高级",
             "c": "blue"

@@ -58,7 +58,7 @@ function applyLang(L){
   contact_qr:'Scan for WeCom',footer:'Authentic \u00b7 Nationwide SF Shipping \u00b7 Factory Warranty',
   tip_adapter:'Free adapter with Daqian/Zeus \u00b7 Compatible with Qingyu/Phantom/Pro',
   tip_yuying:'Recommend Yuying S \u2014 Pro-level features (\u00a5428) for just \u00a5368',
-  disp_relx:'RELX \u00b7 \u00a5139 \u00b7 9.6ml',disp_poolan:'POOLAN \u00b7 \u00a5139 \u00b7 10.5ml',disp_mirui:'MIRUI \u00b7 \u00a5129 \u00b7 10ml',
+  disp_relx:'RELX',disp_poolan:'POOLAN \u00b7 \u00a5139 \u00b7 10.5ml',disp_mirui:'MIRUI \u00b7 \u00a5129 \u00b7 10ml',
   disp_other:'Voopoo \u00b7 Meishenwei \u00b7 HQD',yuying_why:'Why Yuying S?',
   yuying_note:'Phantom Pro features (3 modes + screen + counter), only \u00a5368',zeus_spec:'Zeus 2.85ml \u00b7 Adapter for cross-series'},
   fr:{brand:'Guide S\u00e9lection E-Cig',nav_guide:'Guide',nav_pods:'Pods',nav_disposable:'Jetables',nav_devices:'Appareils',nav_contact:'Contact',
@@ -89,7 +89,7 @@ function applyLang(L){
   contact_qr:'Scanner pour WeCom',footer:'Authentique \u00b7 Livraison Nationale SF \u00b7 Garantie Usine',
   tip_adapter:'Adaptateur gratuit avec Daqian/Zeus \u00b7 Compatible Qingyu/Phantom/Pro',
   tip_yuying:'Nous recommandons Yuying S \u2014 Performances Pro (\u00a5428) pour \u00a5368',
-  disp_relx:'RELX \u00b7 \u00a5139 \u00b7 9.6ml',disp_poolan:'POOLAN \u00b7 \u00a5139 \u00b7 10.5ml',disp_mirui:'MIRUI \u00b7 \u00a5129 \u00b7 10ml',
+  disp_relx:'RELX',disp_poolan:'POOLAN \u00b7 \u00a5139 \u00b7 10.5ml',disp_mirui:'MIRUI \u00b7 \u00a5129 \u00b7 10ml',
   disp_other:'Voopoo \u00b7 Meishenwei \u00b7 HQD',yuying_why:'Pourquoi Yuying S?',
   yuying_note:'Fonctions Pro (3 modes + \u00e9cran + compteur), seulement \u00a5368',zeus_spec:'Zeus 2.85ml \u00b7 Adaptateur multi-s\u00e9ries'},
   ru:{brand:'\u0413\u0438\u0434 \u043f\u043e \u0432\u044b\u0431\u043e\u0440\u0443',nav_guide:'\u0413\u0438\u0434',nav_pods:'Pods',nav_disposable:'\u041e\u0434\u043d\u043e\u0440\u0430\u0437\u043e\u0432\u044b\u0435',nav_devices:'\u0423\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430',nav_contact:'\u041a\u043e\u043d\u0442\u0430\u043a\u0442',
@@ -120,7 +120,7 @@ function applyLang(L){
   contact_qr:'\u0421\u043a\u0430\u043d\u0438\u0440\u0443\u0439\u0442\u0435 \u0434\u043b\u044f WeCom',footer:'\u041e\u0440\u0438\u0433\u0438\u043d\u0430\u043b \u00b7 \u0414\u043e\u0441\u0442\u0430\u0432\u043a\u0430 SF \u00b7 \u0413\u0430\u0440\u0430\u043d\u0442\u0438\u044f',
   tip_adapter:'\u0411\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u044b\u0439 \u0430\u0434\u0430\u043f\u0442\u0435\u0440 \u0441 Daqian/Zeus \u00b7 \u0421\u043e\u0432\u043c\u0435\u0441\u0442\u0438\u043c \u0441 Qingyu/Phantom/Pro',
   tip_yuying:'\u0420\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u0443\u0435\u043c Yuying S \u2014 \u0444\u0443\u043d\u043a\u0446\u0438\u0438 Pro (\u00a5428) \u0437\u0430 \u00a5368',
-  disp_relx:'RELX \u00b7 \u00a5139 \u00b7 9.6ml',disp_poolan:'POOLAN \u00b7 \u00a5139 \u00b7 10.5ml',disp_mirui:'MIRUI \u00b7 \u00a5129 \u00b7 10ml',
+  disp_relx:'RELX',disp_poolan:'POOLAN \u00b7 \u00a5139 \u00b7 10.5ml',disp_mirui:'MIRUI \u00b7 \u00a5129 \u00b7 10ml',
   disp_other:'Voopoo \u00b7 Meishenwei \u00b7 HQD',yuying_why:'\u041f\u043e\u0447\u0435\u043c\u0443 Yuying S?',
   yuying_note:'\u0424\u0443\u043d\u043a\u0446\u0438\u0438 Pro (3 \u0440\u0435\u0436\u0438\u043c\u0430 + \u044d\u043a\u0440\u0430\u043d + \u0441\u0447\u0435\u0442\u0447\u0438\u043a), \u0432\u0441\u0435\u0433\u043e \u00a5368',zeus_spec:'Zeus 2.85ml \u00b7 \u0410\u0434\u0430\u043f\u0442\u0435\u0440 \u0434\u043b\u044f \u0441\u043e\u0432\u043c\u0435\u0441\u0442\u0438\u043c\u043e\u0441\u0442\u0438'}
   };

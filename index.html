@@ -1395,7 +1395,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 <div class="app-shell"><div class="app-scroll"><main>
 
 <div class="topbar">
-  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v3.6</span></div>
+  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v3.7</span></div>
   <div class="tb-right">
     <a class="tb-btn" href="javascript:void(0)" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">📞 联系门店</a>
     <div class="lang-dropdown" id="langDrop">
@@ -1486,7 +1486,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
   <div class="hl-note"><b>01:</b> 甜豆+坚果+咖啡+蛋糕 四重层次 &nbsp;|&nbsp; <b>02:</b> 浓香烟草+可可+生巧 解瘾首选</div>
 </div>
 
-<div class="section-header"><h2 data-i18n="disp_relx">悦刻 RELX · 9.6ml</h2></div>
+<div class="section-header"><h2 data-i18n="disp_relx">悦刻 RELX</h2></div>
 <div class="newbie-hint">💡 <b>原厂品质</b> — 开袋即用无需充电，适合尝鲜或备用</div>
 <div class="card-grid" id="disp-relx"></div>
 
@@ -1545,7 +1545,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="footer-note"></div>
 
-<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v3.6</span></div>
+<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v3.7</span></div>
 
 </main></div>
 
@@ -1714,9 +1714,10 @@ var DISPOSABLE_SECTIONS = {
   relx: {
     title: "悦刻 RELX",
     products: [
-      { id:101, name:"满园茵茵", price:139, tags:[{t:"拿铁温润",c:"blue"}], desc:"烤烟可可奶香", descEm:null, str:"★★★☆☆", style:"适中", img:"https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/disposable_images/image2.jpeg?v=2", flags:[], status:"active" },
-      { id:102, name:"金光奕奕", price:139, tags:[{t:"果味过渡",c:"green"},{t:"凤梨果香",c:"green"}], desc:"凤梨果香+烤烟", descEm:"gr", str:"★★★☆☆", style:"适中", img:"https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/disposable_images/image1.jpeg?v=2", flags:["tip"], status:"active" },
-      { id:103, name:"飞马环游", price:139, tags:[{t:"檀香高级",c:"blue"}], desc:"木质沉香", descEm:null, str:"★★★☆☆", style:"适中", img:"https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/disposable_images/image3.jpeg?v=2", flags:[], status:"active" }
+      { id:114, name:"生花好事", price:149, tags:[{t:"新品上市",c:"blue"},{t:"解瘾强",c:"red"},{t:"焦糖坚果",c:"blue"},{t:"12ml大容量",c:"gold"}], desc:"焦糖坚果豆香 · 强击喉 奶油蜂蜜香", descEm:"rd", str:"★★★★☆", style:"偏浓", img:"https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/disposable_images/生花好事.png?v=2", flags:["star"], status:"active", video:"https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/videos/生花好事.mp4" },
+      { id:101, name:"满园茵茵", price:139, tags:[{t:"9.6ml",c:"blue"},{t:"拿铁温润",c:"blue"}], desc:"烤烟可可奶香", descEm:null, str:"★★★☆☆", style:"适中", img:"https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/disposable_images/image2.jpeg?v=2", flags:[], status:"active" },
+      { id:102, name:"金光奕奕", price:139, tags:[{t:"9.6ml",c:"blue"},{t:"果味过渡",c:"green"},{t:"凤梨果香",c:"green"}], desc:"凤梨果香+烤烟", descEm:"gr", str:"★★★☆☆", style:"适中", img:"https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/disposable_images/image1.jpeg?v=2", flags:["tip"], status:"active" },
+      { id:103, name:"飞马环游", price:139, tags:[{t:"9.6ml",c:"blue"},{t:"檀香高级",c:"blue"}], desc:"木质沉香", descEm:null, str:"★★★☆☆", style:"适中", img:"https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/disposable_images/image3.jpeg?v=2", flags:[], status:"active" }
     ]
   },
   poolan: {
@@ -1790,6 +1791,7 @@ function getRenderLang() {
 function getPuffs(p) {
   if (p.id >= 200) return 0;
   if (p.id === 111 || p.id === 112) return 1800;
+  if (p.id === 114) return 4000;
   var bySeries = { pro: 300, phantom: 300, qingyu: 300, daqian: 1500, zeus: 430, niche: 300 };
   if (p.series && bySeries[p.series] !== undefined) {
     var base = bySeries[p.series];
@@ -1840,7 +1842,7 @@ function renderProductCard(p) {
   var staffPick = (p.flags || []).indexOf('best') !== -1 ? '<span class="staff-pick">👤 店长推荐</span>' : '';
   var puffs = getPuffs(p);
   return '<div class="product-card' + (cls ? ' ' + cls : '') + '">'
-    + '<div class="p-img"><img src="' + p.img + '" alt="' + showName + '">'
+    + '<div class="p-img"><img src="' + p.img + '" onerror="var f=localAssetUrl(\'' + escHtml(p.img) + '\');if(this.src!==f)this.src=f" alt="' + showName + '">'
     + (p.video ? '<div class="p-video-overlay" onclick="event.stopPropagation();openVideoPlayer(\'' + escHtml(p.video) + '\',\'' + escHtml(showName) + '\')"><span class="p-video-btn">▶</span></div>' : '')
     + '</div>'
     + '<div class="p-name-row"><span class="p-name">' + showName + staffPick + '</span><span class="p-price">&yen;' + p.price + '</span></div>'
@@ -1864,7 +1866,7 @@ function renderDeviceSection(d) {
     var isLarge = d.colors.length >= 4;
     var videoHtml = d.video ? '<div class="p-video-overlay" onclick="event.stopPropagation();openVideoPlayer(\'' + escHtml(d.video) + '\',\'' + escHtml(d.name) + '\')"><span class="p-video-btn">▶</span></div>' : '';
     html += '<div class="product-card' + (isNarrow ? ' horizontal' : isLarge ? ' large-img' : '') + '">'
-      + '<div class="p-img"><img src="' + c.img + '" alt="' + c.label + '">' + videoHtml + '</div>'
+      + '<div class="p-img"><img src="' + c.img + '" onerror="var f=localAssetUrl(\'' + escHtml(c.img) + '\');if(this.src!==f)this.src=f" alt="' + c.label + '">' + videoHtml + '</div>'
       + '<div class="p-info">'
         + '<div class="p-name-row"><span class="p-name">' + c.label + '</span><span class="p-price">&yen;' + d.price + '</span></div>'
         + '<div class="p-desc">适配：' + d.compat + '</div>'
@@ -2054,7 +2056,7 @@ function openVideoPlayer(url, name) {
   modal.innerHTML =
     '<span class="vm-close">&times;</span>' +
     '<div class="vm-content">' +
-      '<video controls autoplay playsinline preload="auto" src="' + escHtml(url) + '"></video>' +
+      '<video controls autoplay playsinline preload="auto" src="' + escHtml(url) + '" onerror="var f=localAssetUrl(\'' + escHtml(url) + '\');if(this.src!==f){this.src=f;this.load()}"></video>' +
       '<div class="vm-name">' + escHtml(name) + '</div>' +
       '<div class="vm-hint">点击视频外部或 ✕ 关闭</div>' +
     '</div>';
@@ -2131,7 +2133,7 @@ function saveDevicesToStorage() {
   try { localStorage.setItem('relx_devices', JSON.stringify(DEVICES)); } catch(e) {}
 }
 
-// v3.6 同步体系: pod-config.json + disposable-config.json + device-config.json
+// v3.7 同步体系: pod-config.json + disposable-config.json + device-config.json
 var GIT_OWNER = 'BrunoYang0918';
 var GIT_REPO = 'relx-catalog';
 var GIT_BRANCH = 'main';
@@ -2148,6 +2150,9 @@ function fetchRemoteJSON(filename) {
   if (location.hostname === GIT_OWNER + '.github.io') {
     // GitHub Pages 同域加载，缓存与部署完全同步，每 5 分钟换一次缓存破坏参数
     url = '/' + GIT_REPO + '/' + filename + '?_t=' + Math.floor(Date.now() / 300000);
+  } else if (location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname === '') {
+    // 本地开发：直接加载同目录本地配置，方便预览未推送的新增产品
+    url = './' + filename;
   } else {
     // 本地文件或其他环境，用 raw.githubusercontent.com（缓存 ~5 分钟）
     url = 'https://raw.githubusercontent.com/' + GIT_OWNER + '/' + GIT_REPO + '/' + GIT_BRANCH + '/' + filename;
@@ -2156,6 +2161,16 @@ function fetchRemoteJSON(filename) {
     if (!r.ok) throw new Error('Fetch failed');
     return r.json();
   });
+}
+
+// 本地预览时，把 CDN 资源地址转为同目录本地文件名，便于查看未上传的新图片/视频
+function localAssetUrl(cdnUrl) {
+  if (!cdnUrl) return cdnUrl;
+  if (location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname === '') {
+    var m = cdnUrl.match(/\/([^\/\?]+?)(?:\?v=\d+)?$/);
+    if (m) return './' + m[1];
+  }
+  return cdnUrl;
 }
 
 function saveToGitHub(filename, data, callback) {
@@ -3777,7 +3792,7 @@ function renderCartBody() {
     var html = '';
     items.forEach(function(item) {
       html += '<div class="cp-item">'
-        + '<div class="cpi-img"><img src="' + item.product.img + '" alt=""></div>'
+        + '<div class="cpi-img"><img src="' + item.product.img + '" onerror="var f=localAssetUrl(\'' + escHtml(item.product.img) + '\');if(this.src!==f)this.src=f" alt=""></div>'
         + '<div class="cpi-info"><div class="cpi-name">' + item.product.name + '</div><div class="cpi-series">' + item.section + '</div><div class="cpi-price">&yen;' + item.product.price + '</div></div>'
         + '<div class="cpi-qty"><button onclick="changeQty(' + item.id + ',-1)">−</button><input type="number" class="cpi-num" value="' + item.qty + '" min="1" max="99" onchange="setQty(' + item.id + ',this.value)" style="width:40px;text-align:center;font-size:13px;font-weight:700;border:1px solid #ddd;border-radius:4px;padding:2px 0;"><button onclick="changeQty(' + item.id + ',1)">＋</button></div>'
         + '<span class="cpi-del" onclick="removeItem(' + item.id + ')">✕</span>'
@@ -4077,7 +4092,7 @@ function renderHero() {
     if (lang !== 'zh' && p.i18n && p.i18n[lang] && p.i18n[lang].name) showName = p.i18n[lang].name;
     html += '<div class="hero-card">'
       + '<span class="hc-rank">' + (index + 1) + '</span>'
-      + '<div class="hc-img"><img src="' + p.img + '" alt=""></div>'
+      + '<div class="hc-img"><img src="' + p.img + '" onerror="var f=localAssetUrl(\'' + escHtml(p.img) + '\');if(this.src!==f)this.src=f" alt=""></div>'
       + '<div class="hc-info">'
         + '<div class="hc-name">' + showName + '</div>'
         + '<div class="hc-meta">' + entry.section + '</div>'
@@ -4226,7 +4241,7 @@ function renderNewProducts() {
   var html = '';
   newProducts.forEach(function(item) {
     html += '<div class="nps-card" onclick="document.getElementById(\'pods\').scrollIntoView({behavior:\'smooth\'})">'
-      + '<div class="nps-img"><img src="' + item.product.img + '" alt=""></div>'
+      + '<div class="nps-img"><img src="' + item.product.img + '" onerror="var f=localAssetUrl(\'' + escHtml(item.product.img) + '\');if(this.src!==f)this.src=f" alt=""></div>'
       + '<div class="nps-name">' + item.product.name + '</div>'
       + '<div class="nps-badge">新品上市</div>'
       + '<div class="nps-price">&yen;' + item.product.price + '</div>'
@@ -4602,4 +4617,4 @@ function closeMapModal() {
 
 </body>
 </html>
-<!-- v3.6 redeploy trigger -->
+<!-- v3.7 redeploy trigger -->

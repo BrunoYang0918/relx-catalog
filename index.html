@@ -1724,7 +1724,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 <div class="app-shell"><div class="app-scroll"><main>
 
 <div class="topbar">
-  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v1.39</span></div>
+  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v1.40</span></div>
   <div class="tb-right">
     <a class="tb-btn" href="javascript:void(0)" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">📞 联系门店</a>
     <div class="lang-dropdown" id="langDrop">
@@ -1874,7 +1874,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="footer-note"></div>
 
-<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v1.39</span></div>
+<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v1.40</span></div>
 
 </main></div>
 
@@ -2452,7 +2452,7 @@ function savePromoConfig(cfg) {
   localStorage.setItem('relx_promo', JSON.stringify(cfg));
 }
 
-var DATA_VERSION = 'v1.39';
+var DATA_VERSION = 'v1.40';
 
 function saveProductsToStorage() {
   try { localStorage.setItem('relx_products', JSON.stringify(POD_SECTIONS)); localStorage.setItem('relx_data_version', DATA_VERSION); } catch(e) {}
@@ -2464,7 +2464,7 @@ function saveDevicesToStorage() {
   try { localStorage.setItem('relx_devices', JSON.stringify(DEVICES)); localStorage.setItem('relx_data_version', DATA_VERSION); } catch(e) {}
 }
 
-// v1.39 同步体系: pod-config.json + disposable-config.json + device-config.json
+// v1.40 同步体系: pod-config.json + disposable-config.json + device-config.json
 var GIT_OWNER = 'BrunoYang0918';
 var GIT_REPO = 'relx-catalog';
 var GIT_BRANCH = 'main';
@@ -4639,7 +4639,7 @@ document.getElementById("cartPanel").addEventListener("click", function(e) {
   }
   function resetPodLabel() {
     var trigger = document.getElementById('navPodTrigger');
-    if (trigger) trigger.textContent = '烟弹选味 ▾';
+    if (trigger) trigger.textContent = '烟弹选味';
   }
   links.forEach(function(a) {
     a.addEventListener('click', function(e) {
@@ -4955,4 +4955,4 @@ function closeMapModal() {
 
 </body>
 </html>
-<!-- v1.39 redeploy trigger -->
+<!-- v1.40 redeploy trigger -->

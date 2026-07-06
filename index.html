@@ -1604,6 +1604,16 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
   from { opacity: 0; transform: translateX(-6px); }
   to { opacity: 1; transform: translateX(0); }
 }
+/* 场景导航图标动画 */
+.sn-icon { display: inline-block; line-height: 1; }
+.scene-nav .sp:nth-child(2) .sn-icon { animation: snSprout 1.8s ease-in-out infinite; }
+.scene-nav .sp:nth-child(3) .sn-icon { animation: snPuff 1.2s ease-in-out infinite; }
+.scene-nav .sp:nth-child(4) .sn-icon { animation: snBounce 1.4s ease-in-out infinite; }
+.scene-nav .sp:nth-child(5) .sn-icon { animation: snBloom 2s ease-in-out infinite; }
+@keyframes snSprout { 0%,100% { transform: scale(1) rotate(0deg); } 50% { transform: scale(1.12) rotate(-5deg); } }
+@keyframes snPuff { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.15); opacity: .8; } }
+@keyframes snBounce { 0%,100% { transform: translateY(0); } 40% { transform: translateY(-3px); } 60% { transform: translateY(-1px); } }
+@keyframes snBloom { 0%,100% { transform: scale(1) rotate(0deg); } 50% { transform: scale(1.1) rotate(8deg); } }
 /* 下拉展开时每个图标独立动画 */
 .nav-dropdown.open .nd-menu a:nth-child(1) .nd-icon { animation: ndFlash .8s ease-in-out infinite; }
 .nav-dropdown.open .nd-menu a:nth-child(2) .nd-icon { animation: ndTwinkle 1.2s ease-in-out infinite; }
@@ -1757,10 +1767,10 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="scene-nav" id="sceneNav">
   <span class="sp all on" data-filter="all">全部</span>
-  <span class="sp" data-filter="新手入门">🌱 新手入门</span>
-  <span class="sp" data-filter="有劲解瘾">💨 有劲解瘾</span>
-  <span class="sp" data-filter="果味口感">🍈 果味口感</span>
-  <span class="sp" data-filter="柔和香甜">🌸 柔和香甜</span>
+  <span class="sp" data-filter="新手入门"><span class="sn-icon">🌱</span> 新手入门</span>
+  <span class="sp" data-filter="有劲解瘾"><span class="sn-icon">💨</span> 有劲解瘾</span>
+  <span class="sp" data-filter="果味口感"><span class="sn-icon">🍈</span> 果味口感</span>
+  <span class="sp" data-filter="柔和香甜"><span class="sn-icon">🌸</span> 柔和香甜</span>
 </div>
 
 <div class="section-header major" id="pods">

@@ -6,15 +6,35 @@
 <title>国标电子烟选品指南</title>
 <style>
 :root {
+  /* Brand Core */
   --teal: #0D7377;
+  --primary: #0D7377;
+  --primary-dark: #095155;
+  --primary-light: #E8F4F5;
   --gold: #C9A96E;
+  --gold-light: #FFF8ED;
   --red: #C0392B;
   --green: #27AE60;
-  --bg: #f5f3ee;
+
+  /* Surface */
+  --bg: #FBF9F6;
   --card-bg: #fff;
-  --text: #2D2D2D;
-  --text-light: #666;
+
+  /* Typography */
+  --text: #1A1A1A;
+  --text-secondary: #6B7280;
+  --text-tertiary: #9CA3AF;
+
+  /* Borders & Shadows */
   --border: #E8E5DF;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+
+  /* Shape */
+  --radius: 10px;
+  --radius-sm: 6px;
+  --radius-lg: 14px;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior: smooth; height: 100%; }
@@ -22,10 +42,10 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
   background: var(--bg);
   color: var(--text);
-  line-height: 1.5;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   height: 100%; overflow: hidden;
-  /* iPad/iOS 全局触摸优化 */
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
@@ -41,13 +61,14 @@ body {
 body::before {
   content: "";
   position: fixed; top:0; left:0; right:0; bottom:0;
-  pointer-events: none; z-index: 0; opacity: .06;
+  pointer-events: none; z-index: 0; opacity: .04;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='80'%3E%3Ctext x='0' y='35' font-family='Microsoft YaHei,sans-serif' font-size='16' font-weight='700' fill='%23000' transform='rotate(-25 250 40)'%3E长寿路189弄购物中心店 · 18939741711%3C/text%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 400px 64px;
 }
+::selection { background: var(--primary); color: #fff; }
 
-main { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
+main { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
 
 .topbar {
   position: sticky; top: 0; z-index: 100;
@@ -1354,6 +1375,252 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
   font-size: 13px; border: none; cursor: pointer;
   letter-spacing: .5px;
 }
+
+/* ===== [REFINED] Design Refinements ===== */
+
+/* Topbar — more spacious, glass buttons */
+.topbar { padding: 12px 16px; box-shadow: 0 2px 16px rgba(0,0,0,.12); }
+.topbar .brand { font-size: 16px; letter-spacing: .5px; line-height: 1.3; }
+.topbar .tb-btn { border-radius: 8px; backdrop-filter: blur(4px); }
+.lang-dropdown .ld-btn { border-radius: 8px; backdrop-filter: blur(4px); }
+.lang-dropdown .ld-menu { border-radius: 6px; padding: 4px; }
+.ld-menu span { border-radius: 6px; padding: 8px 14px; color: var(--text); }
+.ld-menu span:hover { background: var(--primary-light); }
+.ld-menu span.active { background: var(--primary); color: #fff; }
+
+/* Quick nav — glass background */
+.quick-nav { background: rgba(255,255,255,.85); backdrop-filter: blur(12px); padding: 8px 12px; gap: 6px; }
+.quick-nav a { font-size: 12px; color: var(--primary); background: var(--primary-light); }
+.quick-nav a:active, .quick-nav a.hl { background: var(--primary); color: #fff; }
+
+/* Section headers — gold underline instead of top border */
+.section-header { border-top: none; opacity: 1; padding: 22px 16px 10px; }
+.section-header h2 { font-size: 17px; color: var(--primary); position: relative; display: inline-block; }
+.section-header h2::after { content: ''; display: block; width: 60%; height: 3px; background: var(--gold); border-radius: 2px; margin: 6px auto 0; }
+.section-header.major h2::after { background: rgba(255,255,255,.4); }
+.section-header .subtitle { font-size: 12px; color: var(--text-secondary); }
+
+/* Card grid — more breathing room */
+.card-grid { gap: 12px; padding: 4px 12px 12px; }
+
+/* Product cards — refined spacing */
+.product-card { border-radius: 10px; padding: 12px 10px 10px; gap: 5px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+.product-card:active { transform: scale(.97); }
+.product-card .p-img { height: 142px; border-radius: 6px; background: #FAFAFA; }
+.product-card .p-img img { max-width: 88%; max-height: 88%; }
+.product-card .p-name { font-size: 14px; color: var(--text); }
+.product-card .p-name-row { gap: 6px; }
+.product-card .p-price { font-size: 15px; }
+.product-card .p-desc { font-size: 11px; background: #FAFAFA; padding: 4px 8px; }
+.product-card .p-bottom { gap: 4px; color: var(--text-tertiary); }
+.product-card .p-strength { font-size: 11px; color: var(--gold); letter-spacing: 1px; }
+.product-card .p-style { font-size: 10px; padding: 2px 8px; border-radius: 10px; background: var(--primary-light); color: var(--primary); }
+.product-card .p-style.light { background: #E8F8F5; color: var(--green); }
+.product-card .p-style.strong { background: #FDEDEC; color: var(--red); }
+.product-card .p-select-row { border-top: 1px solid var(--border); padding-top: 7px; }
+.product-card .p-select-row .ps-btn { width: 34px; height: 34px; border-color: var(--primary); color: var(--primary); }
+.product-card .p-select-row .ps-btn.sel { background: var(--primary); color: #fff; }
+.product-card.new-arrival { border-width: 2px; }
+.product-card.new-arrival::before { content: "✨ 新品"; border-radius: 4px; padding: 2px 10px; }
+.product-card.hot-product { border-width: 2px; }
+.product-card.hot-product::before { content: "🔥 爆品"; border-radius: 4px; padding: 2px 10px; }
+
+/* Horizontal card (devices 2 colors) */
+.product-card.horizontal { gap: 12px; }
+.product-card.horizontal .p-img { width: 110px; height: 110px; }
+.product-card.horizontal .p-info { gap: 5px; }
+
+/* Large image card (4+ colors) */
+.product-card.large-img .p-img { height: 176px; }
+
+/* Tags — refined */
+.tag { font-size: 10px; padding: 1px 6px; border-radius: 4px; font-weight: 600; }
+.tag-green { background: #E8F8F5; color: #1E7A4A; }
+.tag-red { background: #FDEDEC; color: #9B2C2C; }
+.tag-gold { background: var(--gold-light); color: #8B6914; }
+.tag-blue { background: var(--primary-light); color: var(--primary); }
+
+/* Newbie hint — left accent bar */
+.newbie-hint { text-align: left; padding: 10px 16px; background: linear-gradient(135deg, var(--primary-light), #fff); border-left: 3px solid var(--primary); border-radius: 6px; font-size: 12px; color: var(--text-secondary); margin: 0 12px 4px; }
+.newbie-hint b { color: var(--primary); }
+
+/* Scene nav — glass effect */
+.scene-nav { background: rgba(251,249,246,.9); backdrop-filter: blur(12px); }
+.scene-nav .sp { padding: 5px 11px; font-size: 11px; border-radius: 14px; }
+.scene-nav .sp.all { background: #fff; color: var(--text-secondary); border-color: var(--border); }
+.scene-nav .sp.all.on { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+/* Highlight cards — refined */
+.highlight { border-radius: 10px; padding: 14px 16px; border-width: 1.5px; }
+.highlight .hl-title { font-size: 15px; color: var(--text); }
+.highlight .hl-features span { font-size: 11px; padding: 3px 10px; background: var(--primary-light); color: var(--primary); }
+.highlight .hl-note { font-size: 12px; color: var(--text-secondary); }
+
+/* Contact bar — cleaner */
+.contact-bar { border-radius: 10px; padding: 18px 16px; border-width: 1.5px; }
+.contact-bar .ct-store-name { font-size: 15px; }
+.contact-bar .ct-phone { font-size: 17px; }
+.contact-bar .ct-badge { border-radius: 4px; }
+.contact-bar .ct-trust { padding: 12px 0 0; font-size: 11px; color: var(--text-tertiary); }
+
+/* Floating bar — refined */
+.floating-bar { padding: 8px 12px calc(8px + env(safe-area-inset-bottom,0px)); }
+.floating-bar .fb-btn { border-radius: 10px; padding: 11px 8px; }
+.floating-bar .fb-cart { border-width: 2px; }
+
+/* Device cards */
+.device-card { border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+.device-card .d-img { border-radius: 6px; }
+.device-spec { border-radius: 6px; }
+
+/* Cart panel */
+.cart-panel .cp-sheet { border-radius: 14px 14px 0 0; }
+.cart-panel .cp-hdr h3 { color: var(--primary); }
+.cart-panel .cp-total span { color: var(--red); }
+.cart-panel .cp-foot { padding-bottom: calc(12px + env(safe-area-inset-bottom,0px)); }
+
+/* Admin panel */
+.admin-panel .ap-header { background: var(--primary); }
+.admin-panel .ap-tabs { background: var(--primary-dark); }
+.admin-panel .ap-section h4 { color: var(--primary); font-size: 14px; }
+.admin-panel .ap-row .ap-name { color: var(--text); }
+
+/* Marquee promo items */
+.promo-item { display: inline-flex; align-items: center; gap: 8px; padding: 0 22px; height: 100%; color: #fff; font-size: 13px; }
+.promo-item::after { content: ''; position: absolute; right: 0; top: 14px; bottom: 14px; width: 1px; background: rgba(255,255,255,.15); }
+.promo-item:last-child::after { display: none; }
+.promo-item .icon-gift { font-size: 16px; }
+.promo-item .text-main { font-weight: 500; }
+.promo-item .text-highlight { color: #F7DC6F; font-weight: 700; font-size: 15px; }
+.promo-item .num-highlight { color: #F7DC6F; font-size: 16px; font-weight: 700; }
+
+/* Back to top */
+.back-to-top { background: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+
+/* Loading screen */
+#loadingScreen { background: linear-gradient(160deg, var(--primary) 0%, var(--primary-dark) 50%, #0A5C60 100%); }
+#loadingScreen .ls-icon { width: 96px; height: 96px; }
+#loadingScreen .ls-store { font-size: 20px; color: rgba(255,255,255,.88); letter-spacing: .5px; }
+#loadingScreen .ls-brand { font-size: 16px; color: var(--gold); }
+#loadingScreen .ls-bar { background: var(--gold); }
+#loadingScreen .ls-bar-wrap { height: 3px; border-radius: 2px; }
+#loadingScreen .ls-warn { color: #F1C40F; }
+
+/* Map modal */
+.map-modal-sheet { border-radius: 14px; }
+.map-opt { border-radius: 10px; }
+.map-modal-close { border-radius: 10px; }
+
+/* Video modal */
+.video-modal video { border-radius: 10px; }
+
+/* Quiz */
+.quiz-overlay { border-radius: 14px; }
+.quiz-card .q-opt { border-radius: 10px; }
+.quiz-card .q-btn { border-radius: 10px; }
+.quiz-result .qr-rec { border-radius: 10px; }
+
+/* Admin modal */
+.admin-modal .am-box { border-radius: 10px; }
+.admin-panel .ap-row { border-radius: 6px; }
+
+/* Section CTA */
+.section-cta { border-radius: 10px; }
+
+/* HP strip */
+.new-product-strip .nps-card { border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+
+/* Glossary */
+.glossary-popover { border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.12); }
+
+/* ===== Staff Pick Badge ===== */
+.staff-pick { display: inline-block; font-size: 9px; background: var(--gold); color: #fff; padding: 1px 6px; border-radius: 3px; margin-left: 4px; vertical-align: middle; font-weight: 600; }
+
+/* ===== Nav Dropdown ===== */
+.nav-dropdown { position: relative; flex: 1; }
+.nav-dropdown .nd-trigger {
+  display: flex; align-items: center; justify-content: center; gap: 3px;
+  padding: 6px 0; font-size: 12px; font-weight: 600;
+  color: var(--primary); background: var(--primary-light);
+  border-radius: 20px; cursor: pointer; user-select: none;
+}
+.nav-dropdown .nd-trigger::after {
+  content: "▾"; font-size: 12px; opacity: .5;
+  transition: transform .2s;
+}
+.nav-dropdown.open .nd-trigger::after { transform: rotate(180deg); }
+.nav-dropdown .nd-menu {
+  display: none; position: absolute; top: 100%; left: 0; right: 0;
+  margin-top: 5px; background: #fff; border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.12);
+  overflow: hidden; z-index: 200; padding: 5px;
+}
+.nav-dropdown.open .nd-menu { display: block; }
+.nav-dropdown .nd-menu a {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 12px; font-size: 13px; font-weight: 500;
+  color: var(--text); text-decoration: none; border-radius: 6px;
+}
+.nav-dropdown .nd-menu a:hover { background: var(--primary-light); }
+/* 系列色点：按 nth-child 顺序匹配 */
+.nav-dropdown .nd-menu a:nth-child(1)::before { content: ''; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: #0D7377; }
+.nav-dropdown .nd-menu a:nth-child(2)::before { content: ''; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: #C9A96E; }
+.nav-dropdown .nd-menu a:nth-child(3)::before { content: ''; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: #27AE60; }
+.nav-dropdown .nd-menu a:nth-child(4)::before { content: ''; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: #8E44AD; }
+.nav-dropdown .nd-menu a:nth-child(5)::before { content: ''; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: #E67E22; }
+.nav-dropdown .nd-menu a:nth-child(6)::before { content: ''; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: #E74C3C; }
+
+/* ===== Device Grid ===== */
+.device-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 8px 12px; }
+@media (min-width: 480px) { .device-grid { grid-template-columns: repeat(3, 1fr); } }
+
+/* ===== Hero Grid (热销排行) ===== */
+.hero-grid { display: flex; flex-direction: column; gap: 8px; padding: 8px 12px; }
+.hero-card { display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #FFFDF7 0%, #fff 100%); border: 1.5px solid var(--gold); border-radius: 10px; padding: 10px 12px; cursor: pointer; transition: transform .15s; }
+.hero-card:active { transform: scale(.98); }
+.hero-card .hc-rank { width: 26px; height: 26px; border-radius: 50%; background: var(--gold); color: #fff; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.hero-card .hc-img { width: 56px; height: 56px; border-radius: 6px; background: #F8F7F5; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
+.hero-card .hc-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.hero-card .hc-info { flex: 1; min-width: 0; }
+.hero-card .hc-name { font-size: 14px; font-weight: 700; color: var(--text); }
+.hero-card .hc-meta { font-size: 11px; color: var(--text-tertiary); }
+.hero-card .hc-price { font-size: 15px; font-weight: 800; color: var(--gold); white-space: nowrap; flex-shrink: 0; }
+
+/* ===== New Product Strip Details ===== */
+.nps-card .nps-img { width: 100%; height: 80px; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 4px; }
+.nps-card .nps-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.nps-card .nps-name { font-size: 12px; font-weight: 700; color: var(--text); }
+.nps-card .nps-price { font-size: 14px; font-weight: 700; color: var(--gold); }
+.nps-card .nps-badge { display: inline-block; font-size: 9px; background: var(--primary-light); color: var(--primary); padding: 1px 6px; border-radius: 3px; font-weight: 600; margin-top: 2px; }
+
+/* ===== Quiz Sub ===== */
+.quiz-card .q-sub { font-size: 12px; color: var(--text-tertiary); text-align: center; margin-bottom: 16px; }
+
+/* ===== Quiz Result Extras ===== */
+.quiz-result .qr-recs { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+.quiz-result .qr-rec .qr-series { font-size: 10px; color: var(--text-tertiary); }
+.quiz-result .qr-add-row { display: flex; align-items: center; gap: 6px; margin-top: 8px; justify-content: center; }
+.quiz-result .qr-dev-banner { display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #FFF8E1, #FFF3CD); border: 1.5px solid var(--gold); border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; }
+.quiz-result .qr-dev-banner .qrdb-icon { font-size: 26px; flex-shrink: 0; }
+.quiz-result .qr-dev-banner .qrdb-info { flex: 1; min-width: 0; }
+.quiz-result .qr-dev-banner .qrdb-name { font-size: 13px; font-weight: 700; color: var(--text); }
+.quiz-result .qr-dev-banner .qrdb-price { font-size: 10px; color: var(--text-secondary); }
+.quiz-result .qr-dev-banner .qrdb-link { flex-shrink: 0; font-size: 12px; font-weight: 600; color: var(--gold); text-decoration: none; white-space: nowrap; }
+
+/* ===== Video Modal ===== */
+.video-modal .vm-content { max-width: 90vw; max-height: 85vh; display: flex; flex-direction: column; align-items: center; }
+.video-modal .vm-name { margin-top: 12px; color: #fff; font-size: 14px; text-align: center; opacity: .8; }
+.video-modal .vm-hint { margin-top: 8px; color: rgba(255,255,255,.5); font-size: 12px; text-align: center; }
+
+/* ===== Sync / Misc ===== */
+.sync-dismiss { margin-top: 10px; padding: 5px 18px; border: 1px solid var(--border); background: #fff; border-radius: 5px; cursor: pointer; font-size: 12px; color: var(--text-secondary); }
+.card-select { cursor: pointer; }
+.cp-disclaimer { font-size: 10px; color: #bbb; text-align: center; margin-top: 4px; }
+.cart-recover-tip { background: var(--gold-light); border: 1px solid var(--gold); border-radius: 6px; padding: 10px 12px; margin: 8px 16px; font-size: 12px; color: #8B6914; line-height: 1.5; display: none; }
+.cpi-series { font-size: 10px; color: var(--text-tertiary); margin-top: 2px; }
+.cpi-del { color: var(--text-tertiary); cursor: pointer; font-size: 16px; padding: 4px; margin-left: 4px; }
+.cpi-del:hover { color: var(--red); }
+html[lang="en"] .product-card.hot::after { content: "HOT"; }
 </style>
 <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "7d574b0b915e45bf8adf47591c47349e"}'></script><!-- End Cloudflare Web Analytics -->
 </head>
@@ -1399,7 +1666,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 <div class="app-shell"><div class="app-scroll"><main>
 
 <div class="topbar">
-  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v3.7</span></div>
+  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v3.8</span></div>
   <div class="tb-right">
     <a class="tb-btn" href="javascript:void(0)" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">📞 联系门店</a>
     <div class="lang-dropdown" id="langDrop">
@@ -1426,7 +1693,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="quick-nav" id="quickNav">
   <div class="nav-dropdown" id="navPodDropdown">
-    <span class="nd-trigger" id="navPodTrigger" onclick="event.stopPropagation();document.getElementById('navPodDropdown').classList.toggle('open')">烟弹选味 ▾</span>
+    <span class="nd-trigger" id="navPodTrigger" onclick="event.stopPropagation();document.getElementById('navPodDropdown').classList.toggle('open')">烟弹选味</span>
     <div class="nd-menu">
       <a href="javascript:void(0)" onclick="scrollToSection('#pod-pro','幻影Pro')">幻影Pro</a>
       <a href="javascript:void(0)" onclick="scrollToSection('#pod-phantom','幻影')">幻影</a>
@@ -1549,7 +1816,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="footer-note"></div>
 
-<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v3.7</span></div>
+<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v3.8</span></div>
 
 </main></div>
 
@@ -2127,17 +2394,19 @@ function savePromoConfig(cfg) {
   localStorage.setItem('relx_promo', JSON.stringify(cfg));
 }
 
+var DATA_VERSION = 'v3.8';
+
 function saveProductsToStorage() {
-  try { localStorage.setItem('relx_products', JSON.stringify(POD_SECTIONS)); } catch(e) {}
+  try { localStorage.setItem('relx_products', JSON.stringify(POD_SECTIONS)); localStorage.setItem('relx_data_version', DATA_VERSION); } catch(e) {}
 }
 function saveDisposableToStorage() {
-  try { localStorage.setItem('relx_disposable', JSON.stringify(DISPOSABLE_SECTIONS)); } catch(e) {}
+  try { localStorage.setItem('relx_disposable', JSON.stringify(DISPOSABLE_SECTIONS)); localStorage.setItem('relx_data_version', DATA_VERSION); } catch(e) {}
 }
 function saveDevicesToStorage() {
-  try { localStorage.setItem('relx_devices', JSON.stringify(DEVICES)); } catch(e) {}
+  try { localStorage.setItem('relx_devices', JSON.stringify(DEVICES)); localStorage.setItem('relx_data_version', DATA_VERSION); } catch(e) {}
 }
 
-// v3.7 同步体系: pod-config.json + disposable-config.json + device-config.json
+// v3.8 同步体系: pod-config.json + disposable-config.json + device-config.json
 var GIT_OWNER = 'BrunoYang0918';
 var GIT_REPO = 'relx-catalog';
 var GIT_BRANCH = 'main';
@@ -2221,30 +2490,37 @@ function saveToGitHub(filename, data, callback) {
 
 // 页面启动时，异步拉取远程产品数据
 (function() {
-  // 先从 localStorage 快速展示本地数据
-  try {
-    var localData = JSON.parse(localStorage.getItem('relx_products'));
-    if (localData && Object.keys(localData).length > 0) {
-      POD_SECTIONS = localData;
-      renderAll();
-      renderHero();
-    }
-  } catch(e) {}
-  try {
-    var localDisposable = JSON.parse(localStorage.getItem('relx_disposable'));
-    if (localDisposable && Object.keys(localDisposable).length > 0) {
-      DISPOSABLE_SECTIONS = localDisposable;
-      renderAll();
-      renderHero();
-    }
-  } catch(e) {}
-  try {
-    var localDevices = JSON.parse(localStorage.getItem('relx_devices'));
-    if (localDevices && localDevices.length > 0) {
-      DEVICES = localDevices;
-      rebuildDeviceProducts();
-    }
-  } catch(e) {}
+  // 检测 localStorage 数据版本，版本不匹配则丢弃旧缓存
+  var cachedVersion = '';
+  try { cachedVersion = localStorage.getItem('relx_data_version') || ''; } catch(e) {}
+  var cacheValid = (cachedVersion === DATA_VERSION);
+
+  // 先从 localStorage 快速展示本地数据（仅版本匹配时使用）
+  if (cacheValid) {
+    try {
+      var localData = JSON.parse(localStorage.getItem('relx_products'));
+      if (localData && Object.keys(localData).length > 0) {
+        POD_SECTIONS = localData;
+        renderAll();
+        renderHero();
+      }
+    } catch(e) {}
+    try {
+      var localDisposable = JSON.parse(localStorage.getItem('relx_disposable'));
+      if (localDisposable && Object.keys(localDisposable).length > 0) {
+        DISPOSABLE_SECTIONS = localDisposable;
+        renderAll();
+        renderHero();
+      }
+    } catch(e) {}
+    try {
+      var localDevices = JSON.parse(localStorage.getItem('relx_devices'));
+      if (localDevices && localDevices.length > 0) {
+        DEVICES = localDevices;
+        rebuildDeviceProducts();
+      }
+    } catch(e) {}
+  }
 
   // 再从远程拉取最新数据，覆盖本地（GitHub Pages 同域加载，缓存与部署完全同步）
   fetchRemoteJSON('pod-config.json').then(function(data) {
@@ -4621,4 +4897,4 @@ function closeMapModal() {
 
 </body>
 </html>
-<!-- v3.7 redeploy trigger -->
+<!-- v3.8 redeploy trigger -->

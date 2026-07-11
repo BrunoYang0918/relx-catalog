@@ -1,0 +1,814 @@
+- main [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e4]: 悦刻 · 产品图册
+    - link "📞 189 3974 1711" [ref=e6] [cursor=pointer]:
+      - /url: tel:18939741711
+  - generic [ref=e7]:
+    - link "选购指南" [ref=e8] [cursor=pointer]:
+      - /url: "#guide"
+    - link "烟弹口味" [ref=e9] [cursor=pointer]:
+      - /url: "#pods"
+    - link "一次性" [ref=e10] [cursor=pointer]:
+      - /url: "#disposable"
+    - link "烟具色鉴" [ref=e11] [cursor=pointer]:
+      - /url: "#devices"
+    - link "联系门店" [ref=e12] [cursor=pointer]:
+      - /url: "#contact"
+  - generic [ref=e13]:
+    - heading "快速选购指南" [level=2] [ref=e14]
+    - generic [ref=e15]: 超 50 款国标烟弹 · 总有你爱的那一口
+  - generic [ref=e17]:
+    - generic [ref=e18]:
+      - generic [ref=e19]: 🍈
+      - heading "果味过渡" [level=4] [ref=e20]
+      - generic [ref=e21]: 怀念水果味？
+      - generic [ref=e22]:
+        - generic [ref=e23]: 翠川苍
+        - generic [ref=e24]: 柏芬
+        - generic [ref=e25]: 隋和
+        - generic [ref=e26]: 旭日凌云
+        - generic [ref=e27]: 金光奕奕
+        - generic [ref=e28]: 白岸
+        - generic [ref=e29]: 夏幕
+    - generic [ref=e30]:
+      - generic [ref=e31]: 🔥
+      - heading "解瘾强击喉" [level=4] [ref=e32]
+      - generic [ref=e33]: 像真烟 一口到位
+      - generic [ref=e34]:
+        - generic [ref=e35]: 群玉山见
+        - generic [ref=e36]: 红运滚滚
+        - generic [ref=e37]: 甘泽
+        - generic [ref=e38]: 广厦间
+        - generic [ref=e39]: 山雾秋
+        - generic [ref=e40]: 匠造者-02
+    - generic [ref=e41]:
+      - generic [ref=e42]: 💰
+      - heading "预算指南" [level=4] [ref=e43]
+      - generic [ref=e44]: 丰俭由人
+      - generic [ref=e45]:
+        - generic [ref=e46]: 青羽 ¥99起
+        - generic [ref=e47]: 幻影 ¥119
+        - generic [ref=e48]: Pro ¥129
+  - heading "推荐组合（杆+弹）" [level=2] [ref=e50]
+  - generic [ref=e51]:
+    - generic [ref=e52]:
+      - generic [ref=e53]: 入门之选
+      - generic [ref=e54]: 青羽杆 + 青羽弹
+      - generic [ref=e55]: ¥317
+    - generic [ref=e56]:
+      - generic [ref=e57]: 经典搭配
+      - generic [ref=e58]: 幻影五代 + 幻影弹
+      - generic [ref=e59]: ¥447
+    - generic [ref=e60]:
+      - generic [ref=e61]: 进阶升级
+      - generic [ref=e62]: 御影S + 幻影弹
+      - generic [ref=e63]: ¥487
+    - generic [ref=e64]:
+      - generic [ref=e65]: 解瘾首选
+      - generic [ref=e66]: 大千杆 + 大千弹
+      - generic [ref=e67]: ¥387
+    - generic [ref=e68]:
+      - generic [ref=e69]: 顶配旗舰
+      - generic [ref=e70]: 宙斯杆 + 宙斯弹
+      - generic [ref=e71]: ¥1057
+  - heading "烟具速查" [level=2] [ref=e73]
+  - table [ref=e75]:
+    - rowgroup [ref=e76]:
+      - row "型号 价格 电池 适配烟弹 颜色" [ref=e77]:
+        - columnheader "型号" [ref=e78]
+        - columnheader "价格" [ref=e79]
+        - columnheader "电池" [ref=e80]
+        - columnheader "适配烟弹" [ref=e81]
+        - columnheader "颜色" [ref=e82]
+    - rowgroup [ref=e83]:
+      - row "青羽 ¥218 350mAh 青羽/幻影/小众 黑·银" [ref=e84]:
+        - cell "青羽" [ref=e85]
+        - cell "¥218" [ref=e86]
+        - cell "350mAh" [ref=e87]
+        - cell "青羽/幻影/小众" [ref=e88]
+        - cell "黑·银" [ref=e89]
+      - row "大千 ¥258 800mAh 大千系列专属 黑" [ref=e90]:
+        - cell "大千" [ref=e91]
+        - cell "¥258" [ref=e92]
+        - cell "800mAh" [ref=e93]
+        - cell "大千系列专属" [ref=e94]
+        - cell "黑" [ref=e95]
+      - row "幻影五代 ¥328 380mAh Pro/幻影/青羽 嫩绿·银·黑·渐变粉紫·渐变金粉" [ref=e96]:
+        - cell "幻影五代" [ref=e97]
+        - cell "¥328" [ref=e98]
+        - cell "380mAh" [ref=e99]
+        - cell "Pro/幻影/青羽" [ref=e100]
+        - cell "嫩绿·银·黑·渐变粉紫·渐变金粉" [ref=e101]
+      - row "御影S 🔥推荐 ¥368 440mAh 幻影系+铂岚 雅灰" [ref=e102]:
+        - cell "御影S 🔥推荐" [ref=e103]
+        - cell "¥368" [ref=e104]
+        - cell "440mAh" [ref=e105]
+        - cell "幻影系+铂岚" [ref=e106]
+        - cell "雅灰" [ref=e107]
+      - row "幻影Pro ¥428 440mAh Pro/幻影/青羽 银·白·粉·黑" [ref=e108]:
+        - cell "幻影Pro" [ref=e109]
+        - cell "¥428" [ref=e110]
+        - cell "440mAh" [ref=e111]
+        - cell "Pro/幻影/青羽" [ref=e112]
+        - cell "银·白·粉·黑" [ref=e113]
+      - row "宙斯 ¥888 800mAh 宙斯专属+转接 黑" [ref=e114]:
+        - cell "宙斯" [ref=e115]
+        - cell "¥888" [ref=e116]
+        - cell "800mAh" [ref=e117]
+        - cell "宙斯专属+转接" [ref=e118]
+        - cell "黑" [ref=e119]
+  - generic [ref=e120]: 🎁 购买大千/宙斯免费赠送转接口 · 可适配青羽/幻影/Pro系列烟弹
+  - generic [ref=e121]: 💡 推荐御影S — 功能对标幻影Pro（¥428）仅售¥368 · 详看后文
+  - heading "一次性推荐" [level=2] [ref=e123]
+  - generic [ref=e124]:
+    - generic [ref=e125]: 美深威 匠造者-01/02 ¥149 重点
+    - generic [ref=e126]:
+      - generic [ref=e127]: 13ml超大油
+      - generic [ref=e128]: 可视油仓
+      - generic [ref=e129]: 可调功率
+      - generic [ref=e130]: 吸阻调节
+      - generic [ref=e131]: 电量显示
+      - generic [ref=e132]: 600mAh
+  - table [ref=e134]:
+    - rowgroup [ref=e135]:
+      - row "需求 推荐 价 特点" [ref=e136]:
+        - columnheader "需求" [ref=e137]
+        - columnheader "推荐" [ref=e138]
+        - columnheader "价" [ref=e139]
+        - columnheader "特点" [ref=e140]
+    - rowgroup [ref=e141]:
+      - row "果味过渡 金光奕奕 ¥139 凤梨果香 · 悦刻原厂" [ref=e142]:
+        - cell "果味过渡" [ref=e143]
+        - cell "金光奕奕" [ref=e144]
+        - cell "¥139" [ref=e145]
+        - cell "凤梨果香 · 悦刻原厂" [ref=e146]
+      - row "解瘾强 山雾秋 ¥129 层次丰富·击喉强" [ref=e147]:
+        - cell "解瘾强" [ref=e148]
+        - cell "山雾秋" [ref=e149]
+        - cell "¥129" [ref=e150]
+        - cell "层次丰富·击喉强" [ref=e151]
+      - row "国风雅致 敬亭山·念关山 ¥139 木质清香" [ref=e152]:
+        - cell "国风雅致" [ref=e153]
+        - cell "敬亭山·念关山" [ref=e154]
+        - cell "¥139" [ref=e155]
+        - cell "木质清香" [ref=e156]
+      - row "蓝莓替代 夏幕·霜月 ¥129 莓果温润" [ref=e157]:
+        - cell "蓝莓替代" [ref=e158]
+        - cell "夏幕·霜月" [ref=e159]
+        - cell "¥129" [ref=e160]
+        - cell "莓果温润" [ref=e161]
+  - generic [ref=e162]:
+    - generic [ref=e163]:
+      - generic [ref=e164]: 🛡️
+      - generic [ref=e165]: 正品保障
+      - generic [ref=e166]: 全部国标货源 正规渠道
+    - generic [ref=e167]:
+      - generic [ref=e168]: 📦
+      - generic [ref=e169]: 全国发货
+      - generic [ref=e170]: 顺丰包邮 闪电配送
+    - generic [ref=e171]:
+      - generic [ref=e172]: 🛠️
+      - generic [ref=e173]: 售后保障
+      - generic [ref=e174]: 质量问题直接对接厂家售后
+  - generic [ref=e175]:
+    - heading "烟弹 · 口味速查" [level=2] [ref=e176]
+    - generic [ref=e177]: 幻影Pro ¥129 · 幻影 ¥119 · 青羽 ¥99
+  - heading "幻影Pro系列 · 适配六代 · 三档功率" [level=2] [ref=e179]
+  - generic [ref=e180]:
+    - generic [ref=e181]:
+      - generic [ref=e182]: ¥129
+      - generic [ref=e183]:
+        - text: 蓝田暖阳
+        - generic [ref=e184]: 淡雅中式
+      - img "蓝田暖阳" [ref=e186]
+      - generic [ref=e187]: 清雅烤烟香 · 淡雅中式 回味干净
+      - generic [ref=e188]:
+        - generic [ref=e189]: ★★☆☆☆
+        - generic [ref=e190]: 清淡
+    - generic [ref=e191]:
+      - generic [ref=e192]: ¥129
+      - generic [ref=e193]:
+        - text: 森林复兴
+        - generic [ref=e194]: 清爽草本
+      - img "森林复兴" [ref=e196]
+      - generic [ref=e197]: 草木草本香 · 凉茶草本 清爽不腻
+      - generic [ref=e198]:
+        - generic [ref=e199]: ★★★☆☆
+        - generic [ref=e200]: 适中
+    - generic [ref=e201]:
+      - generic [ref=e202]: ¥129
+      - generic [ref=e203]:
+        - text: 传家宝藏
+        - generic [ref=e204]: 清透干净
+      - img "传家宝藏" [ref=e206]
+      - generic [ref=e207]: 清透烤烟香 · 清透干净 无杂味
+      - generic [ref=e208]:
+        - generic [ref=e209]: ★★☆☆☆
+        - generic [ref=e210]: 清淡
+    - generic [ref=e211]:
+      - generic [ref=e212]: ¥129
+      - generic [ref=e213]:
+        - text: 红运滚滚
+        - generic [ref=e214]: 解瘾强
+        - generic [ref=e215]: 爆款
+        - generic [ref=e216]: 焦糖甜香
+      - img "红运滚滚" [ref=e218]
+      - generic [ref=e219]: 焦甜甘草香 · 焦糖甜香 浓厚烤烟
+      - generic [ref=e220]:
+        - generic [ref=e221]: ★★★★☆
+        - generic [ref=e222]: 偏浓
+      - text: 热销
+    - generic [ref=e223]:
+      - generic [ref=e224]: ¥129
+      - generic [ref=e225]:
+        - text: 日出沧海
+        - generic [ref=e226]: 新品上市
+      - img "日出沧海" [ref=e228]
+      - generic [ref=e229]: 清润海盐烤烟 · 海盐清爽 微甜回甘
+      - generic [ref=e230]:
+        - generic [ref=e231]: ★★☆☆☆
+        - generic [ref=e232]: 清淡
+  - heading "幻影系列 · 适配五代/六代 · 口味最丰富" [level=2] [ref=e234]
+  - generic [ref=e235]:
+    - generic [ref=e236]:
+      - generic [ref=e237]: ¥119
+      - generic [ref=e238]:
+        - text: 金风习习
+        - generic [ref=e239]: 新品上市
+        - generic [ref=e240]: 菊花清甜
+      - img "金风习习" [ref=e242]
+      - generic [ref=e243]: 冰糖菊花茶 · 菊花清甜
+      - generic [ref=e244]:
+        - generic [ref=e245]: ★★☆☆☆
+        - generic [ref=e246]: 清淡
+    - generic [ref=e247]:
+      - generic [ref=e248]: ¥119
+      - generic [ref=e249]:
+        - text: 绿扇盈盈
+        - generic [ref=e250]: 万宝路替代
+      - img "绿扇盈盈" [ref=e252]
+      - generic [ref=e253]: 淡豆香烟草 · 万宝路淡香
+      - generic [ref=e254]:
+        - generic [ref=e255]: ★★★☆☆
+        - generic [ref=e256]: 适中
+      - text: 热销
+    - generic [ref=e257]:
+      - generic [ref=e258]: ¥119
+      - generic [ref=e259]:
+        - text: 兰亭煮雪
+        - generic [ref=e260]: 冰糖雪梨
+      - img "兰亭煮雪" [ref=e262]
+      - generic [ref=e263]: 甘草甜烤烟 · 冰糖雪梨
+      - generic [ref=e264]:
+        - generic [ref=e265]: ★★☆☆☆
+        - generic [ref=e266]: 清淡
+    - generic [ref=e267]:
+      - generic [ref=e268]: ¥119
+      - generic [ref=e269]:
+        - text: 竹仗胜马
+        - generic [ref=e270]: 茉莉花茶
+      - img "竹仗胜马" [ref=e272]
+      - generic [ref=e273]: 草木花茶烤烟 · 茉莉花茶
+      - generic [ref=e274]:
+        - generic [ref=e275]: ★★☆☆☆
+        - generic [ref=e276]: 清淡
+    - generic [ref=e277]:
+      - generic [ref=e278]: ¥119
+      - generic [ref=e279]:
+        - text: 绕指轻舞
+        - generic [ref=e280]: 女生首选
+      - img "绕指轻舞" [ref=e282]
+      - generic [ref=e283]: 清逸烤烟 · 轻盈不压喉 女生首选
+      - generic [ref=e284]:
+        - generic [ref=e285]: ★★☆☆☆
+        - generic [ref=e286]: 清淡
+    - generic [ref=e287]:
+      - generic [ref=e288]: ¥119
+      - generic [ref=e289]:
+        - text: 浩海潮升
+        - generic [ref=e290]: 青苹果清爽
+      - img "浩海潮升" [ref=e292]
+      - generic [ref=e293]: 清甜烤烟 · 青苹果淡香 夏季口粮
+      - generic [ref=e294]:
+        - generic [ref=e295]: ★★☆☆☆
+        - generic [ref=e296]: 清淡
+    - generic [ref=e297]:
+      - generic [ref=e298]: ¥119
+      - generic [ref=e299]:
+        - text: 柳暗花明
+        - generic [ref=e300]: 红枣蜜香
+      - img "柳暗花明" [ref=e302]
+      - generic [ref=e303]: 红枣蜜香烤烟 · 温润绵长 秋冬
+      - generic [ref=e304]:
+        - generic [ref=e305]: ★★★☆☆
+        - generic [ref=e306]: 适中
+    - generic [ref=e307]:
+      - generic [ref=e308]: ¥119
+      - generic [ref=e309]:
+        - text: 群玉山见
+        - generic [ref=e310]: 解瘾强
+        - generic [ref=e311]: 爆款
+        - generic [ref=e312]: 雪茄醇厚
+      - img "群玉山见" [ref=e314]
+      - generic [ref=e315]: 焦甜木甘草香 · 雪茄醇厚 解瘾
+      - generic [ref=e316]:
+        - generic [ref=e317]: ★★★★☆
+        - generic [ref=e318]: 偏浓
+  - heading "青羽系列 · ¥99 · 性价比之王" [level=2] [ref=e320]
+  - generic [ref=e321]:
+    - generic [ref=e322]:
+      - generic [ref=e323]: ¥99
+      - generic [ref=e324]:
+        - text: 忘江有径
+        - generic [ref=e325]: 爆款
+        - generic [ref=e326]: 桂圆甜润
+      - img "忘江有径" [ref=e328]
+      - generic [ref=e329]: 草本桂圆甜香 · 桂圆甜润
+      - generic [ref=e330]:
+        - generic [ref=e331]: ★★★☆☆
+        - generic [ref=e332]: 适中
+      - text: 热销
+    - generic [ref=e333]:
+      - generic [ref=e334]: ¥99
+      - generic [ref=e335]:
+        - text: 旭日凌云
+        - generic [ref=e336]: 果味过渡
+        - generic [ref=e337]: 性价比
+      - img "旭日凌云" [ref=e339]
+      - generic [ref=e340]: 清瓜香甜 · 青瓜清爽 最佳果味过渡
+      - generic [ref=e341]:
+        - generic [ref=e342]: ★★☆☆☆
+        - generic [ref=e343]: 清淡
+    - generic [ref=e344]:
+      - generic [ref=e345]: ¥99
+      - generic [ref=e346]:
+        - text: 森林复兴
+        - generic [ref=e347]: 解瘾强
+      - img "森林复兴" [ref=e349]
+      - generic [ref=e350]: 苔香豆甜烤烟 · 烟劲饱满
+      - generic [ref=e351]:
+        - generic [ref=e352]: ★★★★☆
+        - generic [ref=e353]: 适中
+    - generic [ref=e354]:
+      - generic [ref=e355]: ¥99
+      - generic [ref=e356]:
+        - text: 点点灵犀
+        - generic [ref=e357]: 全天口粮
+      - img "点点灵犀" [ref=e359]
+      - generic [ref=e360]: 清浅烤烟香 · 余味干净 全天口粮
+      - generic [ref=e361]:
+        - generic [ref=e362]: ★★☆☆☆
+        - generic [ref=e363]: 清淡
+    - generic [ref=e364]:
+      - generic [ref=e365]: ¥99
+      - generic [ref=e366]:
+        - text: 晨光入林
+        - generic [ref=e367]: 酒香独特
+      - img "晨光入林" [ref=e369]
+      - generic [ref=e370]: 酒香烤烟香 · 白兰地淡香
+      - generic [ref=e371]:
+        - generic [ref=e372]: ★★★☆☆
+        - generic [ref=e373]: 适中
+    - generic [ref=e374]:
+      - generic [ref=e375]: ¥99
+      - generic [ref=e376]:
+        - text: 佳人佳期
+        - generic [ref=e377]: 女生首选
+      - img "佳人佳期" [ref=e379]
+      - generic [ref=e380]: 淡甜草木烤烟 · 温婉不刺激 女生
+      - generic [ref=e381]:
+        - generic [ref=e382]: ★★☆☆☆
+        - generic [ref=e383]: 清淡
+    - generic [ref=e384]:
+      - generic [ref=e385]: ¥99
+      - generic [ref=e386]:
+        - text: 暖夕穿林
+        - generic [ref=e387]: 层次丰富
+      - img "暖夕穿林" [ref=e389]
+      - generic [ref=e390]: 草本果香回甜 · 层次丰富 口碑佳
+      - generic [ref=e391]:
+        - generic [ref=e392]: ★★★☆☆
+        - generic [ref=e393]: 适中
+    - generic [ref=e394]:
+      - generic [ref=e395]: ¥99
+      - generic [ref=e396]:
+        - text: 柔情牛仔
+        - generic [ref=e397]: 外烟替代
+      - img "柔情牛仔" [ref=e399]
+      - generic [ref=e400]: 异域烟草香 · 骆驼风格 外烟替代
+      - generic [ref=e401]:
+        - generic [ref=e402]: ★★★☆☆
+        - generic [ref=e403]: 适中
+  - generic [ref=e404]:
+    - heading "大千系列 · 10ml超大容量 · 一颗顶五颗" [level=2] [ref=e405]
+    - generic [ref=e406]: ¥109-129
+  - generic [ref=e407]:
+    - generic [ref=e408]:
+      - generic [ref=e409]: ¥129
+      - generic [ref=e410]:
+        - text: 春鸣
+        - generic [ref=e411]: 凉感推荐
+        - generic [ref=e412]: 新手友好
+      - img "春鸣" [ref=e414]
+      - generic [ref=e415]: 凉感柔和烟草 · 薄荷烟草 新手友好
+      - generic [ref=e416]:
+        - generic [ref=e417]: ★★☆☆☆
+        - generic [ref=e418]: 清淡
+    - generic [ref=e419]:
+      - generic [ref=e420]: ¥129
+      - generic [ref=e421]:
+        - text: 柏芬
+        - generic [ref=e422]: 果味过渡
+        - generic [ref=e423]: 酸甜丝滑
+      - img "柏芬" [ref=e425]
+      - generic [ref=e426]: 奶油话梅香 · 酸甜丝滑 以前果味
+      - generic [ref=e427]:
+        - generic [ref=e428]: ★★☆☆☆
+        - generic [ref=e429]: 清淡
+    - generic [ref=e430]:
+      - generic [ref=e431]: ¥129
+      - generic [ref=e432]:
+        - text: 知夏
+        - generic [ref=e433]: 雪茄+柑橘
+      - img "知夏" [ref=e435]
+      - generic [ref=e436]: 醇香雪茄+柑橘 · 雪茄带柑橘清新
+      - generic [ref=e437]:
+        - generic [ref=e438]: ★★★☆☆
+        - generic [ref=e439]: 适中
+    - generic [ref=e440]:
+      - generic [ref=e441]: ¥129
+      - generic [ref=e442]:
+        - text: 悠岚
+        - generic [ref=e443]: 长期口粮
+        - generic [ref=e444]: 中南海替代
+      - img "悠岚" [ref=e446]
+      - generic [ref=e447]: 清雅干草甜香 · 中南海淡香 首选
+      - generic [ref=e448]:
+        - generic [ref=e449]: ★★☆☆☆
+        - generic [ref=e450]: 清淡
+    - generic [ref=e451]:
+      - generic [ref=e452]: ¥129
+      - generic [ref=e453]:
+        - text: 甘泽
+        - generic [ref=e454]: 解瘾强
+        - generic [ref=e455]: 爆款
+        - generic [ref=e456]: 层次王者
+      - img "甘泽" [ref=e458]
+      - generic [ref=e459]: 茴甜→木香→烤烟 · 三段式层次
+      - generic [ref=e460]:
+        - generic [ref=e461]: ★★★★☆
+        - generic [ref=e462]: 偏浓
+    - generic [ref=e463]:
+      - generic [ref=e464]: ¥109
+      - generic [ref=e465]:
+        - text: 隋和
+        - generic [ref=e466]: 果味过渡
+        - generic [ref=e467]: 荔枝茶
+      - img "隋和" [ref=e469]
+      - generic [ref=e470]: 蜜香荔枝茶 · 以前荔枝味电子烟
+      - generic [ref=e471]:
+        - generic [ref=e472]: ★★☆☆☆
+        - generic [ref=e473]: 清淡
+    - generic [ref=e474]:
+      - generic [ref=e475]: ¥109
+      - generic [ref=e476]:
+        - text: 太霄
+        - generic [ref=e477]: 茶系推荐
+      - img "太霄" [ref=e479]
+      - generic [ref=e480]: 清香乌龙 · 铁观音回甘 茶系首选
+      - generic [ref=e481]:
+        - generic [ref=e482]: ★★☆☆☆
+        - generic [ref=e483]: 清淡
+  - heading "宙斯系列 · 高端旗舰 · 适配宙斯主机" [level=2] [ref=e485]
+  - generic [ref=e486]:
+    - generic [ref=e487]:
+      - generic [ref=e488]: ¥169
+      - generic [ref=e489]:
+        - text: 绿扇盈盈
+        - generic [ref=e490]: 解瘾强
+        - generic [ref=e491]: 爆款
+        - generic [ref=e492]: IQOS替代
+      - img "绿扇盈盈" [ref=e494]
+      - generic [ref=e495]: 淡豆香烟草 · IQOS醇厚感 2.85ml
+      - generic [ref=e496]:
+        - generic [ref=e497]: ★★★★☆
+        - generic [ref=e498]: 偏浓
+    - generic [ref=e499]:
+      - generic [ref=e500]: ¥99
+      - generic [ref=e501]:
+        - text: 拂柳风
+        - generic [ref=e502]: 2颗装
+        - generic [ref=e503]: 软中华风格
+      - img "拂柳风" [ref=e505]
+      - generic [ref=e506]: 中式烤烟+清雅木香 · 软中华淡雅 3ml
+      - generic [ref=e507]:
+        - generic [ref=e508]: ★★★☆☆
+        - generic [ref=e509]: 适中
+    - generic [ref=e510]:
+      - generic [ref=e511]: ¥99
+      - generic [ref=e512]:
+        - text: 广厦间
+        - generic [ref=e513]: 解瘾强
+        - generic [ref=e514]: 2颗装
+        - generic [ref=e515]: 硬中华口感
+      - img "广厦间" [ref=e517]
+      - generic [ref=e518]: 醇厚烤烟香 · 硬中华满足感 3ml
+      - generic [ref=e519]:
+        - generic [ref=e520]: ★★★★☆
+        - generic [ref=e521]: 偏浓
+  - heading "小众精选 · 悦刻杆子适配" [level=2] [ref=e523]
+  - generic [ref=e524]:
+    - generic [ref=e525]:
+      - generic [ref=e526]: ¥99
+      - generic [ref=e527]:
+        - text: 翠川苍
+        - generic [ref=e528]: 果甜清爽
+      - img "翠川苍" [ref=e530]
+      - generic [ref=e531]: 淡雅果甜烤烟 · 清新不突兀
+      - generic [ref=e532]:
+        - generic [ref=e533]: ★★☆☆☆
+        - generic [ref=e534]: 清淡
+    - generic [ref=e535]:
+      - generic [ref=e536]: ¥99
+      - generic [ref=e537]:
+        - text: 云岭松风
+        - generic [ref=e538]: 松针草本
+      - img "云岭松风" [ref=e540]
+      - generic [ref=e541]: 松针草本香 · 国风意境
+      - generic [ref=e542]:
+        - generic [ref=e543]: ★★★☆☆
+        - generic [ref=e544]: 适中
+    - generic [ref=e545]:
+      - generic [ref=e546]: ¥99
+      - generic [ref=e547]:
+        - text: 碧海澄空
+        - generic [ref=e548]: 果味过渡
+        - generic [ref=e549]: 凉感推荐
+      - img "碧海澄空" [ref=e551]
+      - generic [ref=e552]: 海盐+薄荷+果香 · 以前薄荷水果
+      - generic [ref=e553]:
+        - generic [ref=e554]: ★★☆☆☆
+        - generic [ref=e555]: 清淡
+    - generic [ref=e556]:
+      - generic [ref=e557]: ¥119
+      - generic [ref=e558]:
+        - text: 金丝露
+        - generic [ref=e559]: 焦香烤烟
+      - img "金丝露" [ref=e561]
+      - generic [ref=e562]: 焦香烤烟 · 纯正 老烟民最爱
+      - generic [ref=e563]:
+        - generic [ref=e564]: ★★★☆☆
+        - generic [ref=e565]: 适中
+    - generic [ref=e566]:
+      - generic [ref=e567]: ¥119
+      - generic [ref=e568]:
+        - text: 冷烟月
+        - generic [ref=e569]: 草本清香
+      - img "冷烟月" [ref=e571]
+      - generic [ref=e572]: 草本清香 · 干净利落
+      - generic [ref=e573]:
+        - generic [ref=e574]: ★★★☆☆
+        - generic [ref=e575]: 适中
+    - generic [ref=e576]:
+      - generic [ref=e577]: ¥99
+      - generic [ref=e578]:
+        - text: 兰亭雅集
+        - generic [ref=e579]: 花香清雅
+      - img "兰亭雅集" [ref=e581]
+      - generic [ref=e582]: 蜂蜜紫罗兰香 · 以前花香味
+      - generic [ref=e583]:
+        - generic [ref=e584]: ★★☆☆☆
+        - generic [ref=e585]: 清淡
+  - generic [ref=e586]:
+    - heading "一次性电子烟 · 口味速查" [level=2] [ref=e587]
+    - generic [ref=e588]: 即开即用 无需充电 多品牌多口味
+  - generic [ref=e589]:
+    - generic [ref=e590]: 美深威 匠造者-01 / 匠造者-02 ¥149 重点
+    - generic [ref=e591]: ¥149
+    - generic [ref=e592]:
+      - generic [ref=e593]: 13ml超大油
+      - generic [ref=e594]: 可视油仓
+      - generic [ref=e595]: 可调输出功率
+      - generic [ref=e596]: 吸阻调节
+      - generic [ref=e597]: 电量显示
+      - generic [ref=e598]: 600mAh大电池
+    - generic [ref=e599]: "01: 甜豆+坚果+咖啡+蛋糕 四重层次 | 02: 浓香烟草+可可+生巧 解瘾首选"
+  - heading "悦刻 RELX · ¥139 · 9.6ml" [level=2] [ref=e601]
+  - generic [ref=e602]:
+    - generic [ref=e603]:
+      - generic [ref=e604]: ¥139
+      - generic [ref=e605]:
+        - text: 满园茵茵
+        - generic [ref=e606]: 拿铁温润
+      - img "满园茵茵" [ref=e608]
+      - generic [ref=e609]: 烤烟可可奶香 · 拿铁温润
+      - generic [ref=e610]:
+        - generic [ref=e611]: ★★★☆☆
+        - generic [ref=e612]: 适中
+    - generic [ref=e613]:
+      - generic [ref=e614]: ¥139
+      - generic [ref=e615]:
+        - text: 金光奕奕
+        - generic [ref=e616]: 果味过渡
+        - generic [ref=e617]: 凤梨果香
+      - img "金光奕奕" [ref=e619]
+      - generic [ref=e620]: 凤梨果香+烤烟 · 果味过渡
+      - generic [ref=e621]:
+        - generic [ref=e622]: ★★★☆☆
+        - generic [ref=e623]: 适中
+    - generic [ref=e624]:
+      - generic [ref=e625]: ¥139
+      - generic [ref=e626]:
+        - text: 飞马环游
+        - generic [ref=e627]: 檀香高级
+      - img "飞马环游" [ref=e629]
+      - generic [ref=e630]: 木质沉香 · 檀香高级
+      - generic [ref=e631]:
+        - generic [ref=e632]: ★★★☆☆
+        - generic [ref=e633]: 适中
+  - heading "铂岚 POOLAN · ¥139 · 10.5ml · 国风雅韵" [level=2] [ref=e635]
+  - generic [ref=e636]:
+    - generic [ref=e637]:
+      - generic [ref=e638]: ¥139
+      - generic [ref=e639]:
+        - text: 敬亭山
+        - generic [ref=e640]: 茶系推荐
+      - img "敬亭山" [ref=e642]
+      - generic [ref=e643]: 木质清香 · 品茶雅致
+      - generic [ref=e644]:
+        - generic [ref=e645]: ★★☆☆☆
+        - generic [ref=e646]: 清淡
+    - generic [ref=e647]:
+      - generic [ref=e648]: ¥139
+      - generic [ref=e649]:
+        - text: 念关山
+        - generic [ref=e650]: 香槟气泡
+      - img "念关山" [ref=e652]
+      - generic [ref=e653]: 清甜香槟 · 气泡轻盈
+      - generic [ref=e654]:
+        - generic [ref=e655]: ★★☆☆☆
+        - generic [ref=e656]: 清淡
+  - heading "迷睿 · ¥129 · 10ml" [level=2] [ref=e658]
+  - generic [ref=e659]:
+    - generic [ref=e660]:
+      - generic [ref=e661]: ¥129
+      - generic [ref=e662]:
+        - text: 夏幕
+        - generic [ref=e663]: 果味过渡
+        - generic [ref=e664]: 蓝莓替代
+      - img "夏幕" [ref=e666]
+      - generic [ref=e667]: 莓果+烟草 · 蓝莓替代
+      - generic [ref=e668]:
+        - generic [ref=e669]: ★★☆☆☆
+        - generic [ref=e670]: 清淡
+    - generic [ref=e671]:
+      - generic [ref=e672]: ¥129
+      - generic [ref=e673]:
+        - text: 金缕
+        - generic [ref=e674]: 花茶清雅
+      - img "金缕" [ref=e676]
+      - generic [ref=e677]: 玫瑰茉莉 · 花茶清雅
+      - generic [ref=e678]:
+        - generic [ref=e679]: ★★☆☆☆
+        - generic [ref=e680]: 清淡
+    - generic [ref=e681]:
+      - generic [ref=e682]: ¥129
+      - generic [ref=e683]:
+        - text: 见山
+        - generic [ref=e684]: 清新自然
+      - img "见山" [ref=e686]
+      - generic [ref=e687]: 清新自然 · 不腻不燥
+      - generic [ref=e688]:
+        - generic [ref=e689]: ★★☆☆☆
+        - generic [ref=e690]: 清淡
+    - generic [ref=e691]:
+      - generic [ref=e692]: ¥129
+      - generic [ref=e693]:
+        - text: 白岸
+        - generic [ref=e694]: 果味过渡
+        - generic [ref=e695]: 凉感推荐
+      - img "白岸" [ref=e697]
+      - generic [ref=e698]: 柑橘乌龙+凉 · 柠檬茶
+      - generic [ref=e699]:
+        - generic [ref=e700]: ★★☆☆☆
+        - generic [ref=e701]: 清淡
+  - heading "Voopoo · 美深威 · HQD" [level=2] [ref=e703]
+  - generic [ref=e704]:
+    - generic [ref=e705]:
+      - generic [ref=e706]: ¥129
+      - generic [ref=e707]:
+        - text: 山雾秋
+        - generic [ref=e708]: 解瘾强
+        - generic [ref=e709]: 层次丰富
+      - img "山雾秋" [ref=e711]
+      - generic [ref=e712]: 花香果香 层次丰富
+      - generic [ref=e713]:
+        - generic [ref=e714]: ★★★★☆
+        - generic [ref=e715]: 偏浓
+    - generic [ref=e716]:
+      - generic [ref=e717]: ¥149
+      - generic [ref=e718]:
+        - text: 匠造者-01
+        - generic [ref=e719]: 爆款
+        - generic [ref=e720]: 超大容量
+        - generic [ref=e721]: 四重层次
+      - img "匠造者-01" [ref=e723]
+      - generic [ref=e724]: 豆香坚果咖啡蛋糕 四重层次 13ml
+      - generic [ref=e725]:
+        - generic [ref=e726]: ★★★☆☆
+        - generic [ref=e727]: 偏淡
+    - generic [ref=e728]:
+      - generic [ref=e729]: ¥149
+      - generic [ref=e730]:
+        - text: 匠造者-02
+        - generic [ref=e731]: 解瘾强
+        - generic [ref=e732]: 爆款
+        - generic [ref=e733]: 超大容量
+      - img "匠造者-02" [ref=e735]
+      - generic [ref=e736]: 浓香烟草+可可+生巧 黑森林 13ml
+      - generic [ref=e737]:
+        - generic [ref=e738]: ★★★★☆
+        - generic [ref=e739]: 偏浓
+    - generic [ref=e740]:
+      - generic [ref=e741]: ¥129
+      - generic [ref=e742]:
+        - text: 霜月
+        - generic [ref=e743]: 蓝莓烤烟
+      - img "霜月" [ref=e745]
+      - generic [ref=e746]: 蓝莓烤烟 · 温润不燥
+      - generic [ref=e747]:
+        - generic [ref=e748]: ★★★☆☆
+        - generic [ref=e749]: 适中
+  - generic [ref=e750]:
+    - heading "烟具 · 选色图鉴" [level=2] [ref=e751]
+    - generic [ref=e752]: 颜色细节一览 · 按价格从低到高排列
+  - heading "青羽 · ¥218 · 入门首选" [level=2] [ref=e754]
+  - generic [ref=e755]:
+    - generic [ref=e756]:
+      - img "青羽黑" [ref=e758]
+      - generic [ref=e759]: 黑
+    - generic [ref=e760]:
+      - img "青羽银" [ref=e762]
+      - generic [ref=e763]: 银
+  - heading "大千 · ¥258 · 续航王" [level=2] [ref=e765]
+  - generic [ref=e767]:
+    - img "大千黑" [ref=e769]
+    - generic [ref=e770]: 黑
+  - heading "幻影五代 · ¥328 · 经典之选" [level=2] [ref=e772]
+  - generic [ref=e773]:
+    - generic [ref=e774]:
+      - img "嫩绿" [ref=e776]
+      - generic [ref=e777]: 嫩绿
+    - generic [ref=e778]:
+      - img "银" [ref=e780]
+      - generic [ref=e781]: 银
+    - generic [ref=e782]:
+      - img "黑" [ref=e784]
+      - generic [ref=e785]: 黑
+    - generic [ref=e786]:
+      - img "渐变紫" [ref=e788]
+      - generic [ref=e789]: 渐变粉紫
+    - generic [ref=e790]:
+      - img "渐变金" [ref=e792]
+      - generic [ref=e793]: 渐变金粉
+  - heading "御影S · ¥368 · 功能对标幻影Pro 🔥推荐" [level=2] [ref=e795]
+  - generic [ref=e797]:
+    - img "御影S" [ref=e799]
+    - generic [ref=e800]: 雅灰
+  - generic [ref=e801]:
+    - generic [ref=e802]: 为什么选御影S？
+    - generic [ref=e803]: 功能对标幻影Pro（3档功率+屏幕显示+口数记录），仅售¥368，省60块
+    - generic [ref=e804]:
+      - generic [ref=e805]: 电量实时显示
+      - generic [ref=e806]: 3档功率调节
+      - generic [ref=e807]: 口数精准记录
+      - generic [ref=e808]: Type-C充电
+  - heading "幻影Pro · ¥428 · 旗舰六代" [level=2] [ref=e810]
+  - generic [ref=e811]:
+    - generic [ref=e812]:
+      - img "银" [ref=e814]
+      - generic [ref=e815]: 银
+    - generic [ref=e816]:
+      - img "白" [ref=e818]
+      - generic [ref=e819]: 白
+    - generic [ref=e820]:
+      - img "粉" [ref=e822]
+      - generic [ref=e823]: 粉
+    - generic [ref=e824]:
+      - img "黑" [ref=e826]
+      - generic [ref=e827]: 黑
+  - heading "宙斯 · ¥888 · 顶级旗舰" [level=2] [ref=e829]
+  - generic [ref=e831]:
+    - img "宙斯" [ref=e833]
+    - generic [ref=e834]: 黑
+  - generic [ref=e835]: 适配宙斯系列2.85ml烟弹 · 搭配转接头可通用其他系列烟弹
+  - heading "联系门店" [level=2] [ref=e837]
+  - generic [ref=e838]:
+    - generic [ref=e839]:
+      - generic [ref=e840]: 长寿路189弄购物中心店
+      - generic [ref=e841]: 悦刻授权经销商
+      - generic [ref=e842]: 📞 189 3974 1711
+    - generic [ref=e844]:
+      - img "企微" [ref=e846]
+      - generic [ref=e847]: 扫码加企微
+  - generic [ref=e848]: 正品保障 · 全国顺丰包邮 · 售后直接对接厂家

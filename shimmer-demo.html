@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>光效扫过 · Shimmer Demo</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #f0efeb;
+  font-family: 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+  padding: 40px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+h2 {
+  width: 100%; text-align: center;
+  color: #0D7377; margin-bottom: 8px;
+}
+p.note { width: 100%; text-align: center; color: #999; font-size: 13px; margin-bottom: 24px; }
+
+.card {
+  width: 160px;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+  position: relative;
+}
+
+/* ===== 光效核心 ===== */
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(201, 169, 110, 0.08) 30%,
+    rgba(201, 169, 110, 0.25) 50%,
+    rgba(201, 169, 110, 0.08) 70%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  animation: shimmer 3s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+
+@keyframes shimmer {
+  0%   { left: -100%; }
+  100% { left: 150%; }
+}
+
+/* 每张卡片错开动画起始时间 */
+.card:nth-child(2)::after { animation-delay: 0.4s; }
+.card:nth-child(3)::after { animation-delay: 0.8s; }
+.card:nth-child(4)::after { animation-delay: 1.2s; }
+.card:nth-child(5)::after { animation-delay: 0.2s; }
+.card:nth-child(6)::after { animation-delay: 0.6s; }
+
+/* 新品加金色边框扫光 */
+.card.new {
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+.card.new::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  padding: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #C9A96E 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: borderShimmer 2.5s ease-in-out infinite;
+  z-index: 3;
+  pointer-events: none;
+}
+
+@keyframes borderShimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.card-img {
+  width: 100%; height: 140px;
+  background: linear-gradient(135deg, #e8e4db, #d5cfc0);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 40px;
+  position: relative;
+  z-index: 1;
+}
+.card-body {
+  padding: 10px 12px 12px;
+}
+.card-name {
+  font-size: 14px; font-weight: 700; color: #333; margin-bottom: 4px;
+}
+.card-tags {
+  display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 6px;
+}
+.tag {
+  font-size: 10px; padding: 2px 6px; border-radius: 4px; line-height: 1.4;
+}
+.tag-blue  { background: #e8f4f4; color: #0D7377; }
+.tag-red   { background: #fde8e8; color: #C0392B; }
+.tag-gold  { background: #fdf3e0; color: #C9A96E; }
+.card-price {
+  font-size: 16px; font-weight: 800; color: #C0392B;
+}
+
+/* 按钮：重新播放 */
+.replay-btn {
+  width: 100%; margin-top: 24px; text-align: center;
+}
+.replay-btn button {
+  background: #0D7377; color: #fff; border: none;
+  padding: 10px 32px; border-radius: 8px; font-size: 14px;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+<h2>光效扫过 · Shimmer Demo</h2>
+<p class="note">点击"重新播放"可以看到每张卡片依次被金色光效扫过<br>新品卡片额外有金色边框流光</p>
+
+<div id="cards">
+  <div class="card new">
+    <div class="card-img">🌺</div>
+    <div class="card-body">
+      <div class="card-name">生花好事</div>
+      <div class="card-tags">
+        <span class="tag tag-blue">新品上市</span>
+        <span class="tag tag-red">解瘾强</span>
+      </div>
+      <div class="card-price">&yen;149</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-img">☕</div>
+    <div class="card-body">
+      <div class="card-name">满园茵茵</div>
+      <div class="card-tags">
+        <span class="tag tag-blue">9.6ml</span>
+        <span class="tag tag-blue">拿铁温润</span>
+      </div>
+      <div class="card-price">&yen;139</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-img">🍍</div>
+    <div class="card-body">
+      <div class="card-name">金光奕奕</div>
+      <div class="card-tags">
+        <span class="tag tag-blue">9.6ml</span>
+        <span class="tag tag-green">果味过渡</span>
+      </div>
+      <div class="card-price">&yen;139</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-img">🪵</div>
+    <div class="card-body">
+      <div class="card-name">飞马环游</div>
+      <div class="card-tags">
+        <span class="tag tag-blue">9.6ml</span>
+        <span class="tag tag-blue">檀香高级</span>
+      </div>
+      <div class="card-price">&yen;139</div>
+    </div>
+  </div>
+
+  <div class="card new">
+    <div class="card-img">🔧</div>
+    <div class="card-body">
+      <div class="card-name">匠造者-01</div>
+      <div class="card-tags">
+        <span class="tag tag-blue">新品上市</span>
+        <span class="tag tag-gold">爆款</span>
+      </div>
+      <div class="card-price">&yen;149</div>
+    </div>
+  </div>
+
+  <div class="card new">
+    <div class="card-img">🍫</div>
+    <div class="card-body">
+      <div class="card-name">匠造者-02</div>
+      <div class="card-tags">
+        <span class="tag tag-blue">新品上市</span>
+        <span class="tag tag-red">解瘾强</span>
+      </div>
+      <div class="card-price">&yen;149</div>
+    </div>
+  </div>
+</div>
+
+<div class="replay-btn">
+  <button onclick="replay()">🔄 重新播放</button>
+</div>
+
+<script>
+function replay() {
+  var cards = document.querySelectorAll('.card');
+  cards.forEach(function(c) { c.style.animation = 'none'; c.offsetHeight; c.style.animation = ''; });
+  cards.forEach(function(c) {
+    var after = getComputedStyle(c, '::after');
+  });
+}
+</script>
+</body>
+</html>

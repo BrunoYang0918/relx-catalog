@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>悦刻·产品图册</title>
+<style>
+:root {
+  --teal: #0D7377;
+  --gold: #C9A96E;
+  --red: #C0392B;
+  --green: #27AE60;
+  --bg: #f5f3ee;
+  --card-bg: #fff;
+  --text: #2D2D2D;
+  --text-light: #666;
+  --border: #E8E5DF;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: 100px;
+  position: relative;
+}
+
+/* ===== 水印 ===== */
+body::before {
+  content: "";
+  position: fixed; top:0; left:0; right:0; bottom:0;
+  pointer-events: none; z-index: 0; opacity: .06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='80'%3E%3Ctext x='0' y='35' font-family='Microsoft YaHei,sans-serif' font-size='16' font-weight='700' fill='%23000' transform='rotate(-25 250 40)'%3E长寿路189弄购物中心店 · 18939741711%3C/text%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 400px 64px;
+}
+
+main { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
+
+/* ===== 顶部导航栏 ===== */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: linear-gradient(135deg, var(--teal) 0%, #095155 100%);
+  color: #fff; padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  box-shadow: 0 2px 12px rgba(0,0,0,.15);
+}
+.topbar .brand { font-size: 17px; font-weight: 700; letter-spacing: 1px; }
+.topbar .phone-top { font-size: 12px; opacity: .9; }
+.topbar .phone-top a { color: #fff; text-decoration: none; }
+
+/* 快捷导航标签 */
+.quick-nav {
+  position: sticky; top: 48px; z-index: 99;
+  background: #fff; border-bottom: 1px solid var(--border);
+  padding: 8px 0;
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.quick-nav::-webkit-scrollbar { display: none; }
+.quick-nav a {
+  display: inline-block; padding: 6px 14px; margin: 0 2px;
+  font-size: 13px; font-weight: 600; color: var(--teal);
+  background: #E8F4F5; border-radius: 20px;
+  text-decoration: none; white-space: nowrap;
+  transition: all .2s;
+}
+.quick-nav a:first-child { margin-left: 12px; }
+.quick-nav a:last-child { margin-right: 12px; }
+.quick-nav a:active, .quick-nav a.hl { background: var(--teal); color: #fff; }
+
+/* ===== 通用区块 ===== */
+.section { padding: 16px 12px; }
+.section-header {
+  text-align: center; padding: 20px 16px 12px;
+  border-top: 2px solid var(--gold); margin: 0 0 8px;
+}
+.section-header.first { border-top: none; padding-top: 8px; }
+.section-header h2 { font-size: 18px; color: var(--teal); font-weight: 700; }
+.section-header .subtitle { font-size: 13px; color: var(--text-light); margin-top: 4px; }
+
+.divider { height: 1.5px; background: var(--gold); margin: 0 16px; opacity: .6; }
+
+/* ===== 产品卡片网格 ===== */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px; padding: 8px 12px;
+}
+@media (min-width: 480px) {
+  .card-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ===== 产品卡片 ===== */
+.product-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 8px 8px;
+  display: flex; flex-direction: column; gap: 4px;
+  position: relative; overflow: hidden;
+  transition: transform .15s;
+}
+.product-card:active { transform: scale(.98); }
+.product-card.best { border-color: var(--gold); border-width: 2px; }
+.product-card.star { border-color: var(--red); border-width: 2px; }
+.product-card.tip { border-color: var(--green); border-width: 2px; }
+
+.product-card .p-name {
+  font-size: 14px; font-weight: 700; color: #095155;
+  line-height: 1.4; padding-right: 44px;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 3px;
+}
+.product-card .p-price {
+  position: absolute; top: 10px; right: 8px;
+  font-size: 15px; font-weight: 700; color: var(--gold);
+}
+.product-card .p-img {
+  width: 100%; height: 100px; background: #fff;
+  border-radius: 6px; margin: 2px 0; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.product-card .p-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.product-card .p-desc {
+  background: #FFF8ED; border-radius: 4px;
+  padding: 5px 8px; font-size: 12px; color: #666; line-height: 1.4;
+}
+.product-card .p-desc .em { font-weight: 700; }
+.product-card .p-desc .em.rd { color: var(--red); }
+.product-card .p-desc .em.gr { color: var(--green); }
+.product-card .p-desc .em.gd { color: var(--gold); }
+.product-card .p-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 2px;
+}
+.product-card .p-strength { font-size: 11px; color: #999; }
+.product-card .p-style {
+  font-size: 11px; font-weight: 600; color: var(--teal);
+  background: #E8F4F5; padding: 2px 8px; border-radius: 10px;
+}
+
+/* 热销角标 */
+.product-card.hot::after {
+  content: "热销";
+  position: absolute; top: 28px; right: 6px;
+  background: var(--red); color: #fff;
+  font-size: 9px; font-weight: 700; padding: 2px 7px;
+  border-radius: 3px; z-index: 5;
+}
+
+/* 内联标签 */
+.tag {
+  font-size: 9px; padding: 1px 5px; border-radius: 4px;
+  font-weight: 700; white-space: nowrap; display: inline-block;
+}
+.tag-green { background: #E8F8F5; color: var(--green); }
+.tag-red { background: #FDEDEC; color: var(--red); }
+.tag-gold { background: #FFF8ED; color: var(--gold); }
+.tag-blue { background: #E8F4F5; color: var(--teal); }
+
+/* ===== 快速选购导览 ===== */
+.guide-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 10px; padding: 8px 12px;
+}
+.guide-card {
+  border-radius: 12px; padding: 16px 8px; text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+}
+.guide-card .icon { font-size: 28px; }
+.guide-card h4 { font-size: 13px; font-weight: 700; }
+.guide-card .g-sub { font-size: 10px; color: #888; }
+.guide-card .g-tags { display: flex; flex-wrap: wrap; gap: 3px; justify-content: center; }
+.guide-card .g-tags span {
+  font-size: 9px; padding: 2px 6px; border-radius: 4px; font-weight: 600;
+}
+.gc1 { background: linear-gradient(180deg, #E8F8F5 0%, #fff 100%); border: 1px solid #B8E6D0; }
+.gc1 h4 { color: var(--green); }
+.gc1 .g-tags span { background: #D4F5E9; color: #1E7A4A; }
+.gc2 { background: linear-gradient(180deg, #FDEDEC 0%, #fff 100%); border: 1px solid #E8B4B4; }
+.gc2 h4 { color: var(--red); }
+.gc2 .g-tags span { background: #FCE5E5; color: #9B2C2C; }
+.gc3 { background: linear-gradient(180deg, #FFF8ED 0%, #fff 100%); border: 1px solid #DFCC9F; }
+.gc3 h4 { color: var(--gold); }
+.gc3 .g-tags span { background: #FDF5D7; color: #8B6914; }
+
+/* ===== 推荐组合 ===== */
+.combo-scroll {
+  display: flex; gap: 10px; padding: 8px 12px;
+  overflow-x: auto; scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.combo-scroll::-webkit-scrollbar { display: none; }
+.combo-card {
+  flex: 0 0 130px; scroll-snap-align: start;
+  border-radius: 12px; padding: 14px 10px 12px;
+  text-align: center; display: flex; flex-direction: column; gap: 6px;
+}
+.combo-card .c-label { font-size: 14px; font-weight: 700; letter-spacing: .5px; }
+.combo-card .c-cfg { font-size: 11px; color: #666; line-height: 1.3; }
+.combo-card .c-price { font-size: 22px; font-weight: 800; color: var(--gold); }
+.c-tier1 { background: linear-gradient(180deg, #E8F8F5, #fff); border: 1px solid #B8E6D0; }
+.c-tier1 .c-label { color: var(--green); }
+.c-tier2 { background: linear-gradient(180deg, #E8F4F5, #fff); border: 1px solid #B8D4D8; }
+.c-tier2 .c-label { color: var(--teal); }
+.c-tier3 { background: linear-gradient(180deg, #FFF8ED, #fff); border: 1px solid #DFCC9F; }
+.c-tier3 .c-label { color: var(--gold); }
+.c-tier4 { background: linear-gradient(180deg, #FDEDEC, #fff); border: 1px solid #E8B4B4; }
+.c-tier4 .c-label { color: var(--red); }
+.c-tier5 { background: linear-gradient(180deg, #EFE5D5, #fff); border: 2px solid var(--gold); }
+.c-tier5 .c-label { color: #8B6914; }
+
+/* ===== 表格 ===== */
+.table-wrap {
+  margin: 8px 12px; overflow-x: auto; -webkit-overflow-scrolling: touch;
+  border-radius: 8px; border: 1px solid var(--border);
+}
+.table-wrap table {
+  width: 100%; border-collapse: collapse; font-size: 12px; min-width: 500px;
+}
+.table-wrap th {
+  background: var(--teal); color: #fff; padding: 8px 6px;
+  text-align: center; font-weight: 600; font-size: 11px; white-space: nowrap;
+}
+.table-wrap td {
+  padding: 7px 6px; text-align: center; border-bottom: 1px solid var(--border);
+}
+.table-wrap tr:nth-child(even) td { background: #F9F8F5; }
+.table-wrap .nc { text-align: left; font-weight: 700; color: #095155; }
+.table-wrap .hl-row td { background: #FFF8ED !important; }
+
+/* ===== 高亮卡片 ===== */
+.highlight {
+  background: linear-gradient(135deg, #FFF8ED, #fff);
+  border: 2px solid var(--gold); border-radius: 12px;
+  padding: 14px 16px; margin: 8px 12px;
+}
+.highlight.star { border-color: var(--red); }
+.highlight .hl-title { font-size: 16px; font-weight: 700; color: #095155; margin-bottom: 4px; }
+.highlight .hl-title .badge {
+  font-size: 11px; background: var(--red); color: #fff;
+  padding: 1px 8px; border-radius: 4px; margin-left: 6px;
+}
+.highlight .hl-price { font-size: 24px; font-weight: 700; color: var(--gold); margin: 4px 0; }
+.highlight .hl-features { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.highlight .hl-features span {
+  font-size: 12px; background: #E8F4F5; color: var(--teal);
+  padding: 3px 10px; border-radius: 6px; font-weight: 600;
+}
+.highlight .hl-note { font-size: 12px; color: #666; margin-top: 8px; line-height: 1.5; }
+
+/* ===== 推荐提示 ===== */
+.tip-banner {
+  margin: 4px 12px 8px; padding: 8px 16px; border-radius: 8px;
+  background: #FDEDEC; text-align: center; font-size: 13px; font-weight: 700; color: var(--red);
+}
+
+/* ===== 信任卡片 ===== */
+.trust-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 10px; padding: 12px;
+}
+.trust-card {
+  background: #fff; border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px 8px; text-align: center;
+}
+.trust-card .ticon { font-size: 28px; margin-bottom: 6px; }
+.trust-card .tlabel { font-size: 13px; font-weight: 700; color: #095155; margin-bottom: 2px; }
+.trust-card .tdesc { font-size: 11px; color: #999; }
+
+/* ===== 联系栏 ===== */
+.contact-bar {
+  margin: 16px 12px 0; background: linear-gradient(135deg, #F9F8F5, #fff);
+  border: 2px solid var(--gold); border-radius: 12px;
+  padding: 16px; display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+}
+.contact-bar .ct-left { display: flex; flex-direction: column; gap: 4px; }
+.contact-bar .ct-label { font-size: 12px; color: #999; }
+.contact-bar .ct-store { font-size: 15px; font-weight: 700; color: #095155; }
+.contact-bar .ct-phone { font-size: 20px; font-weight: 700; color: var(--gold); }
+.contact-bar .ct-right { display: flex; align-items: center; gap: 8px; }
+.contact-bar .ct-qr { width: 72px; height: 72px; border-radius: 6px; overflow: hidden; }
+.contact-bar .ct-qr img { width: 100%; height: 100%; object-fit: contain; }
+.contact-bar .ct-qr-label { font-size: 11px; color: #999; text-align: center; }
+
+/* ===== 底部 ===== */
+.footer-note {
+  text-align: center; padding: 16px 12px 8px;
+  font-size: 11px; color: #bbb;
+}
+
+/* ===== 烟具颜色网格（紧凑） ===== */
+.device-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 8px; padding: 8px 12px;
+}
+@media (min-width: 480px) {
+  .device-grid { grid-template-columns: repeat(4, 1fr); }
+}
+.device-card {
+  background: #fff; border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px; text-align: center;
+}
+.device-card .d-img {
+  width: 100%; height: 100px; display: flex;
+  align-items: center; justify-content: center; overflow: hidden;
+}
+.device-card .d-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.device-card .d-label { font-size: 11px; color: #888; margin-top: 4px; }
+
+/* ===== 设备参数卡片 ===== */
+.device-spec {
+  background: #E8F4F5; border-radius: 8px;
+  padding: 10px 14px; margin: 8px 12px; font-size: 12px; color: var(--teal);
+}
+
+/* ===== 转接口提示 ===== */
+.adapter-tip {
+  margin: 4px 12px 8px; padding: 6px 12px;
+  background: #E8F4F5; border-radius: 6px;
+  text-align: center; font-size: 12px; color: var(--teal); font-weight: 600;
+}
+</style>
+</head>
+<body>
+
+<main>
+
+<!-- ========== 顶部导航栏 ========== -->
+<div class="topbar">
+  <div class="brand">悦刻 · 产品图册</div>
+  <div class="phone-top"><a href="tel:18939741711">📞 189 3974 1711</a></div>
+</div>
+
+<div class="quick-nav" id="quickNav">
+  <a href="#guide">选购指南</a>
+  <a href="#pods">烟弹口味</a>
+  <a href="#disposable">一次性</a>
+  <a href="#devices">烟具色鉴</a>
+  <a href="#contact">联系门店</a>
+</div>
+
+<!-- ========== 1. 快速选购指南 ========== -->
+<div class="section-header first" id="guide">
+  <h2>快速选购指南</h2>
+  <div class="subtitle">超 50 款国标烟弹 · 总有你爱的那一口</div>
+</div>
+<div class="divider"></div>
+
+<div class="guide-grid">
+  <div class="guide-card gc1">
+    <div class="icon">🍈</div>
+    <h4>果味过渡</h4>
+    <div class="g-sub">怀念水果味？</div>
+    <div class="g-tags"><span>翠川苍</span><span>柏芬</span><span>隋和</span><span>旭日凌云</span><span>金光奕奕</span><span>白岸</span><span>夏幕</span></div>
+  </div>
+  <div class="guide-card gc2">
+    <div class="icon">🔥</div>
+    <h4>解瘾强击喉</h4>
+    <div class="g-sub">像真烟 一口到位</div>
+    <div class="g-tags"><span>群玉山见</span><span>红运滚滚</span><span>甘泽</span><span>广厦间</span><span>山雾秋</span><span>匠造者-02</span></div>
+  </div>
+  <div class="guide-card gc3">
+    <div class="icon">💰</div>
+    <h4>预算指南</h4>
+    <div class="g-sub">丰俭由人</div>
+    <div class="g-tags"><span>青羽 ¥99起</span><span>幻影 ¥119</span><span>Pro ¥129</span></div>
+  </div>
+</div>
+
+<div class="section-header"><h2>推荐组合（杆+弹）</h2></div>
+<div class="combo-scroll">
+  <div class="combo-card c-tier1"><div class="c-label">入门之选</div><div class="c-cfg">青羽杆 + 青羽弹</div><div class="c-price">¥317</div></div>
+  <div class="combo-card c-tier2"><div class="c-label">经典搭配</div><div class="c-cfg">幻影五代 + 幻影弹</div><div class="c-price">¥447</div></div>
+  <div class="combo-card c-tier3"><div class="c-label">进阶升级</div><div class="c-cfg">御影S + 幻影弹</div><div class="c-price">¥487</div></div>
+  <div class="combo-card c-tier4"><div class="c-label">解瘾首选</div><div class="c-cfg">大千杆 + 大千弹</div><div class="c-price">¥387</div></div>
+  <div class="combo-card c-tier5"><div class="c-label">顶配旗舰</div><div class="c-cfg">宙斯杆 + 宙斯弹</div><div class="c-price">¥1057</div></div>
+</div>
+
+<div class="section-header"><h2>烟具速查</h2></div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>型号</th><th>价格</th><th>电池</th><th>适配烟弹</th><th>颜色</th></tr></thead>
+<tbody>
+<tr><td class="nc">青羽</td><td>¥218</td><td>350mAh</td><td>青羽/幻影/小众</td><td>黑·银</td></tr>
+<tr><td class="nc">大千</td><td>¥258</td><td>800mAh</td><td>大千系列专属</td><td>黑</td></tr>
+<tr><td class="nc">幻影五代</td><td>¥328</td><td>380mAh</td><td>Pro/幻影/青羽</td><td>嫩绿·银·黑·渐变粉紫·渐变金粉</td></tr>
+<tr class="hl-row"><td class="nc" style="color:var(--red);">御影S 🔥推荐</td><td style="color:var(--red);font-weight:700;">¥368</td><td>440mAh</td><td>幻影系+铂岚</td><td>雅灰</td></tr>
+<tr><td class="nc">幻影Pro</td><td>¥428</td><td>440mAh</td><td>Pro/幻影/青羽</td><td>银·白·粉·黑</td></tr>
+<tr><td class="nc">宙斯</td><td>¥888</td><td>800mAh</td><td>宙斯专属+转接</td><td>黑</td></tr>
+</tbody></table>
+</div>
+<div class="adapter-tip">🎁 购买大千/宙斯免费赠送转接口 · 可适配青羽/幻影/Pro系列烟弹</div>
+<div class="tip-banner">💡 推荐御影S — 功能对标幻影Pro（¥428）仅售¥368 · 详看后文</div>
+
+<div class="section-header"><h2>一次性推荐</h2></div>
+<div class="highlight star">
+  <div class="hl-title">美深威 匠造者-01/02 <span class="badge">¥149 重点</span></div>
+  <div class="hl-features">
+    <span>13ml超大油</span><span>可视油仓</span><span>可调功率</span><span>吸阻调节</span><span>电量显示</span><span>600mAh</span>
+  </div>
+</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>需求</th><th>推荐</th><th>价</th><th>特点</th></tr></thead>
+<tbody>
+<tr><td class="nc">果味过渡</td><td>金光奕奕</td><td>¥139</td><td>凤梨果香 · 悦刻原厂</td></tr>
+<tr><td class="nc">解瘾强</td><td>山雾秋</td><td>¥129</td><td>层次丰富·击喉强</td></tr>
+<tr><td class="nc">国风雅致</td><td>敬亭山·念关山</td><td>¥139</td><td>木质清香</td></tr>
+<tr><td class="nc">蓝莓替代</td><td>夏幕·霜月</td><td>¥129</td><td>莓果温润</td></tr>
+</tbody></table>
+</div>
+
+<div class="trust-grid">
+  <div class="trust-card"><div class="ticon">🛡️</div><div class="tlabel">正品保障</div><div class="tdesc">全部国标货源 正规渠道</div></div>
+  <div class="trust-card"><div class="ticon">📦</div><div class="tlabel">全国发货</div><div class="tdesc">顺丰包邮 闪电配送</div></div>
+  <div class="trust-card"><div class="ticon">🛠️</div><div class="tlabel">售后保障</div><div class="tdesc">质量问题直接对接厂家售后</div></div>
+</div>
+
+<!-- ========== 2. 烟弹口味 ========== -->
+<div class="section-header" id="pods">
+  <h2>烟弹 · 口味速查</h2>
+  <div class="subtitle">幻影Pro ¥129 · 幻影 ¥119 · 青羽 ¥99</div>
+</div>
+
+<div class="section-header"><h2>幻影Pro系列 · 适配六代 · 三档功率</h2></div>
+<div class="card-grid">
+  <div class="product-card"><span class="p-price">¥129</span><div class="p-name">蓝田暖阳 <span class="tag tag-blue">淡雅中式</span></div><div class="p-img"><img src="extracted_images/pod_images/image1.jpeg" alt="蓝田暖阳"></div><div class="p-desc"><span class="em">清雅烤烟香 · 淡雅中式 回味干净</span></div><div class="p-bottom"><span class="p-strength">★★☆☆☆</span><span class="p-style">清淡</span></div></div>
+  <div class="product-card"><span class="p-price">¥129</span><div class="p-name">森林复兴 <span class="tag tag-blue">清爽草本</span></div><div class="p-img"><img src="extracted_images/pod_images/image2.jpeg" alt="森林复兴"></div><div class="p-desc"><span class="em">草木草本香 · 凉茶草本 清爽不腻</span></div><div class="p-bottom"><span class="p-strength">★★★☆☆</span><span class="p-style">适中</span></div></div>
+  <div class="product-card"><span class="p-price">¥129</span><div class="p-name">传家宝藏 <span class="tag tag-blue">清透干净</span></div><div class="p-img"><img src="extracted_images/pod_images/image3.jpeg" alt="传家宝藏"></div><div class="p-desc"><span class="em">清透烤烟香 · 清透干净 无杂味</span></div><div class="p-bottom"><span class="p-strength">★★☆☆☆</span><span class="p-style">清淡</span></div></div>
+  <div class="product-card best hot"><span class="p-price">¥129</span><div class="p-name">红运滚滚 <span class="tag tag-red">解瘾强</span><span class="tag tag-gold">爆款</span><span class="tag tag-blue">焦糖甜香</span></div><div class="p-img"><img src="extracted_images/pod_images/image4.jpeg" alt="红运滚滚"></div><div class="p-desc"><span class="em rd">焦甜甘草香 · 焦糖甜香 浓厚烤烟</span></div><div class="p-bottom"><span class="p-strength">★★★★☆</span><span class="p-style">偏浓</span></div></div>
+  <div class="product-card"><span class="p-price">¥129</span><div class="p-name">日出沧海 <span class="tag tag-blue">新品上市</span></div><div class="p-img"><img src="extracted_images/pod_images/image5.jpeg" alt="日出沧海"></div><div class="p-desc"><span class="em">清润海盐烤烟 · 海盐清爽 微甜回甘</span></div><div class="p-bottom"><span class="p-strength">★★☆☆☆</span><span class="p-style">清淡</span></div></div>
+</div>
+
+<div class="section-header"><h2>幻影系列 · 适配五代/六代 · 口味最丰富</h2></div>
+<div class="card-grid">
+  <div class="product-card"><span class="p-price">¥119</span><div class="p-name">金风习习 <span class="tag tag-blue">新品上市</span><span class="tag tag-green">菊花清甜</span></div><div class="p-img"><img src="extracted_images/pod_images/image6.jpeg" alt="金风习习"></div><div class="p-desc"><span class="em">冰糖菊花茶 · 菊花清甜</span></div><div class="p-bottom"><span class="p-strength">★★☆☆☆</span><span class="p-style">清淡</span></div></div>
+  <div class="product-card hot"><span class="p-price">¥119</span><div class="p-name">绿扇盈盈 <span class="tag tag-blue">万宝路替代</span></div><div class="p-img"><img src="extracted_images/pod_images/image7.jpeg" alt="绿扇盈盈"></div><div class="p-desc"><span class="em">淡豆香烟草 · 万宝路淡香</span></div><div class="p-bottom"><span class="p-strength">★★★☆☆</span><span class="p-style">适中</span></div></div>
+  <div class="product-card"><span class="p-price">¥119</span><div class="p-name">兰亭煮雪 <span class="tag tag-blue">冰糖雪梨</span></div><div class="p-img"><img src="extracted_images/pod_images/image8.jpeg" alt="兰亭煮雪"></div><div class="p-desc"><span class="em">甘草甜烤烟 · 冰糖雪梨</span></div><div class="p-bottom"><span class="p-strength">★★☆☆☆</span><span class="p-style">清淡</span></div></div>
+  <div class="product-card"><span class="p-price">¥119</span><div class="p-name">竹仗胜马 <span class="tag tag-blue">茉莉花茶</span></div><div class="p-img"><img src="extracted_images/pod_images/image9.jpeg" alt="竹仗胜马"></div><div class="p-desc"><span class="em">草木花茶烤烟 · 茉莉花茶</span></div><div class="p-bottom"><span class="p-strength">★★☆☆☆</span><span class="p-style">清淡</span></div></div>
+  <div class="product-card"><span class="p-price">¥119</span><div class="p-name">绕指轻舞 <span class="tag tag-blue">女生首选</span></div><div class="p-img"><img src="extracted_images/pod_images/image10.jpeg" alt="绕指轻舞"></div><div class="p-desc"><span class="em">清逸烤烟 · 轻盈不压喉 女生首选</span></div><div class="p-bottom"><span class="p-strength">★★☆☆☆</span><span class="p-style">清淡</span></div></div>
+  <div class="product-card"><span class="p-price">¥119</span><div class="p-name">浩海潮升 <span class="tag tag-green">青苹果清爽</span></div><div class="p-img"><img src="extracted_images/pod_images/image11.jpeg" alt="浩海潮升"></div><div class="p-desc"><span class="em">清甜烤烟 · 青苹果淡香 夏季口粮</span></div><div class="p-bottom"><span class="p-strength">★★☆☆☆</span><span class="p-style">清淡</span></div></div>
+  <div class="product-card"><span class="p-price">¥119</span><div class="p-name">柳暗花明 <span class="tag tag-blue">红枣蜜香</span></div><div class="p-img"><img src="extracted_images/pod_images/image12.jpeg" alt="柳暗花明"></div><div class="p-desc"><span class="em">红枣蜜香烤烟 · 温润绵长 秋冬</span></div><div class="p-bottom"><span class="p-strength">★★★☆☆</span><span class="p-style">适中</span></div></div>
+  <div class="product-card best"><span class="p-price">¥119</span><div class="p-name">群玉山见 <span class="tag tag-red">解瘾强</span><span class="tag tag-gold">爆款</span><span class="tag tag-blue">雪茄醇厚</span></div><div class="p-img"><img src="extracted_images/pod_images/image13.jpeg" alt="群玉山见"></div><div class="p-desc"><span class="em rd">焦甜木甘草香 · 雪茄醇厚 解瘾</span></div><div class="p-bottom"><span class="p-strength">★★★★☆</span><span class="p-style">偏浓</span></div></div>
+</div>
+
+<div class="section-header"><h2>青羽系列 · ¥99 · 性价比之王</h2></div>
+<div class="card-grid">
+  <div class="product-card best hot"><span class="p-price">¥99</span><div class="p-name">忘江有径 <span class="tag tag-gold">爆款</span><span class="tag tag-blue">桂圆甜润</span></div><div class="p-img"><img src="extracted_images/pod_images/image14.jpeg" alt="忘江有径"></div><div class="p-desc"><span class="em">草本桂圆甜香 · 桂圆甜润</span></div><div class="p-bottom"><span class="p-strength">★★★☆☆</span><span class="p-style">适中</span></div></div>
+  <div class="product-card tip"><span class="p-price">¥99</span><div class="p-name">旭日凌云 <span class="tag tag-green">果味过渡</span><span class="tag tag-blue">性价比</span></div><div class="p-img"><img src="extracted_images/pod_images/image15.jpeg" alt="旭日凌云"></div><div class="p-desc"><span class="em gr">清瓜香甜 · 青瓜清爽 最佳果味过渡</span></div><div class="p-bottom"><span class="p-strength">★★☆☆☆</span><span class="p-style">清淡</span></div></div>
+  <div class="product-card"><span class="p-price">¥99</span><div class="p-name">森林复兴 <span class="tag tag-red">解瘾强</span></div><div class="p-img"><img src="extracted_images/pod_images/image16.jpeg" alt="森林复兴"></div><div class="p-desc"><span class="em">苔香豆甜烤烟 · 烟劲饱满</span></div><div class="p-bottom"><span class="p-strength">★★★★☆</span><span class="p-style">适中</span></div></div>
+  <div class="product-card"><span class="p-price">¥99</span><div class="p-name">点点灵犀 <span class="tag tag-blue">全天口粮</span></div><div class="p-img"><img src="extracted_images/pod_images/image17.jpeg" alt="点点灵犀"></div><div class="p-desc"><span class="em">清浅烤烟香 · 余味干净 全天口粮</span></div><div class="p-bottom"><span class="p-strength">★★☆☆☆</span><span class="p-style">清淡</span></div></div>
+  <div class="product-card"><span class="p-price">¥99</span><div class="p-name">晨光入林 <span class="tag tag-blue">酒香独特</span></div><div class="p-img"><img src="extracted_images/pod_images/image18.jpeg" alt="晨光入林"></div><div class="p-desc"><span class="em">酒香烤烟香 · 白兰地淡香</span></div><div class="p-bottom"><span class="p-strength">★★★☆☆</span><span class="p-style">适中</span></div></div>
+  <div class="product-card"><span class="p-price">¥99</span><div class="p-name">佳人佳期 <span class="tag tag-blue">女生首选</span></div><div class="p-img"><img src="extracted_images/pod_images/image19.jpeg" alt="佳人佳期"></div><div class="p-desc"><span class="em">淡甜草木烤烟 · 温婉不刺激 女生</span></div><div class="p-bottom"><span class="p-strength">★★☆☆☆</span><span class="p-style">清淡</span></div></div>
+  <div class="product-card"><span class="p-price">¥99</span><div class="p-name">暖夕穿林 <span class="tag tag-blue">层次丰富</span></div><div class="p-img"><img src="extracted_images/pod_images/image20.jpeg" alt="暖夕穿林"></div><div class="p-desc"><span class="em">草本果香回甜 · 层次丰富 口碑佳</span></div><div class="p-bottom"><span class="p-strength">★★★☆☆</span><span class="p-style">适中</span></div></div>
+  <div class="product-card"><span class="p-price">¥99</span><div class="p-name">柔情牛仔 <span class="tag tag-blue">外烟替代</span></div><div class="p-img"><img src="extracted_images/pod_images/image21.jpeg" alt="柔情牛仔"></div><div class="p-desc"><span class="em">异域烟草香 · 骆驼风格 外烟替代</span></div><div class="p-bottom"><span class="p-strength">★★★☆☆</span><span class="p-style">适中</span></div></div>
+</div>
+
+<!-- ========== 3. 大千 + 宙斯 + 小众 ========== -->
+<div class="section-header">
+  <h2>大千系列 · 10ml超大容量 · 一颗顶五颗</h2>
+  <div class="subtitle">¥109-129</div>
+</div>
+<div class="card-grid">
+  <div class="product-card"><span class="p-price">¥129</span><div class="p-name">春鸣 <span class="tag tag-green">凉感推荐</span><span class="tag tag-blue">新手友好</span></div><div class="p-img"><img src="extracted_images/pod_images/image25.jpeg" alt="春鸣"></div><div class="p-desc"><span class="em">凉感柔和烟草 · 薄荷烟草 新手友好</span></div><div class="p-bottom"><span class="p-strength">★★☆☆☆</span><span class="p-style">清淡</span></div></div>
+  <div class="product-card tip"><span class="p-price">¥129</span><div class="p-name">柏芬 <span class="tag tag-green">果味过渡</span><span class="tag tag-blue">酸甜丝滑</span></div><div class="p-img"><img src="extracted_images/pod_images/image26.jpeg" alt="柏芬"></div><div class="p-desc"><span class="em gr">奶油话梅香 · 酸甜丝滑 以前果味</span></div><div class="p-bottom"><span class="p-strength">★★☆☆☆</span><span class="p-style">清淡</span></div></div>
+  <div class="product-card"><span class="p-price">¥129</span><div class="p-name">知夏 <span class="tag tag-blue">雪茄+柑橘</span></div><div class="p-img"><img src="extracted_images/pod_images/image27.jpeg" alt="知夏"></div><div class="p-desc"><span class="em">醇香雪茄+柑橘 · 雪茄带柑橘清新</span></div><div class="p-bottom"><span class="p-strength">★★★☆☆</span><span class="p-style">适中</span></div></div>
+  <div class="product-card"><span class="p-price">¥129</span><div class="p-name">悠岚 <span class="tag tag-blue">长期口粮</span><span class="tag tag-blue">中南海替代</span></div><div class="p-img"><img src="extracted_images/pod_images/image28.jpeg" alt="悠岚"></div><div class="p-desc"><span class="em">清雅干草甜香 · 中南海淡香 首选</span></div><div class="p-bottom"><span class="p-strength">★★☆☆☆</span><span class="p-style">清淡</span></div></div>
+  <div class="product-card best"><span class="p-price">¥129</span><div class="p-name">甘泽 <span class="tag tag-red">解瘾强</span><span class="tag tag-gold">爆款</span><span class="tag tag-blue">层次王者</span></div><div class="p-img"><img src="extracted_images/pod_images/image29.jpeg" alt="甘泽"></div><div class="p-desc"><span class="em rd">茴甜→木香→烤烟 · 三段式层次</span></div><div class="p-bottom"><span class="p-strength">★★★★☆</span><span class="p-style">偏浓</span></div></div>
+  <div class="product-card tip"><span class="p-price">¥109</span><div class="p-name">隋和 <span class="tag tag-green">果味过渡</span><span class="tag tag-blue">荔枝茶</span></div><div class="p-img"><img src="extracted_images/pod_images/image30.jpeg" alt="隋和"></div><div class="p-desc"><span class="em gr">蜜香荔枝茶 · 以前荔枝味电子烟</span></div><div class="p-bottom"><span class="p-strength">★★☆☆☆</span><span class="p-style">清淡</span></div></div>
+  <div class="product-card"><span class="p-price">¥109</span><div class="p-name">太霄 <span class="tag tag-blue">茶系推荐</span></div><div class="p-img"><img src="extracted_images/pod_images/image31.jpeg" alt="太霄"></div><div class="p-desc"><span class="em">清香乌龙 · 铁观音回甘 茶系首选</span></div><div class="p-bottom"><span class="p-strength">★★☆☆☆</span><span class="p-style">清淡</span></div></div>
+</div>
+
+<div class="section-header"><h2>宙斯系列 · 高端旗舰 · 适配宙斯主机</h2></div>
+<div class="card-grid">
+  <div class="product-card best"><span class="p-price">¥169</span><div class="p-name">绿扇盈盈 <span class="tag tag-red">解瘾强</span><span class="tag tag-gold">爆款</span><span class="tag tag-blue">IQOS替代</span></div><div class="p-img"><img src="extracted_images/pod_images/image22.jpeg" alt="绿扇盈盈"></div><div class="p-desc"><span class="em rd">淡豆香烟草 · IQOS醇厚感 2.85ml</span></div><div class="p-bottom"><span class="p-strength">★★★★☆</span><span class="p-style">偏浓</span></div></div>
+  <div class="product-card"><span class="p-price">¥99</span><div class="p-name">拂柳风 <span class="tag tag-blue">2颗装</span><span class="tag tag-blue">软中华风格</span></div><div class="p-img"><img src="extracted_images/pod_images/image23.jpeg" alt="拂柳风"></div><div class="p-desc"><span class="em">中式烤烟+清雅木香 · 软中华淡雅 3ml</span></div><div class="p-bottom"><span class="p-strength">★★★☆☆</span><span class="p-style">适中</span></div></div>
+  <div class="product-card best"><span class="p-price">¥99</span><div class="p-name">广厦间 <span class="tag tag-red">解瘾强</span><span class="tag tag-blue">2颗装</span><span class="tag tag-blue">硬中华口感</span></div><div class="p-img"><img src="extracted_images/pod_images/image24.jpeg" alt="广厦间"></div><div class="p-desc"><span class="em rd">醇厚烤烟香 · 硬中华满足感 3ml</span></div><div class="p-bottom"><span class="p-strength">★★★★☆</span><span class="p-style">偏浓</span></div></div>
+</div>
+
+<div class="section-header"><h2>小众精选 · 悦刻杆子适配</h2></div>
+<div class="card-grid">
+  <div class="product-card"><span class="p-price">¥99</span><div class="p-name">翠川苍 <span class="tag tag-green">果甜清爽</span></div><div class="p-img"><img src="extracted_images/pod_images/image32.jpeg" alt="翠川苍"></div><div class="p-desc"><span class="em">淡雅果甜烤烟 · 清新不突兀</span></div><div class="p-bottom"><span class="p-strength">★★☆☆☆</span><span class="p-style">清淡</span></div></div>
+  <div class="product-card"><span class="p-price">¥99</span><div class="p-name">云岭松风 <span class="tag tag-blue">松针草本</span></div><div class="p-img"><img src="extracted_images/pod_images/image33.jpeg" alt="云岭松风"></div><div class="p-desc"><span class="em">松针草本香 · 国风意境</span></div><div class="p-bottom"><span class="p-strength">★★★☆☆</span><span class="p-style">适中</span></div></div>
+  <div class="product-card tip"><span class="p-price">¥99</span><div class="p-name">碧海澄空 <span class="tag tag-green">果味过渡</span><span class="tag tag-green">凉感推荐</span></div><div class="p-img"><img src="extracted_images/pod_images/image34.jpeg" alt="碧海澄空"></div><div class="p-desc"><span class="em gr">海盐+薄荷+果香 · 以前薄荷水果</span></div><div class="p-bottom"><span class="p-strength">★★☆☆☆</span><span class="p-style">清淡</span></div></div>
+  <div class="product-card"><span class="p-price">¥119</span><div class="p-name">金丝露 <span class="tag tag-blue">焦香烤烟</span></div><div class="p-img"><img src="extracted_images/pod_images/image35.png" alt="金丝露"></div><div class="p-desc"><span class="em">焦香烤烟 · 纯正 老烟民最爱</span></div><div class="p-bottom"><span class="p-strength">★★★☆☆</span><span class="p-style">适中</span></div></div>
+  <div class="product-card"><span class="p-price">¥119</span><div class="p-name">冷烟月 <span class="tag tag-blue">草本清香</span></div><div class="p-img"><img src="extracted_images/pod_images/image36.jpeg" alt="冷烟月"></div><div class="p-desc"><span class="em">草本清香 · 干净利落</span></div><div class="p-bottom"><span class="p-strength">★★★☆☆</span><span class="p-style">适中</span></div></div>
+  <div class="product-card"><span class="p-price">¥99</span><div class="p-name">兰亭雅集 <span class="tag tag-blue">花香清雅</span></div><div class="p-img"><img src="extracted_images/pod_images/image37.jpeg" alt="兰亭雅集"></div><div class="p-desc"><span class="em">蜂蜜紫罗兰香 · 以前花香味</span></div><div class="p-bottom"><span class="p-strength">★★☆☆☆</span><span class="p-style">清淡</span></div></div>
+</div>
+
+<!-- ========== 4. 一次性电子烟 ========== -->
+<div class="section-header" id="disposable">
+  <h2>一次性电子烟 · 口味速查</h2>
+  <div class="subtitle">即开即用 无需充电 多品牌多口味</div>
+</div>
+
+<div class="highlight star">
+  <div class="hl-title">美深威 匠造者-01 / 匠造者-02 <span class="badge">¥149 重点</span></div>
+  <div class="hl-price">¥149</div>
+  <div class="hl-features">
+    <span>13ml超大油</span><span>可视油仓</span><span>可调输出功率</span><span>吸阻调节</span><span>电量显示</span><span>600mAh大电池</span>
+  </div>
+  <div class="hl-note"><b>01:</b> 甜豆+坚果+咖啡+蛋糕 四重层次 &nbsp;|&nbsp; <b>02:</b> 浓香烟草+可可+生巧 解瘾首选</div>
+</div>
+
+<div class="section-header first"><h2>悦刻 RELX · ¥139 · 9.6ml</h2></div>
+<div class="card-grid">
+  <div class="product-card"><span class="p-price">¥139</span><div class="p-name">满园茵茵 <span class="tag tag-blue">拿铁温润</span></div><div class="p-img"><img src="extracted_images/disposable_images/image1.jpeg" alt="满园茵茵"></div><div class="p-desc"><span class="em">烤烟可可奶香 · 拿铁温润</span></div><div class="p-bottom"><span class="p-strength">★★★☆☆</span><span class="p-style">适中</span></div></div>
+  <div class="product-card tip"><span class="p-price">¥139</span><div class="p-name">金光奕奕 <span class="tag tag-green">果味过渡</span><span class="tag tag-green">凤梨果香</span></div><div class="p-img"><img src="extracted_images/disposable_images/image2.jpeg" alt="金光奕奕"></div><div class="p-desc"><span class="em gr">凤梨果香+烤烟 · 果味过渡</span></div><div class="p-bottom"><span class="p-strength">★★★☆☆</span><span class="p-style">适中</span></div></div>
+  <div class="product-card"><span class="p-price">¥139</span><div class="p-name">飞马环游 <span class="tag tag-blue">檀香高级</span></div><div class="p-img"><img src="extracted_images/disposable_images/image3.jpeg" alt="飞马环游"></div><div class="p-desc"><span class="em">木质沉香 · 檀香高级</span></div><div class="p-bottom"><span class="p-strength">★★★☆☆</span><span class="p-style">适中</span></div></div>
+</div>
+
+<div class="section-header"><h2>铂岚 POOLAN · ¥139 · 10.5ml · 国风雅韵</h2></div>
+<div class="card-grid">
+  <div class="product-card"><span class="p-price">¥139</span><div class="p-name">敬亭山 <span class="tag tag-blue">茶系推荐</span></div><div class="p-img"><img src="extracted_images/disposable_images/image5.jpeg" alt="敬亭山"></div><div class="p-desc"><span class="em">木质清香 · 品茶雅致</span></div><div class="p-bottom"><span class="p-strength">★★☆☆☆</span><span class="p-style">清淡</span></div></div>
+  <div class="product-card"><span class="p-price">¥139</span><div class="p-name">念关山 <span class="tag tag-blue">香槟气泡</span></div><div class="p-img"><img src="extracted_images/disposable_images/image6.jpeg" alt="念关山"></div><div class="p-desc"><span class="em">清甜香槟 · 气泡轻盈</span></div><div class="p-bottom"><span class="p-strength">★★☆☆☆</span><span class="p-style">清淡</span></div></div>
+</div>
+
+<div class="section-header"><h2>迷睿 · ¥129 · 10ml</h2></div>
+<div class="card-grid">
+  <div class="product-card tip"><span class="p-price">¥129</span><div class="p-name">夏幕 <span class="tag tag-green">果味过渡</span><span class="tag tag-blue">蓝莓替代</span></div><div class="p-img"><img src="extracted_images/disposable_images/image7.jpeg" alt="夏幕"></div><div class="p-desc"><span class="em gr">莓果+烟草 · 蓝莓替代</span></div><div class="p-bottom"><span class="p-strength">★★☆☆☆</span><span class="p-style">清淡</span></div></div>
+  <div class="product-card"><span class="p-price">¥129</span><div class="p-name">金缕 <span class="tag tag-blue">花茶清雅</span></div><div class="p-img"><img src="extracted_images/disposable_images/image8.jpeg" alt="金缕"></div><div class="p-desc"><span class="em">玫瑰茉莉 · 花茶清雅</span></div><div class="p-bottom"><span class="p-strength">★★☆☆☆</span><span class="p-style">清淡</span></div></div>
+  <div class="product-card"><span class="p-price">¥129</span><div class="p-name">见山 <span class="tag tag-blue">清新自然</span></div><div class="p-img"><img src="extracted_images/disposable_images/image9.jpeg" alt="见山"></div><div class="p-desc"><span class="em">清新自然 · 不腻不燥</span></div><div class="p-bottom"><span class="p-strength">★★☆☆☆</span><span class="p-style">清淡</span></div></div>
+  <div class="product-card tip"><span class="p-price">¥129</span><div class="p-name">白岸 <span class="tag tag-green">果味过渡</span><span class="tag tag-green">凉感推荐</span></div><div class="p-img"><img src="extracted_images/disposable_images/image10.jpeg" alt="白岸"></div><div class="p-desc"><span class="em gr">柑橘乌龙+凉 · 柠檬茶</span></div><div class="p-bottom"><span class="p-strength">★★☆☆☆</span><span class="p-style">清淡</span></div></div>
+</div>
+
+<div class="section-header"><h2>Voopoo · 美深威 · HQD</h2></div>
+<div class="card-grid">
+  <div class="product-card best"><span class="p-price">¥129</span><div class="p-name">山雾秋 <span class="tag tag-red">解瘾强</span><span class="tag tag-blue">层次丰富</span></div><div class="p-img"><img src="extracted_images/disposable_images/image4.jpeg" alt="山雾秋"></div><div class="p-desc"><span class="em rd">花香果香 层次丰富</span></div><div class="p-bottom"><span class="p-strength">★★★★☆</span><span class="p-style">偏浓</span></div></div>
+  <div class="product-card star"><span class="p-price">¥149</span><div class="p-name">匠造者-01 <span class="tag tag-gold">爆款</span><span class="tag tag-blue">超大容量</span><span class="tag tag-blue">四重层次</span></div><div class="p-img"><img src="extracted_images/disposable_images/image12.jpeg" alt="匠造者-01"></div><div class="p-desc"><span class="em rd">豆香坚果咖啡蛋糕 四重层次 13ml</span></div><div class="p-bottom"><span class="p-strength">★★★☆☆</span><span class="p-style">偏淡</span></div></div>
+  <div class="product-card star"><span class="p-price">¥149</span><div class="p-name">匠造者-02 <span class="tag tag-red">解瘾强</span><span class="tag tag-gold">爆款</span><span class="tag tag-blue">超大容量</span></div><div class="p-img"><img src="extracted_images/disposable_images/image13.jpeg" alt="匠造者-02"></div><div class="p-desc"><span class="em rd">浓香烟草+可可+生巧 黑森林 13ml</span></div><div class="p-bottom"><span class="p-strength">★★★★☆</span><span class="p-style">偏浓</span></div></div>
+  <div class="product-card"><span class="p-price">¥129</span><div class="p-name">霜月 <span class="tag tag-blue">蓝莓烤烟</span></div><div class="p-img"><img src="extracted_images/disposable_images/image14.jpeg" alt="霜月"></div><div class="p-desc"><span class="em">蓝莓烤烟 · 温润不燥</span></div><div class="p-bottom"><span class="p-strength">★★★☆☆</span><span class="p-style">适中</span></div></div>
+</div>
+
+<!-- ========== 5. 烟具选色 ========== -->
+<div class="section-header" id="devices">
+  <h2>烟具 · 选色图鉴</h2>
+  <div class="subtitle">颜色细节一览 · 按价格从低到高排列</div>
+</div>
+
+<div class="section-header first"><h2>青羽 · ¥218 · 入门首选</h2></div>
+<div class="device-grid">
+  <div class="device-card"><div class="d-img"><img src="device_colors/青羽_黑.png" alt="青羽黑"></div><div class="d-label">黑</div></div>
+  <div class="device-card"><div class="d-img"><img src="device_colors/青羽_银.png" alt="青羽银"></div><div class="d-label">银</div></div>
+</div>
+
+<div class="section-header"><h2>大千 · ¥258 · 续航王</h2></div>
+<div class="device-grid">
+  <div class="device-card"><div class="d-img"><img src="device_colors/大千_黑.png" alt="大千黑"></div><div class="d-label">黑</div></div>
+</div>
+
+<div class="section-header"><h2>幻影五代 · ¥328 · 经典之选</h2></div>
+<div class="device-grid">
+  <div class="device-card"><div class="d-img"><img src="device_colors/幻影五代_嫩绿.png" alt="嫩绿"></div><div class="d-label">嫩绿</div></div>
+  <div class="device-card"><div class="d-img"><img src="device_colors/幻影五代_银.png" alt="银"></div><div class="d-label">银</div></div>
+  <div class="device-card"><div class="d-img"><img src="device_colors/幻影五代_黑.png" alt="黑"></div><div class="d-label">黑</div></div>
+  <div class="device-card"><div class="d-img"><img src="device_colors/幻影五代_渐变紫.png" alt="渐变紫"></div><div class="d-label">渐变粉紫</div></div>
+  <div class="device-card"><div class="d-img"><img src="device_colors/幻影五代_渐变金.png" alt="渐变金"></div><div class="d-label">渐变金粉</div></div>
+</div>
+
+<div class="section-header"><h2>御影S · ¥368 · 功能对标幻影Pro 🔥推荐</h2></div>
+<div class="device-grid">
+  <div class="device-card"><div class="d-img"><img src="device_colors/御影S_雅灰.png" alt="御影S"></div><div class="d-label">雅灰</div></div>
+</div>
+<div class="highlight">
+  <div class="hl-title">为什么选御影S？</div>
+  <div class="hl-note">功能对标幻影Pro（3档功率+屏幕显示+口数记录），仅售¥368，省60块</div>
+  <div class="hl-features">
+    <span>电量实时显示</span><span>3档功率调节</span><span>口数精准记录</span><span>Type-C充电</span>
+  </div>
+</div>
+
+<div class="section-header"><h2>幻影Pro · ¥428 · 旗舰六代</h2></div>
+<div class="device-grid">
+  <div class="device-card"><div class="d-img"><img src="device_colors/幻影Pro_银.png" alt="银"></div><div class="d-label">银</div></div>
+  <div class="device-card"><div class="d-img"><img src="device_colors/幻影Pro_白.png" alt="白"></div><div class="d-label">白</div></div>
+  <div class="device-card"><div class="d-img"><img src="device_colors/幻影Pro_粉.png" alt="粉"></div><div class="d-label">粉</div></div>
+  <div class="device-card"><div class="d-img"><img src="device_colors/幻影Pro_黑.png" alt="黑"></div><div class="d-label">黑</div></div>
+</div>
+
+<div class="section-header"><h2>宙斯 · ¥888 · 顶级旗舰</h2></div>
+<div class="device-grid">
+  <div class="device-card"><div class="d-img"><img src="device_colors/宙斯_黑.png" alt="宙斯"></div><div class="d-label">黑</div></div>
+</div>
+<div class="device-spec">适配宙斯系列2.85ml烟弹 · 搭配转接头可通用其他系列烟弹</div>
+
+<!-- ========== 联系 ========== -->
+<div class="section-header" id="contact"><h2>联系门店</h2></div>
+<div class="contact-bar">
+  <div class="ct-left">
+    <div class="ct-label">长寿路189弄购物中心店</div>
+    <div class="ct-store">悦刻授权经销商</div>
+    <div class="ct-phone">📞 189 3974 1711</div>
+  </div>
+  <div class="ct-right">
+    <div style="text-align:center;">
+      <div class="ct-qr"><img src="qrcode_wecom.png" alt="企微"></div>
+      <div class="ct-qr-label">扫码加企微</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer-note">正品保障 · 全国顺丰包邮 · 售后直接对接厂家</div>
+
+</main>
+
+<!-- 简单的当前区块高亮 -->
+<script>
+(function() {
+  var nav = document.getElementById('quickNav');
+  var links = nav.querySelectorAll('a');
+  var sections = [];
+  links.forEach(function(a) {
+    var id = a.getAttribute('href').substring(1);
+    var el = document.getElementById(id);
+    if (el) sections.push({ el: el, link: a });
+  });
+  function update() {
+    var scrollY = window.scrollY + 60;
+    var active = null;
+    sections.forEach(function(s) {
+      if (s.el.offsetTop <= scrollY) active = s.link;
+    });
+    links.forEach(function(l) { l.classList.remove('hl'); });
+    if (active) active.classList.add('hl');
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+</script>
+
+</body>
+</html>

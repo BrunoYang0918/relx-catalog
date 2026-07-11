@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>悦刻 · 底部促销跑马灯</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans SC', 'Microsoft YaHei', 'PingFang SC', sans-serif;
+    background: #f0efeb;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  .phone-frame {
+    width: 390px;
+    margin: 30px auto 0;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .status-bar {
+    height: 44px;
+    background: #0D7377;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  .content-area {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    min-height: 520px;
+  }
+  .content-area .mock-title { font-size: 18px; font-weight: 700; color: #0D7377; margin-bottom: 12px; }
+  .content-area .mock-text { font-size: 13px; color: #666; line-height: 1.8; margin-bottom: 16px; }
+  .content-area .mock-card {
+    background: #F8F7F4;
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 10px;
+    border: 1px solid #E8E5DF;
+  }
+  .content-area .mock-card .card-title { font-size: 14px; font-weight: 600; color: #2D2D2D; margin-bottom: 4px; }
+  .content-area .mock-card .card-desc { font-size: 12px; color: #888; }
+
+  /* ===== 底部促销跑马灯 ===== */
+  .marquee-banner {
+    position: relative;
+    width: 100%;
+    height: 48px;           /* 加高4px，文案略长 */
+    background: linear-gradient(90deg, #8B2020 0%, #C0392B 40%, #8B2020 100%);
+    border-top: none;
+    overflow: hidden;
+    flex-shrink: 0;
+    transition: height 0.35s ease, opacity 0.35s ease;
+  }
+  .marquee-banner.dismissed {
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+  }
+
+  .marquee-banner .close-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: rgba(255,255,255,0.7);
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .marquee-banner .close-btn:hover {
+    background: rgba(255,255,255,0.25);
+    color: #fff;
+  }
+
+  .marquee-banner .promo-tag {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    padding: 0 14px 0 16px;
+    background: linear-gradient(90deg, #8B2020 50%, transparent);
+    pointer-events: none;
+  }
+  .marquee-banner .promo-tag .tag-inner {
+    background: #C9A96E;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+    animation: tagPulse 2s ease-in-out infinite;
+  }
+  .marquee-banner .promo-tag .tag-inner::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -60%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+    transform: skewX(-20deg);
+    animation: tagShimmer 2.5s ease-in-out infinite;
+  }
+
+  @keyframes tagPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+  }
+  @keyframes tagShimmer {
+    0% { left: -60%; }
+    100% { left: 130%; }
+  }
+
+  .marquee-track {
+    position: absolute;
+    left: 80px;
+    right: 38px;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent 0%, #000 3%, #000 97%, transparent 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 3%, #000 97%, transparent 100%);
+  }
+
+  .marquee-content {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    white-space: nowrap;
+    animation: marqueeScroll 24s linear infinite;
+  }
+  .marquee-banner:hover .marquee-content { animation-play-state: paused; }
+
+  @keyframes marqueeScroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .promo-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 22px;
+    height: 100%;
+    color: #fff;
+    font-size: 13px;
+    position: relative;
+  }
+  .promo-item::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 14px;
+    bottom: 14px;
+    width: 1px;
+    background: rgba(255,255,255,0.15);
+  }
+  .promo-item:last-child::after { display: none; }
+  .promo-item .icon-fire { font-size: 16px; }
+  .promo-item .text-main { font-weight: 500; line-height: 1.3; }
+  .promo-item .text-highlight { color: #F7DC6F; font-weight: 700; font-size: 15px; }
+  .promo-item .text-sub { font-size: 11px; opacity: 0.75; font-weight: 400; }
+  .promo-item .num-highlight { color: #F7DC6F; font-size: 16px; font-weight: 700; }
+  /* ===== 底部三栏导航 ===== */
+  .bottom-nav {
+    display: flex;
+    height: 56px;
+    border-top: 1px solid #E8E5DF;
+    background: #fff;
+    flex-shrink: 0;
+  }
+  .bottom-nav .nav-item {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    border-right: 1px solid #E8E5DF;
+  }
+  .bottom-nav .nav-item:last-child { border-right: none; }
+  .bottom-nav .nav-item:active { background: #f8f8f8; }
+  .bottom-nav .nav-item.left { background: #E8F8F5; color: #0D7377; }
+  .bottom-nav .nav-item.center { background: #C9A96E; color: #fff; }
+  .bottom-nav .nav-item.right {
+    background: #fff; color: #0D7377;
+    border: 2px solid #0D7377; border-top: none; border-bottom: none;
+  }
+  .bottom-nav .nav-item .icon { font-size: 15px; }
+
+  /* ===== 悬浮按钮 ===== */
+  .fab {
+    position: absolute;
+    bottom: 72px;
+    right: 12px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.95);
+    border: 1px solid #E8E5DF;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  .note {
+    width: 390px;
+    margin: 16px auto 40px;
+    padding: 16px;
+    background: #FFF8ED;
+    border: 1px solid #C9A96E;
+    border-radius: 10px;
+    font-size: 13px;
+    color: #5D4E37;
+    line-height: 1.8;
+  }
+  .note strong { color: #0D7377; }
+</style>
+</head>
+<body>
+
+<div class="phone-frame">
+
+  <div class="status-bar">
+    <span>9:41</span>
+    <span>📶 📶 🔋</span>
+  </div>
+
+  <div class="content-area">
+    <div class="mock-title">🍃 悦刻 · 口味速查</div>
+    <div class="mock-text">国标烟草口味，正品保障，长寿路189弄购物中心店（18939741711）。</div>
+
+    <div class="mock-card">
+      <div class="card-title">🏆 店内热销 TOP3</div>
+      <div class="card-desc">红运滚滚(Pro) · 忘江有径(青羽) · 绿扇盈盈(幻影)</div>
+    </div>
+    <div class="mock-card">
+      <div class="card-title">🎯 幻影Pro ¥129 · 三档功率可调</div>
+      <div class="card-desc">蓝田暖阳 · 森林复兴 · 红运滚滚 · 日出沧海</div>
+    </div>
+    <div class="mock-card">
+      <div class="card-title">🎯 青羽系列 ¥99 · 性价比之王</div>
+      <div class="card-desc">忘江有径 · 旭日凌云 · 点点灵犀 · 暖夕穿林</div>
+    </div>
+    <div class="mock-card">
+      <div class="card-title">🎯 大千系列 ¥109-129 · 10ml超大容量</div>
+      <div class="card-desc">甘泽 · 柏芬 · 隋和 · 太霄 · 知夏</div>
+    </div>
+  </div>
+
+  <!-- ===== 底部促销跑马灯（方案C · 红色大促氛围） ===== -->
+  <div class="marquee-banner" id="marqueeBanner">
+    <div class="promo-tag"><span class="tag-inner">🎁 特惠</span></div>
+    <button class="close-btn" onclick="dismissBanner()">✕</button>
+    <div class="marquee-track">
+      <div class="marquee-content">
+        <!-- ====== 第一轮 ====== -->
+        <span class="promo-item">
+          <span class="icon-fire">🎁</span>
+          <span class="text-main">全场满<span class="num-highlight">2</span>件 <span class="text-highlight">包邮</span></span>
+        </span>
+        <span class="promo-item">
+          <span class="icon-fire">🎁</span>
+          <span class="text-main">烟弹满<span class="num-highlight">3</span>盒 <span class="text-highlight">赠保护套</span></span>
+        </span>
+        <span class="promo-item">
+          <span class="icon-fire">🎁</span>
+          <span class="text-main">烟弹满<span class="num-highlight">10</span>盒 <span class="text-highlight">赠<span class="num-highlight">1</span>盒</span></span>
+        </span>
+        <span class="promo-item">
+          <span class="icon-fire">🎁</span>
+          <span class="text-main">一次性满<span class="num-highlight">5</span>支 <span class="text-highlight">赠<span class="num-highlight">1</span>支</span></span>
+        </span>
+        <span class="promo-item">
+          <span class="icon-fire" style="opacity:0;">📞</span>
+          <span class="text-main">详情咨询&nbsp;<span class="text-highlight">门店企微</span>&nbsp;<span class="text-sub">18939741711</span></span>
+        </span>
+
+        <!-- ====== 第二轮（无缝循环） ====== -->
+        <span class="promo-item">
+          <span class="icon-fire">🎁</span>
+          <span class="text-main">全场满<span class="num-highlight">2</span>件 <span class="text-highlight">包邮</span></span>
+        </span>
+        <span class="promo-item">
+          <span class="icon-fire">🎁</span>
+          <span class="text-main">烟弹满<span class="num-highlight">3</span>盒 <span class="text-highlight">赠保护套</span></span>
+        </span>
+        <span class="promo-item">
+          <span class="icon-fire">🎁</span>
+          <span class="text-main">烟弹满<span class="num-highlight">10</span>盒 <span class="text-highlight">赠<span class="num-highlight">1</span>盒</span></span>
+        </span>
+        <span class="promo-item">
+          <span class="icon-fire">🎁</span>
+          <span class="text-main">一次性满<span class="num-highlight">5</span>支 <span class="text-highlight">赠<span class="num-highlight">1</span>支</span></span>
+        </span>
+        <span class="promo-item">
+          <span class="icon-fire" style="opacity:0;">📞</span>
+          <span class="text-main">详情咨询&nbsp;<span class="text-highlight">门店企微</span>&nbsp;<span class="text-sub">18939741711</span></span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部三栏导航 -->
+  <div class="bottom-nav">
+    <div class="nav-item left"><span class="icon">☑️</span>口味词典</div>
+    <div class="nav-item center"><span class="icon">🔍</span>帮我选</div>
+    <div class="nav-item right"><span class="icon">🛒</span>选品清单</div>
+  </div>
+
+  <div class="fab">💬</div>
+</div>
+
+<div class="note">
+  <strong>❤️ 回到红色 · 优化版</strong><br><br>
+  ✅ 红色渐变 #8B2020 → #C0392B，比首版更深沉有质感<br>
+  ✅ 标签「🎁 特惠」金色底，和红色搭配醒目不廉价<br>
+  ✅ 福利词金色高亮 #F7DC6F，白字正文，清晰易读
+</div>
+
+<script>
+function dismissBanner() {
+  document.getElementById('marqueeBanner').classList.add('dismissed');
+}
+</script>
+
+</body>
+</html>

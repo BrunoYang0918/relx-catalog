@@ -2222,8 +2222,26 @@ function renderDeviceSection(d) {
 function renderPodGrid(containerId, products) {
   var container = document.getElementById(containerId);
   if (!container) return;
+  // 排序规则：若该小类含「新品/爆品」标签，则新品置顶、爆品次之、其余保持原相对顺序；
+  // 若该小类无任何新品/爆品标签，则不调整顺序。
+  var sorted = products.slice();
+  var hasFeatured = sorted.some(function(p) {
+    var tags = p.tags || [];
+    return tags.some(function(t) { return t.t === '新品上市' || t.t === '爆款'; });
+  });
+  if (hasFeatured) {
+    sorted.sort(function(a, b) {
+      var rank = function(p) {
+        var tags = p.tags || [];
+        if (tags.some(function(t) { return t.t === '新品上市'; })) return 0;
+        if (tags.some(function(t) { return t.t === '爆款'; })) return 1;
+        return 2;
+      };
+      return rank(a) - rank(b);
+    });
+  }
   var html = "";
-  products.forEach(function(p) { html += renderProductCard(p); });
+  sorted.forEach(function(p) { html += renderProductCard(p); });
   container.innerHTML = html;
 }
 

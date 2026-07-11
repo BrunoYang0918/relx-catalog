@@ -1539,17 +1539,16 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 /* ===== Nav Dropdown ===== */
 .nav-dropdown { position: relative; flex: 1; display: flex; align-items: center; justify-content: center; }
 .nav-dropdown .nd-trigger {
-  display: flex; align-items: center; justify-content: center; gap: 3px;
-  flex: 1;
-  padding: 6px 0; font-size: 12px; font-weight: 600;
+  display: inline-flex; align-items: center; justify-content: center; gap: 3px;
+  padding: 6px 12px; font-size: 12px; font-weight: 600;
   color: var(--primary); background: var(--primary-light);
   border-radius: 20px; cursor: pointer; user-select: none;
 }
-.nav-dropdown .nd-trigger::after {
+.nav-dropdown .nd-label::after {
   content: "▾"; font-size: 12px; opacity: .5;
-  transition: transform .2s;
+  transition: transform .2s; margin-left: 2px;
 }
-.nav-dropdown.open .nd-trigger::after { transform: rotate(180deg); }
+.nav-dropdown.open .nd-label::after { transform: rotate(180deg); }
 .nav-dropdown .nd-menu {
   display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
   margin-top: 5px; background: #fff; border-radius: 12px;
@@ -1579,18 +1578,15 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 /* 返回全部重置按钮 */
 .nd-reset {
   display: none;
-  flex-shrink: 0;
-  width: 20px; height: 20px;
-  line-height: 18px; text-align: center;
-  font-size: 12px; font-weight: 700;
-  color: var(--text-secondary);
-  background: rgba(0,0,0,.06); border-radius: 50%;
+  align-items: center; justify-content: center;
+  margin-left: 5px;
+  font-size: 10px; font-weight: 500;
+  color: var(--primary); opacity: 0.55;
   cursor: pointer; user-select: none;
-  transition: all .15s;
-  margin-left: 3px;
+  transition: opacity .15s;
 }
 .nav-dropdown.active .nd-reset { display: inline-flex; }
-.nd-reset:hover { background: rgba(0,0,0,.12); color: var(--text); }
+.nd-reset:hover { opacity: 1; }
 .nav-dropdown .nd-menu a:nth-child(4):hover { background: #E8DFF2; }
 .nav-dropdown .nd-menu a:nth-child(5) { background: #FDF2E9; }
 .nav-dropdown .nd-menu a:nth-child(5):hover { background: #FCE5D3; }
@@ -1768,7 +1764,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="quick-nav" id="quickNav">
   <div class="nav-dropdown" id="navPodDropdown">
-    <span class="nd-trigger" id="navPodTrigger" onclick="event.stopPropagation();document.getElementById('navPodDropdown').classList.toggle('open')">烟弹选味</span><span class="nd-reset" id="navPodReset" onclick="event.stopPropagation();resetNavPod()">✕</span>
+    <span class="nd-trigger" id="navPodTrigger" onclick="event.stopPropagation();document.getElementById('navPodDropdown').classList.toggle('open')"><span class="nd-label" id="navPodLabel">烟弹选味</span><span class="nd-reset" id="navPodReset" onclick="event.stopPropagation();resetNavPod()">✕</span></span>
     <div class="nd-menu">
       <a href="javascript:void(0)" onclick="scrollToSection('#pod-pro','幻影Pro')"><span class="nd-icon">⚡</span><span class="nd-name">幻影Pro<span class="nd-sub">· 三档功率</span></span></a>
       <a href="javascript:void(0)" onclick="scrollToSection('#pod-phantom','幻影')"><span class="nd-icon">⭐</span><span class="nd-name">幻影<span class="nd-sub">· 口味最全</span></span></a>
@@ -4674,8 +4670,8 @@ document.getElementById("cartPanel").addEventListener("click", function(e) {
     if (link) link.classList.add('hl');
   }
   function resetPodLabel() {
-    var trigger = document.getElementById('navPodTrigger');
-    if (trigger) trigger.textContent = '烟弹选味';
+    var label = document.getElementById('navPodLabel');
+    if (label) label.textContent = '烟弹选味';
     var dd = document.getElementById('navPodDropdown');
     if (dd) dd.classList.remove('active');
   }
@@ -4722,7 +4718,7 @@ function scrollToSection(sel, label) {
   target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   document.getElementById('navPodDropdown').classList.remove('open');
   if (label) {
-    document.getElementById('navPodTrigger').textContent = label;
+    document.getElementById('navPodLabel').textContent = label;
     document.getElementById('navPodDropdown').classList.add('active');
   }
 }
@@ -4732,7 +4728,7 @@ function resetNavPod() {
   var dd = document.getElementById('navPodDropdown');
   dd.classList.remove('active');
   dd.classList.remove('open');
-  document.getElementById('navPodTrigger').textContent = '烟弹选味';
+  document.getElementById('navPodLabel').textContent = '烟弹选味';
   document.getElementById('pods').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 

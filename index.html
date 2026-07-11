@@ -4758,6 +4758,11 @@ var QUIZ_STEPS = [
     { label: '果甜风味，清爽好闻', val: '果味' },
     { label: '茶香花香，优雅细腻', val: '花香' },
     { label: '不挑，都行', val: '不限' }
+  ]},
+  { title: '口感还有什么额外偏好？', key: 'extra', options: [
+    { label: '喜欢冰凉清爽感', val: 'cool' },
+    { label: '喜欢甜润醇厚感', val: 'sweet' },
+    { label: '没特别偏好', val: 'none' }
   ]}
 ];
 
@@ -4860,22 +4865,44 @@ function showQuizResult() {
     if (quizAnswers.strength === '清淡' && (p.style === '清淡' || p.style === '偏淡')) score += 30;
     if (quizAnswers.strength === '适中' && p.style === '适中') score += 30;
     if (quizAnswers.strength === '偏浓' && p.style === '偏浓') score += 30;
-    // 口感匹配
+    // 口感匹配（扩充关键词，覆盖新品）
     var tagTexts = (p.tags || []).map(function(t) { return t.t; }).join(' ');
-    if (quizAnswers.taste === '果味' && /果味|绿豆|凤梨|蓝莓|荔枝|青瓜|酸甜|柑橘/.test(tagTexts)) score += 25;
-    if (quizAnswers.taste === '花香' && /花香|花茶|蜂蜜|紫罗兰|山茶|酒香/.test(tagTexts)) score += 25;
-    if (quizAnswers.taste === '烟草' && /烤烟|烟草|烟香|雪茄|焦香/.test(tagTexts)) score += 25;
+    if (quizAnswers.taste === '果味' && /果味|果香|果甜|青瓜|绿豆|凤梨|蓝莓|荔枝|酸甜|柑橘|草莓/.test(tagTexts)) score += 25;
+    if (quizAnswers.taste === '花香' && /花香|花茶|蜂蜜|紫罗兰|山茶|酒香|茶|伯爵/.test(tagTexts)) score += 25;
+    if (quizAnswers.taste === '烟草' && /烤烟|烟草|烟香|雪茄|焦香|醇厚|劲道/.test(tagTexts)) score += 25;
     if (quizAnswers.taste === '不限') score += 15;
     // 新手加成
     if (quizAnswers.strength === '清淡' && tagTexts.indexOf('新手友好') !== -1) score += 15;
     if (quizAnswers.strength === '偏浓' && tagTexts.indexOf('解瘾强') !== -1) score += 15;
+    // 凉感/甜润维度（结合标签+描述）
+    var descText = (p.desc || '') + ' ' + (p.name || '');
+    var fullText = tagTexts + ' ' + descText;
+    if (quizAnswers.extra === 'cool' && /凉|薄荷|冰|清爽/.test(fullText)) score += 20;
+    if (quizAnswers.extra === 'sweet' && /甜|奶|焦糖|蜂蜜|奶油|坚果|豆香|拿铁/.test(fullText)) score += 20;
+    if (quizAnswers.extra === 'none') score += 10;
     // 高毛利优先
     if (p.name.indexOf('匠造者') === 0) score += 10;
     return { product: p, score: score };
   });
 
   scored.sort(function(a, b) { return b.score - a.score; });
-  var top3 = scored.slice(0, 3);
+  // 多样性选品：Top3尽可能来自不同系列，避免3个同一类
+  var top3 = [];
+  var usedSeries = {};
+  scored.forEach(function(item) {
+    var s = item.product.series;
+    if (usedSeries[s]) return;
+    if (top3.length >= 3) return;
+    top3.push(item);
+    usedSeries[s] = true;
+  });
+  // 如果选不满3个（系列太少），从剩余里补满
+  if (top3.length < 3) {
+    scored.forEach(function(item) {
+      if (top3.length >= 3) return;
+      if (top3.indexOf(item) === -1) top3.push(item);
+    });
+  }
 
   var whyMap = {
     '清淡': '劲道柔和，不呛不刺激',
@@ -4884,8 +4911,13 @@ function showQuizResult() {
     '果味': '果甜风味，口感清爽',
     '花香': '花香/茶香调性，优雅细腻',
     '烟草': '纯正烟草味，像抽真烟',
-    '不限': '口感百搭，谁都能驾驭'
+    '不限': '口感百搭，谁都能驾驭',
+    'cool': '冰凉清爽，入口舒适',
+    'sweet': '甜润醇厚，回味悠长'
   };
+  var extraReason = '';
+  if (quizAnswers.extra === 'cool') extraReason = '· 冰凉清爽';
+  if (quizAnswers.extra === 'sweet') extraReason = '· 甜润醇厚';
 
   var recsHtml = top3.map(function(item, i) {
     var p = item.product;
@@ -4893,6 +4925,7 @@ function showQuizResult() {
     var reasons = [];
     if (quizAnswers.strength) reasons.push(whyMap[quizAnswers.strength] || '');
     if (quizAnswers.taste && quizAnswers.taste !== '不限') reasons.push(whyMap[quizAnswers.taste] || '');
+    if (quizAnswers.extra && quizAnswers.extra !== 'none') reasons.push(whyMap[quizAnswers.extra] || '');
     var seriesName = '';
     Object.keys(POD_SECTIONS).forEach(function(k) { if (POD_SECTIONS[k].products.indexOf(p) !== -1) seriesName = POD_SECTIONS[k].title; });
     Object.keys(DISPOSABLE_SECTIONS).forEach(function(k) { if (DISPOSABLE_SECTIONS[k].products.indexOf(p) !== -1) seriesName = DISPOSABLE_SECTIONS[k].title; });

@@ -1539,8 +1539,9 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 /* ===== Nav Dropdown ===== */
 .nav-dropdown { position: relative; flex: 1; display: flex; align-items: center; justify-content: center; }
 .nav-dropdown .nd-trigger {
-  display: inline-flex; align-items: center; justify-content: center; gap: 3px;
-  padding: 6px 12px; font-size: 12px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center; gap: 3px;
+  flex: 1;
+  padding: 6px 0; font-size: 12px; font-weight: 600;
   color: var(--primary); background: var(--primary-light);
   border-radius: 20px; cursor: pointer; user-select: none;
 }

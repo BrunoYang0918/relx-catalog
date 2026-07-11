@@ -1269,7 +1269,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 .quiz-result .qr-rec .qr-name { font-size: 14px; font-weight: 700; color: #095155; }
 .quiz-result .qr-rec .qr-series { font-size: 10px; color: #999; }
 .quiz-result .qr-rec .qr-reason { font-size: 10px; color: var(--gold); margin-top: 2px; }
-.quiz-result .qr-rec .qr-desc { font-size: 12px; color: var(--primary); margin-top: 5px; line-height: 1.5; font-weight: 500; }
+.quiz-result .qr-rec .qr-desc { font-size: 12px; color: var(--gold); margin-top: 4px; line-height: 1.5; }
 .quiz-result .qr-rec .qr-adapter {
   display: inline-block; font-size: 9px; background: #FFF3CD; color: #8B6914;
   padding: 1px 6px; border-radius: 3px; margin-top: 4px; font-weight: 600;
@@ -4973,7 +4973,7 @@ function showQuizResult() {
     return '<div class="qr-rec">'
       + '<div class="qr-name">🏅 ' + p.name + ' <span style="font-size:11px;color:var(--gold)">¥' + p.price + '</span></div>'
       + '<div class="qr-series">' + seriesName + '</div>'
-      + '<div class="qr-desc">🍃 ' + (p.desc || '') + '</div>'
+      + '<div class="qr-desc">💡 ' + (p.desc || '') + '</div>'
       + adapterTag
       + '<div class="qr-add-row" id="qrAddRow_' + pid + '">'
       + '<button class="' + btnCls + '" id="qrAddBtn_' + pid + '" onclick="addQuizItem(' + pid + ')">' + btnTxt + '</button>'
@@ -4995,17 +4995,6 @@ function showQuizResult() {
       + '<div class="qrdb-price">¥368 · 3档功率 · 口数精准记录 · 电量实时显示</div>'
       + '</div>'
       + '<a class="qrdb-link" href="javascript:void(0)" onclick="closeQuiz();document.getElementById(\'devices\').scrollIntoView({behavior:\'smooth\'})">查看烟具 →</a>'
-      + '</div>';
-  }
-  // 转接口提示横幅
-  if (hasAdapterProduct) {
-    deviceBanner += (deviceBanner ? '' : '') // 已有banner就直接追加
-      + '<div class="qr-dev-banner" style="margin-top:' + (deviceBanner ? '4px' : '0') + '">'
-      + '<div class="qrdb-icon">🔌</div>'
-      + '<div class="qrdb-info">'
-      + '<div class="qrdb-name">部分推荐产品需配转接口使用</div>'
-      + '<div class="qrdb-price">购买烟具赠送转接口，单独购买需付费</div>'
-      + '</div>'
       + '</div>';
   }
 

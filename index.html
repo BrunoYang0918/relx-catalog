@@ -144,17 +144,13 @@ main { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
 }
 .product-card:active { transform: scale(.98); }
 
-/* 新品卡片：金色加粗边框 + 渐变光晕 */
+/* 新品卡片：金色加粗边框 + 固定金色光晕（无动画，不发热） */
 .product-card.new-arrival {
   border: 4px solid var(--gold);
-  animation: glowGold 2.5s ease-in-out infinite, cardFloat 3.5s ease-in-out infinite;
-}
-@keyframes glowGold {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(201,169,110,0); }
-  50% { box-shadow:
+  box-shadow:
     0 0 10px 3px rgba(201,169,110,0.4),
     0 0 28px 8px rgba(201,169,110,0.18),
-    0 0 50px 14px rgba(201,169,110,0.06); }
+    0 0 50px 14px rgba(201,169,110,0.06);
 }
 .product-card.new-arrival::before {
   content: "新品上市";
@@ -165,17 +161,13 @@ main { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
   animation: pillPulse 2s ease-in-out infinite;
 }
 
-/* 爆品卡片：红色加粗边框 + 红色渐变光晕 */
+/* 爆品卡片：红色加粗边框 + 固定红色光晕（无动画，不发热） */
 .product-card.hot-product {
   border: 4px solid var(--red);
-  animation: glowRed 2.5s ease-in-out infinite, cardFloat 3.5s ease-in-out infinite;
-}
-@keyframes glowRed {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(192,57,43,0); }
-  50% { box-shadow:
+  box-shadow:
     0 0 10px 3px rgba(192,57,43,0.35),
     0 0 28px 8px rgba(192,57,43,0.15),
-    0 0 50px 14px rgba(192,57,43,0.05); }
+    0 0 50px 14px rgba(192,57,43,0.05);
 }
 .product-card.hot-product::before {
   content: "🔥 爆品";
@@ -189,12 +181,6 @@ main { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
 @keyframes pillPulse {
   0%, 100% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.1); opacity: 0.9; }
-}
-
-/* 卡片悬浮 — 新品/爆品微微上下浮动 */
-@keyframes cardFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
 }
 
 /* 窄列横向卡片（烟具 ≤2 色） */

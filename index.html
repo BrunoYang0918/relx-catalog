@@ -1537,9 +1537,10 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 .staff-pick { display: inline-block; font-size: 9px; background: var(--gold); color: #fff; padding: 1px 6px; border-radius: 3px; margin-left: 4px; vertical-align: middle; font-weight: 600; }
 
 /* ===== Nav Dropdown ===== */
-.nav-dropdown { position: relative; flex: 1; }
+.nav-dropdown { position: relative; flex: 1; display: flex; align-items: center; justify-content: center; }
 .nav-dropdown .nd-trigger {
   display: flex; align-items: center; justify-content: center; gap: 3px;
+  flex: 1;
   padding: 6px 0; font-size: 12px; font-weight: 600;
   color: var(--primary); background: var(--primary-light);
   border-radius: 20px; cursor: pointer; user-select: none;
@@ -1586,16 +1587,10 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
   background: rgba(0,0,0,.06); border-radius: 50%;
   cursor: pointer; user-select: none;
   transition: all .15s;
+  margin-left: 3px;
 }
-.nav-dropdown.active { display: inline-flex !important; align-items: center; gap: 2px; }
 .nav-dropdown.active .nd-reset { display: inline-flex; }
-.nav-dropdown.active .nd-trigger::after { display: none; } /* 选中后隐藏CSS三角，避免重复 */
 .nd-reset:hover { background: rgba(0,0,0,.12); color: var(--text); }
-
-/* 移动端适配重置按钮 */
-@media(max-width:600px) {
-  .nav-dropdown.active .nd-trigger { padding-right: 4px; }
-}
 .nav-dropdown .nd-menu a:nth-child(4):hover { background: #E8DFF2; }
 .nav-dropdown .nd-menu a:nth-child(5) { background: #FDF2E9; }
 .nav-dropdown .nd-menu a:nth-child(5):hover { background: #FCE5D3; }
@@ -4701,7 +4696,10 @@ document.getElementById("cartPanel").addEventListener("click", function(e) {
       links.forEach(function(a) {
         if (a.getAttribute('href') === '#' + id) highlight(a);
       });
-      if (id !== 'pods') resetPodLabel();
+      // 已选中某品类(active)时不强制重置，保留「品类名 + ✕」入口；
+      // 仅在未选中(全部视图)滚动时同步回默认文字
+      var dd = document.getElementById('navPodDropdown');
+      if (id !== 'pods' && dd && !dd.classList.contains('active')) resetPodLabel();
     });
   }, { rootMargin: '-' + OFFSET + 'px 0px -60% 0px' });
   links.forEach(function(a) {

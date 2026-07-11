@@ -151,6 +151,7 @@ main { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
     0 0 10px 3px rgba(201,169,110,0.4),
     0 0 28px 8px rgba(201,169,110,0.18),
     0 0 50px 14px rgba(201,169,110,0.06);
+  animation: cardFloat 3.5s ease-in-out infinite;
 }
 .product-card.new-arrival::before {
   content: "新品上市";
@@ -168,6 +169,7 @@ main { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
     0 0 10px 3px rgba(192,57,43,0.35),
     0 0 28px 8px rgba(192,57,43,0.15),
     0 0 50px 14px rgba(192,57,43,0.05);
+  animation: cardFloat 3.5s ease-in-out infinite;
 }
 .product-card.hot-product::before {
   content: "🔥 爆品";
@@ -181,6 +183,12 @@ main { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
 @keyframes pillPulse {
   0%, 100% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.1); opacity: 0.9; }
+}
+
+/* 新品/爆品卡片微微上下浮动（GPU加速transform，低功耗） */
+@keyframes cardFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
 }
 
 /* 窄列横向卡片（烟具 ≤2 色） */

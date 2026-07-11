@@ -1584,14 +1584,16 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 .nd-reset {
   display: none;
   align-items: center; justify-content: center;
-  margin-left: 5px;
+  margin-left: 2px;
   font-size: 10px; font-weight: 500;
-  color: var(--primary); opacity: 0.55;
+  padding: 2px 5px;
+  color: var(--primary); opacity: 0.7;
   cursor: pointer; user-select: none;
-  transition: opacity .15s;
+  border-radius: 8px;
+  transition: background .15s, opacity .15s;
 }
 .nav-dropdown.active .nd-reset { display: inline-flex; }
-.nd-reset:hover { opacity: 1; }
+.nd-reset:hover { background: rgba(0,0,0,.06); opacity: 1; }
 .nav-dropdown .nd-menu a:nth-child(4):hover { background: #E8DFF2; }
 .nav-dropdown .nd-menu a:nth-child(5) { background: #FDF2E9; }
 .nav-dropdown .nd-menu a:nth-child(5):hover { background: #FCE5D3; }
@@ -1769,7 +1771,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="quick-nav" id="quickNav">
   <div class="nav-dropdown" id="navPodDropdown">
-    <span class="nd-trigger" id="navPodTrigger" onclick="event.stopPropagation();document.getElementById('navPodDropdown').classList.toggle('open')"><span class="nd-label" id="navPodLabel">烟弹选味</span><span class="nd-reset" id="navPodReset" onclick="event.stopPropagation();resetNavPod()">✕</span></span>
+    <span class="nd-trigger" id="navPodTrigger" onclick="event.stopPropagation();document.getElementById('navPodDropdown').classList.toggle('open')"><span class="nd-label" id="navPodLabel">烟弹选味</span><span class="nd-reset" id="navPodReset" onclick="event.stopPropagation();resetNavPod()">全部</span></span>
     <div class="nd-menu">
       <a href="javascript:void(0)" onclick="scrollToSection('#pod-pro','幻影Pro')"><span class="nd-icon">⚡</span><span class="nd-name">幻影Pro<span class="nd-sub">· 三档功率</span></span></a>
       <a href="javascript:void(0)" onclick="scrollToSection('#pod-phantom','幻影')"><span class="nd-icon">⭐</span><span class="nd-name">幻影<span class="nd-sub">· 口味最全</span></span></a>
@@ -4983,7 +4985,7 @@ function showQuizResult() {
       + '<div class="qrdb-icon">🔌</div>'
       + '<div class="qrdb-info">'
       + '<div class="qrdb-name">部分推荐产品需配转接口使用</div>'
-      + '<div class="qrdb-price">门店免费赠送转接口，适配通用</div>'
+      + '<div class="qrdb-price">购买烟具赠送转接口，单独购买需付费</div>'
       + '</div>'
       + '</div>';
   }

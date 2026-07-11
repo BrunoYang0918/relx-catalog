@@ -4746,31 +4746,43 @@ document.addEventListener('click', function(e) {
 });
 
 // 口味探测器
-var QUIZ_STEPS = [
-  { title: '你现在用什么烟具？', key: 'device', options: [
-    { label: '幻影Pro / 幻影 / 青羽 / 御影S', val: 'phantom' },
-    { label: '大千（10ml大弹，可配转接口通用）', val: 'daqian' },
-    { label: '宙斯（可配转接口通用）', val: 'zeus' },
-    { label: '没有烟具，先试试一次性', val: 'disposable' },
-    { label: '没有烟具，考虑入手烟具', val: 'newbie' }
-  ]},
-  { title: '你抽烟劲道偏好？', key: 'strength', options: [
-    { label: '清淡柔和，不呛不刺激', val: '清淡' },
-    { label: '适中就好，有点感觉', val: '适中' },
-    { label: '要有劲才过瘾', val: '偏浓' }
-  ]},
-  { title: '你喜欢什么口感风味？', key: 'taste', options: [
-    { label: '烟草本味，像真烟', val: '烟草' },
-    { label: '果甜风味，清爽好闻', val: '果味' },
-    { label: '茶香花香，优雅细腻', val: '花香' },
-    { label: '不挑，都行', val: '不限' }
-  ]},
-  { title: '口感还有什么额外偏好？', key: 'extra', options: [
-    { label: '喜欢冰凉清爽感', val: 'cool' },
-    { label: '喜欢甜润醇厚感', val: 'sweet' },
-    { label: '没特别偏好', val: 'none' }
-  ]}
-];
+function getQuizSteps() {
+  var steps = [
+    { title: '你现在用什么烟具？', key: 'device', options: [
+      { label: '幻影Pro / 幻影 / 青羽 / 御影S', val: 'phantom' },
+      { label: '大千（10ml大弹，可配转接口通用）', val: 'daqian' },
+      { label: '宙斯（可配转接口通用）', val: 'zeus' },
+      { label: '没有烟具，先试试一次性', val: 'disposable' },
+      { label: '没有烟具，考虑入手烟具', val: 'newbie' }
+    ]},
+  ];
+  // 大千/宙斯用户需确认是否接受转接口
+  if (quizAnswers.device === 'daqian' || quizAnswers.device === 'zeus') {
+    steps.push({ title: '是否接受转接口搭配烟弹？', key: 'adapter', options: [
+      { label: '接受转接口，都可以用', val: 'yes' },
+      { label: '不接受，只要原装烟弹', val: 'no' }
+    ]});
+  }
+  steps.push(
+    { title: '你抽烟劲道偏好？', key: 'strength', options: [
+      { label: '清淡柔和，不呛不刺激', val: '清淡' },
+      { label: '适中就好，有点感觉', val: '适中' },
+      { label: '要有劲才过瘾', val: '偏浓' }
+    ]},
+    { title: '你喜欢什么口感风味？', key: 'taste', options: [
+      { label: '烟草本味，像真烟', val: '烟草' },
+      { label: '果甜风味，清爽好闻', val: '果味' },
+      { label: '茶香花香，优雅细腻', val: '花香' },
+      { label: '不挑，都行', val: '不限' }
+    ]},
+    { title: '口感还有什么额外偏好？', key: 'extra', options: [
+      { label: '喜欢冰凉清爽感', val: 'cool' },
+      { label: '喜欢甜润醇厚感', val: 'sweet' },
+      { label: '没特别偏好', val: 'none' }
+    ]}
+  );
+  return steps;
+}
 
 var quizAnswers = {};
 var quizStep = 0;
@@ -4805,17 +4817,18 @@ function closeQuiz() {
 
 function renderQuizStep() {
   var card = document.getElementById('quizCard');
-  if (quizStep < QUIZ_STEPS.length) {
-    var s = QUIZ_STEPS[quizStep];
+  var steps = getQuizSteps();
+  if (quizStep < steps.length) {
+    var s = steps[quizStep];
     var optsHtml = s.options.map(function(o, i) {
       var sel = quizAnswers[s.key] === o.val ? ' sel' : '';
       return '<div class="q-opt' + sel + '" onclick="selectQuizOption(\'' + s.key + '\',\'' + o.val + '\',this)">' + o.label + '</div>';
     }).join('');
     card.innerHTML = '<div style="text-align:right;margin-bottom:4px"><button onclick="closeQuiz()" style="border:none;background:none;font-size:20px;color:#999;cursor:pointer;padding:0 4px;">✕</button></div>'
-      + '<div class="q-title">Q' + (quizStep + 1) + '/' + QUIZ_STEPS.length + '</div>'
+      + '<div class="q-title">Q' + (quizStep + 1) + '/' + steps.length + '</div>'
       + '<div class="q-sub">' + s.title + '</div>'
       + '<div class="q-options">' + optsHtml + '</div>'
-      + '<button class="q-btn" ' + (quizAnswers[s.key] ? '' : 'disabled') + ' onclick="quizNext()">' + (quizStep === QUIZ_STEPS.length - 1 ? '🔍 查看推荐' : '下一题 →') + '</button>';
+      + '<button class="q-btn" ' + (quizAnswers[s.key] ? '' : 'disabled') + ' onclick="quizNext()">' + (quizStep === steps.length - 1 ? '🔍 查看推荐' : '下一题 →') + '</button>';
   } else {
     showQuizResult();
   }
@@ -4844,6 +4857,11 @@ function showQuizResult() {
     disposable: []
   };
   var compatSeries = DEVICE_COMPAT[quizAnswers.device] || [];
+  // 用户明确不接受转接口 → 只推荐原装烟弹
+  if (quizAnswers.adapter === 'no') {
+    if (quizAnswers.device === 'daqian') compatSeries = ['daqian'];
+    if (quizAnswers.device === 'zeus') compatSeries = ['zeus'];
+  }
   var isDisposable = quizAnswers.device === 'disposable';
 
   var allProducts = [];

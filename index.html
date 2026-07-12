@@ -1739,7 +1739,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 <div class="app-shell"><div class="app-scroll"><main>
 
 <div class="topbar">
-  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v1.44</span></div>
+  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v1.45</span></div>
   <div class="tb-right">
     <a class="tb-btn" href="javascript:void(0)" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">📞 联系门店</a>
     <div class="lang-dropdown" id="langDrop">
@@ -1889,7 +1889,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="footer-note"></div>
 
-<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v1.44</span></div>
+<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v1.45</span></div>
 
 </main></div>
 
@@ -2486,7 +2486,7 @@ function savePromoConfig(cfg) {
   localStorage.setItem('relx_promo', JSON.stringify(cfg));
 }
 
-var DATA_VERSION = 'v1.44';
+var DATA_VERSION = 'v1.45';
 
 function saveProductsToStorage() {
   try { localStorage.setItem('relx_products', JSON.stringify(POD_SECTIONS)); localStorage.setItem('relx_data_version', DATA_VERSION); } catch(e) {}
@@ -2518,9 +2518,12 @@ function fetchRemoteJSON(filename) {
   } else if (location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname === '') {
     // 本地开发：直接加载同目录本地配置，方便预览未推送的新增产品
     url = './' + filename;
-  } else {
-    // 本地文件或其他环境，用 raw.githubusercontent.com（缓存 ~5 分钟）
+  } else if (location.protocol === 'file:') {
+    // 本地文件打开（file:// 协议），用 raw.githubusercontent.com（缓存 ~5 分钟）
     url = 'https://raw.githubusercontent.com/' + GIT_OWNER + '/' + GIT_REPO + '/' + GIT_BRANCH + '/' + filename;
+  } else {
+    // 其他部署环境（Vercel 等）使用同域路径
+    url = './' + filename;
   }
   return fetch(url, { cache: 'no-cache' }).then(function(r) {
     if (!r.ok) throw new Error('Fetch failed');
@@ -2528,11 +2531,17 @@ function fetchRemoteJSON(filename) {
   });
 }
 
-// 本地预览时，把 CDN 资源地址转为同目录本地文件名，便于查看未上传的新图片/视频
+// 预览时，把 CDN 资源地址转为同目录本地文件名
+// 支持 localhost（直接取文件名）和 Vercel/GitHub Pages 同域（保留完整子目录路径）
 function localAssetUrl(cdnUrl) {
   if (!cdnUrl) return cdnUrl;
   if (location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname === '') {
     var m = cdnUrl.match(/\/([^\/\?]+?)(?:\?v=\d+)?$/);
+    if (m) return './' + m[1];
+  }
+  // 非 GitHub Pages 环境（Vercel 等）→ 同域加载图片/视频，保留完整子目录
+  if (location.hostname !== GIT_OWNER + '.github.io') {
+    var m = cdnUrl.match(/@main\/(.+?)(?:\?v=\d+)?$/);
     if (m) return './' + m[1];
   }
   return cdnUrl;

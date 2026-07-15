@@ -1739,7 +1739,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 <div class="app-shell"><div class="app-scroll"><main>
 
 <div class="topbar">
-  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v1.45</span></div>
+  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v1.46</span></div>
   <div class="tb-right">
     <a class="tb-btn" href="javascript:void(0)" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">📞 联系门店</a>
     <div class="lang-dropdown" id="langDrop">
@@ -1889,7 +1889,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="footer-note"></div>
 
-<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v1.45</span></div>
+<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v1.46</span></div>
 
 </main></div>
 
@@ -2187,7 +2187,7 @@ function renderProductCard(p) {
   var staffPick = '';
   var puffs = getPuffs(p);
   return '<div class="product-card' + (cls ? ' ' + cls : '') + '">'
-    + '<div class="p-img"><img src="' + p.img + '" onerror="var f=localAssetUrl(\'' + escHtml(p.img) + '\');if(this.src!==f)this.src=f" alt="' + showName + '">'
+    + '<div class="p-img"><img src="' + p.img + '" loading="lazy" onerror="var f=localAssetUrl(\'' + escHtml(p.img) + '\');if(this.src!==f)this.src=f" alt="' + showName + '">'
     + (p.video ? '<div class="p-video-overlay" onclick="event.stopPropagation();openVideoPlayer(\'' + escHtml(p.video) + '\',\'' + escHtml(showName) + '\')"><span class="p-video-btn">▶</span></div>' : '')
     + '</div>'
     + '<div class="p-name-row"><span class="p-name">' + showName + staffPick + '</span><span class="p-price">&yen;' + p.price + '</span></div>'
@@ -2211,7 +2211,7 @@ function renderDeviceSection(d) {
     var isLarge = d.colors.length >= 4;
     var videoHtml = d.video ? '<div class="p-video-overlay" onclick="event.stopPropagation();openVideoPlayer(\'' + escHtml(d.video) + '\',\'' + escHtml(d.name) + '\')"><span class="p-video-btn">▶</span></div>' : '';
     html += '<div class="product-card' + (isNarrow ? ' horizontal' : isLarge ? ' large-img' : '') + '">'
-      + '<div class="p-img"><img src="' + c.img + '" onerror="var f=localAssetUrl(\'' + escHtml(c.img) + '\');if(this.src!==f)this.src=f" alt="' + c.label + '">' + videoHtml + '</div>'
+      + '<div class="p-img"><img src="' + c.img + '" loading="lazy" onerror="var f=localAssetUrl(\'' + escHtml(c.img) + '\');if(this.src!==f)this.src=f" alt="' + c.label + '">' + videoHtml + '</div>'
       + '<div class="p-info">'
         + '<div class="p-name-row"><span class="p-name">' + c.label + '</span><span class="p-price">&yen;' + d.price + '</span></div>'
         + '<div class="p-desc">适配：' + d.compat + '</div>'
@@ -2486,7 +2486,7 @@ function savePromoConfig(cfg) {
   localStorage.setItem('relx_promo', JSON.stringify(cfg));
 }
 
-var DATA_VERSION = 'v1.45';
+var DATA_VERSION = 'v1.46';
 
 function saveProductsToStorage() {
   try { localStorage.setItem('relx_products', JSON.stringify(POD_SECTIONS)); localStorage.setItem('relx_data_version', DATA_VERSION); } catch(e) {}
@@ -4173,7 +4173,7 @@ function renderCartBody() {
     var html = '';
     items.forEach(function(item) {
       html += '<div class="cp-item">'
-        + '<div class="cpi-img"><img src="' + item.product.img + '" onerror="var f=localAssetUrl(\'' + escHtml(item.product.img) + '\');if(this.src!==f)this.src=f" alt=""></div>'
+        + '<div class="cpi-img"><img src="' + item.product.img + '" loading="lazy" onerror="var f=localAssetUrl(\'' + escHtml(item.product.img) + '\');if(this.src!==f)this.src=f" alt=""></div>'
         + '<div class="cpi-info"><div class="cpi-name">' + item.product.name + '</div><div class="cpi-series">' + item.section + '</div><div class="cpi-price">&yen;' + item.product.price + '</div></div>'
         + '<div class="cpi-qty"><button onclick="changeQty(' + item.id + ',-1)">−</button><input type="number" class="cpi-num" value="' + item.qty + '" min="1" max="99" onchange="setQty(' + item.id + ',this.value)" style="width:40px;text-align:center;font-size:13px;font-weight:700;border:1px solid #ddd;border-radius:4px;padding:2px 0;"><button onclick="changeQty(' + item.id + ',1)">＋</button></div>'
         + '<span class="cpi-del" onclick="removeItem(' + item.id + ')">✕</span>'
@@ -4473,7 +4473,7 @@ function renderHero() {
     if (lang !== 'zh' && p.i18n && p.i18n[lang] && p.i18n[lang].name) showName = p.i18n[lang].name;
     html += '<div class="hero-card">'
       + '<span class="hc-rank">' + (index + 1) + '</span>'
-      + '<div class="hc-img"><img src="' + p.img + '" onerror="var f=localAssetUrl(\'' + escHtml(p.img) + '\');if(this.src!==f)this.src=f" alt=""></div>'
+      + '<div class="hc-img"><img src="' + p.img + '" loading="lazy" onerror="var f=localAssetUrl(\'' + escHtml(p.img) + '\');if(this.src!==f)this.src=f" alt=""></div>'
       + '<div class="hc-info">'
         + '<div class="hc-name">' + showName + '</div>'
         + '<div class="hc-meta">' + entry.section + '</div>'
@@ -4622,7 +4622,7 @@ function renderNewProducts() {
   var html = '';
   newProducts.forEach(function(item) {
     html += '<div class="nps-card" onclick="document.getElementById(\'pods\').scrollIntoView({behavior:\'smooth\'})">'
-      + '<div class="nps-img"><img src="' + item.product.img + '" onerror="var f=localAssetUrl(\'' + escHtml(item.product.img) + '\');if(this.src!==f)this.src=f" alt=""></div>'
+      + '<div class="nps-img"><img src="' + item.product.img + '" loading="lazy" onerror="var f=localAssetUrl(\'' + escHtml(item.product.img) + '\');if(this.src!==f)this.src=f" alt=""></div>'
       + '<div class="nps-name">' + item.product.name + '</div>'
       + '<div class="nps-badge">新品上市</div>'
       + '<div class="nps-price">&yen;' + item.product.price + '</div>'

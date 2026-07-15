@@ -2419,7 +2419,7 @@ function openVideoPlayer(url, name) {
   modal.innerHTML =
     '<span class="vm-close">&times;</span>' +
     '<div class="vm-content">' +
-      '<video controls autoplay playsinline preload="auto" src="' + escHtml(url) + '" onerror="var f=localAssetUrl(\'' + escHtml(url) + '\');if(this.src!==f){this.src=f;this.load()}"></video>' +
+      '<video controls autoplay playsinline preload="none" src="' + escHtml(url) + '" onerror="var f=localAssetUrl(\'' + escHtml(url) + '\');if(this.src!==f){this.src=f;this.load()}"></video>' +
       '<div class="vm-name">' + escHtml(name) + '</div>' +
       '<div class="vm-hint">点击视频外部或 ✕ 关闭</div>' +
     '</div>';

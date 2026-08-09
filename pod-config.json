@@ -1053,6 +1053,43 @@
         "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/pod_images/image37.jpeg?v=2",
         "flags": [],
         "status": "active"
+      },
+      {
+        "id": 39,
+        "name": "溪上烟",
+        "price": 119,
+        "series": "niche",
+        "tags": [
+          {
+            "t": "新品上市",
+            "c": "blue"
+          },
+          {
+            "t": "甜瓜青苹果",
+            "c": "green"
+          },
+          {
+            "t": "清甜果香",
+            "c": "green"
+          },
+          {
+            "t": "2.5ml大容量",
+            "c": "gold"
+          },
+          {
+            "t": "通配烟弹",
+            "c": "blue"
+          }
+        ],
+        "desc": "甜瓜青苹果 · 入口饱满水润 果香自然 收尾干净清爽",
+        "descEm": "gr",
+        "str": "★★★★★",
+        "style": "适中",
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/pod_images/xishang.png?v=2",
+        "flags": [
+          "new"
+        ],
+        "status": "active"
       }
     ]
   }

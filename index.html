@@ -1739,7 +1739,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 <div class="app-shell"><div class="app-scroll"><main>
 
 <div class="topbar">
-  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v1.46</span></div>
+  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v1.50</span></div>
   <div class="tb-right">
     <a class="tb-btn" href="javascript:void(0)" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">📞 联系门店</a>
     <div class="lang-dropdown" id="langDrop">
@@ -1889,7 +1889,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="footer-note"></div>
 
-<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v1.46</span></div>
+<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v1.50</span></div>
 
 </main></div>
 
@@ -2037,10 +2037,14 @@ var POD_SECTIONS = {
       { id:35, name:"金丝露", price:119, series:"niche", tags:[{t:"爆款",c:"gold"},{t:"焦香烤烟",c:"blue"},{t:"2.5ml大容量",c:"gold"},{t:"解瘾强",c:"red"}], desc:"纯正 老烟民最爱", descEm:null, str:"★★★☆☆", style:"适中", img:"https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/pod_images/image35.png?v=2", flags:["best"], status:"active" },
       { id:38, name:"万山红", price:119, series:"niche", tags:[{t:"新品上市",c:"blue"},{t:"草莓红茶",c:"green"},{t:"清甜果香",c:"green"},{t:"2.5ml大容量",c:"gold"},{t:"通配烟弹",c:"blue"},{t:"陶瓷芯",c:"blue"}], desc:"草莓红茶 · 果香与茶香完美融合 凉感轻柔不刺喉", descEm:"gr", str:"★★★☆☆", style:"适中", img:"https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/pod_images/wanshanhong.png?v=2", flags:["new"], status:"active" },
       { id:36, name:"冷烟月", price:119, series:"niche", tags:[{t:"草本清香",c:"blue"},{t:"2.5ml大容量",c:"gold"},{t:"新手友好",c:"blue"}], desc:"干净利落", descEm:null, str:"★★★☆☆", style:"适中", img:"https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/pod_images/image36.jpeg?v=2", flags:[], status:"active" },
-      { id:37, name:"兰亭雅集", price:99, series:"niche", tags:[{t:"花香清雅",c:"blue"},{t:"女生首选",c:"blue"}], desc:"蜂蜜紫罗兰香 · 以前花香味", descEm:null, str:"★★☆☆☆", style:"清淡", img:"https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/pod_images/image37.jpeg?v=2", flags:[], status:"active" }
+      { id:37, name:"兰亭雅集", price:99, series:"niche", tags:[{t:"花香清雅",c:"blue"},{t:"女生首选",c:"blue"}], desc:"蜂蜜紫罗兰香 · 以前花香味", descEm:null, str:"★★☆☆☆", style:"清淡", img:"https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/pod_images/image37.jpeg?v=2", flags:[], status:"active" },
+      { id:39, name:"溪上烟", price:119, series:"niche", tags:[{t:"新品上市",c:"blue"},{t:"甜瓜青苹果",c:"green"},{t:"清甜果香",c:"green"},{t:"2.5ml大容量",c:"gold"},{t:"通配烟弹",c:"blue"}], desc:"甜瓜青苹果 · 入口饱满水润 果香自然 收尾干净清爽", descEm:"gr", str:"★★★★★", style:"适中", img:"https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/pod_images/xishang.png?v=2", flags:["new"], status:"active" }
     ]
   }
 };
+
+// 保存硬编码兜底副本：用于 fetch 失败时强制恢复（避免被脏 localStorage 永久覆盖）
+var _POD_SECTIONS_FALLBACK = JSON.parse(JSON.stringify(POD_SECTIONS));
 
 // 尝试从本地存储加载产品数据（优先于硬编码默认值）
 (function() {
@@ -2486,7 +2490,7 @@ function savePromoConfig(cfg) {
   localStorage.setItem('relx_promo', JSON.stringify(cfg));
 }
 
-var DATA_VERSION = 'v1.46';
+var DATA_VERSION = 'v1.50';
 
 function saveProductsToStorage() {
   try { localStorage.setItem('relx_products', JSON.stringify(POD_SECTIONS)); localStorage.setItem('relx_data_version', DATA_VERSION); } catch(e) {}
@@ -2531,13 +2535,20 @@ function fetchRemoteJSON(filename) {
   });
 }
 
-// 预览时，把 CDN 资源地址转为同目录本地文件名
-// 支持 localhost（直接取文件名）和 Vercel/GitHub Pages 同域（保留完整子目录路径）
+// 预览时，把 CDN 资源地址转为本地相对路径
+// 支持 localhost / 127.0.0.1 / file://（提取 jsdelivr /gh/{owner}/{repo}/ 之后的完整子目录）
+// 以及 Vercel / 其他同域部署（提取 @main/ 之后的完整子目录）
 function localAssetUrl(cdnUrl) {
   if (!cdnUrl) return cdnUrl;
+  // 本地预览（localhost / 127.0.0.1 / file://）→ 从 jsdelivr CDN URL 提取仓库根之后的完整子目录
   if (location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.hostname === '') {
-    var m = cdnUrl.match(/\/([^\/\?]+?)(?:\?v=\d+)?$/);
+    // 优先匹配 jsdelivr @main 格式；其次匹配 /gh/{owner}/{repo}/ 格式（保留完整子目录）
+    var m = cdnUrl.match(/@main\/(.+?)(?:\?v=\d+)?$/)
+         || cdnUrl.match(/\/gh\/[^\/]+\/[^\/]+\/(.+?)(?:\?v=\d+)?$/);
     if (m) return './' + m[1];
+    // 兜底：仅取文件名（适用于历史上位于仓库根目录的资源）
+    var f = cdnUrl.match(/\/([^\/\?]+?)(?:\?v=\d+)?$/);
+    if (f) return './' + f[1];
   }
   // 非 GitHub Pages 环境（Vercel 等）→ 同域加载图片/视频，保留完整子目录
   if (location.hostname !== GIT_OWNER + '.github.io') {
@@ -2596,6 +2607,10 @@ function saveToGitHub(filename, data, callback) {
   try { cachedVersion = localStorage.getItem('relx_data_version') || ''; } catch(e) {}
   var cacheValid = (cachedVersion === DATA_VERSION);
 
+  // 先用硬编码数据做一次兜底渲染，保证 file:// 等无法拉取远程 JSON 的场景也能正常显示
+  renderAll();
+  renderHero();
+
   // 先从 localStorage 快速展示本地数据（仅版本匹配时使用）
   if (cacheValid) {
     try {
@@ -2632,7 +2647,10 @@ function saveToGitHub(filename, data, callback) {
       renderHero();
     }
   }).catch(function() {
-    console.log('远程 pod-config.json 加载失败，使用本地缓存');
+    console.log('远程 pod-config.json 加载失败，强制恢复硬编码兜底数据');
+    POD_SECTIONS = JSON.parse(JSON.stringify(_POD_SECTIONS_FALLBACK));
+    renderAll();
+    renderHero();
   });
   // 拉取促销配置
   fetchRemoteJSON('promo-config.json').then(function(data) {

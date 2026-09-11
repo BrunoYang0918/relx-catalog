@@ -5,3 +5,7 @@
 backup*
 *-原型*
 device_colors_backup/
+
+# 本地工具（一键更新器，不进线上仓库）
+tools/
+_newproduct_refs/

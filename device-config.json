@@ -39,6 +39,11 @@
     "i18nKey": "dev_h5",
     "colors": [
       {
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/device_colors/h5_bingyuehai.png?v=2",
+        "label": "冰月海",
+        "isNew": true
+      },
+      {
         "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/device_colors/h5_green.png?v=2",
         "label": "寒山夜"
       },

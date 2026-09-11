@@ -321,6 +321,10 @@
         "series": "phantom",
         "tags": [
           {
+            "t": "爆款",
+            "c": "gold"
+          },
+          {
             "t": "话梅香",
             "c": "blue"
           },
@@ -342,7 +346,9 @@
         "str": "★★★★☆",
         "style": "偏浓",
         "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/pod_images/image13.jpeg?v=2",
-        "flags": [],
+        "flags": [
+          "best"
+        ],
         "status": "active"
       }
     ]

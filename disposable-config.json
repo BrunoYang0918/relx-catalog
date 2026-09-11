@@ -8,10 +8,6 @@
         "price": 149,
         "tags": [
           {
-            "t": "新品上市",
-            "c": "blue"
-          },
-          {
             "t": "解瘾强",
             "c": "red"
           },
@@ -288,10 +284,6 @@
         "price": 149,
         "tags": [
           {
-            "t": "新品上市",
-            "c": "blue"
-          },
-          {
             "t": "爆款",
             "c": "gold"
           },
@@ -319,10 +311,6 @@
         "name": "匠造者-02",
         "price": 149,
         "tags": [
-          {
-            "t": "新品上市",
-            "c": "blue"
-          },
           {
             "t": "解瘾强",
             "c": "red"
@@ -365,6 +353,96 @@
         "str": "★★★☆☆",
         "style": "适中",
         "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/disposable_images/image14.jpeg?v=2",
+        "flags": [],
+        "status": "active"
+      },
+      {
+        "id": 115,
+        "name": "秘境寻幽",
+        "price": 129,
+        "tags": [
+          {
+            "t": "新品上市",
+            "c": "blue"
+          },
+          {
+            "t": "蜜柚果香",
+            "c": "green"
+          },
+          {
+            "t": "10ml大容量",
+            "c": "gold"
+          },
+          {
+            "t": "适中击喉",
+            "c": "blue"
+          }
+        ],
+        "desc": "天然蜜柚香 · 入口清甜沁润 果香层次丰富",
+        "descEm": "gr",
+        "str": "★★★☆☆",
+        "style": "适中",
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/disposable_images/mijingxunyou.jpg?v=2",
+        "flags": [],
+        "status": "active"
+      },
+      {
+        "id": 116,
+        "name": "弦歌未央",
+        "price": 129,
+        "tags": [
+          {
+            "t": "新品上市",
+            "c": "blue"
+          },
+          {
+            "t": "咖啡巧克力",
+            "c": "blue"
+          },
+          {
+            "t": "烘焙焦香",
+            "c": "blue"
+          },
+          {
+            "t": "10ml大容量",
+            "c": "gold"
+          }
+        ],
+        "desc": "咖啡醇香 · 黑巧微苦 烘焙可可尾韵",
+        "descEm": "rd",
+        "str": "★★★★☆",
+        "style": "适中",
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/disposable_images/xiangeweiyang.jpg?v=2",
+        "flags": [],
+        "status": "active"
+      },
+      {
+        "id": 117,
+        "name": "匠造者-21",
+        "price": 149,
+        "tags": [
+          {
+            "t": "新品上市",
+            "c": "blue"
+          },
+          {
+            "t": "鲜萃绿茶",
+            "c": "green"
+          },
+          {
+            "t": "烤烟焦甜",
+            "c": "blue"
+          },
+          {
+            "t": "超大容量",
+            "c": "blue"
+          }
+        ],
+        "desc": "鲜萃绿茶 · 清雅茶香衬淡枣甜 回甘干净",
+        "descEm": "gr",
+        "str": "★★★☆☆",
+        "style": "偏淡",
+        "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/disposable_images/jiangzaozhe21.png?v=2",
         "flags": [],
         "status": "active"
       }

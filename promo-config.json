@@ -1,5 +1,6 @@
 {
   "version": 1,
+  "rev": 3,
   "enabled": true,
   "tag": "🎁 特惠",
   "items": [
@@ -7,7 +8,7 @@
       "id": 1,
       "icon": "🎁",
       "text": "全场满 ",
-      "num": " 2 ",
+      "num": " 3 ",
       "unit": "件",
       "highlight": "包邮",
       "active": true
@@ -16,7 +17,7 @@
       "id": 2,
       "icon": "🎁",
       "text": "烟弹满 ",
-      "num": "3",
+      "num": "5",
       "unit": "盒",
       "highlight": "赠保护套",
       "active": true

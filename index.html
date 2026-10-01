@@ -1739,7 +1739,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 <div class="app-shell"><div class="app-scroll"><main>
 
 <div class="topbar">
-  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v1.51</span></div>
+  <div class="brand" data-i18n="brand" id="brandEl">国标电子烟选品指南 <span style="font-size:9px;color:rgba(255,255,255,.5);">v1.52</span></div>
   <div class="tb-right">
     <a class="tb-btn" href="javascript:void(0)" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">📞 联系门店</a>
     <div class="lang-dropdown" id="langDrop">
@@ -1889,7 +1889,7 @@ html[lang="en"] .product-card.hot::after { content: "HOT"; }
 
 <div class="footer-note"></div>
 
-<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v1.51</span></div>
+<div class="compliance-warning">⚠️ 吸烟有害健康 · 禁止向未成年人销售电子烟<br>本页面仅供产品信息展示，请遵守当地法律法规<br><span style="font-size:9px;color:#ccc;">v1.52</span></div>
 
 </main></div>
 
@@ -2471,34 +2471,43 @@ function showToast(msg) {
 }
 
 // ===== 促销跑马灯配置 =====
+// rev 为"修订戳"：每次手工改动促销文案，把这个数字 +1。
+// 作用：远端 promo-config.json 若 rev 低于本地，说明那份是旧数据（CDN 缓存 / 尚未推送），
+//       此时忽略远端、保留本地硬编码，避免旧配置把新改动覆盖回去。
+var PROMO_REV = 3; // v3: 购物清单引导语改为动态差额，门槛从配置读取；v2: 包邮 2件→3件、赠保护套 3盒→5盒
 var PROMO_DEFAULT = {
   version: 1,
+  rev: PROMO_REV,
   enabled: true,
   tag: "🎁 特惠",
   items: [
-    { id:1, icon:"🎁", text:"全场满", num:"2", unit:"件", highlight:"包邮", active:true },
-    { id:2, icon:"🎁", text:"烟弹满", num:"3", unit:"盒", highlight:"赠保护套", active:true },
+    { id:1, icon:"🎁", text:"全场满", num:"3", unit:"件", highlight:"包邮", active:true },
+    { id:2, icon:"🎁", text:"烟弹满", num:"5", unit:"盒", highlight:"赠保护套", active:true },
     { id:3, icon:"🎁", text:"烟弹满", num:"10", unit:"盒", highlight:"赠1盒", active:true },
     { id:4, icon:"🎁", text:"一次性满", num:"5", unit:"支", highlight:"赠1支", active:true }
   ]
 };
+var _PROMO_DEFAULT_FALLBACK = JSON.parse(JSON.stringify(PROMO_DEFAULT));
 
 function loadPromoConfig() {
   try {
     var raw = localStorage.getItem('relx_promo');
     if (raw) {
       var cfg = JSON.parse(raw);
-      if (cfg && cfg.version >= 1) return cfg;
+      // 本地缓存的 rev 若低于硬编码，说明缓存是脏的（旧版本残留），直接丢弃走硬编码
+      if (cfg && cfg.version >= 1 && (cfg.rev || 0) >= PROMO_REV) return cfg;
     }
   } catch(e) {}
   return JSON.parse(JSON.stringify(PROMO_DEFAULT));
 }
 
 function savePromoConfig(cfg) {
+  // 落盘时 rev 取「本地硬编码」与「传入值」的较大者，既防止脏数据判定丢弃，也不降级已有更高版本
+  if (cfg) cfg.rev = Math.max(PROMO_REV, cfg.rev || 0);
   localStorage.setItem('relx_promo', JSON.stringify(cfg));
 }
 
-var DATA_VERSION = 'v1.51';
+var DATA_VERSION = 'v1.52';
 
 function saveProductsToStorage() {
   try { localStorage.setItem('relx_products', JSON.stringify(POD_SECTIONS)); localStorage.setItem('relx_data_version', DATA_VERSION); } catch(e) {}
@@ -2663,10 +2672,19 @@ function saveToGitHub(filename, data, callback) {
   // 拉取促销配置
   fetchRemoteJSON('promo-config.json').then(function(data) {
     if (data && data.version) {
+      // 远端 rev 低于本地硬编码 → 是旧数据（CDN 缓存 / 尚未推送），忽略，保留本地
+      if ((data.rev || 0) < PROMO_REV) {
+        console.log('远端 promo-config.json rev=' + (data.rev || 0) + ' 低于本地 ' + PROMO_REV + '，忽略远端旧配置');
+        renderPromoMarquee(PROMO_DEFAULT);
+        return;
+      }
       savePromoConfig(data);
       renderPromoMarquee(data);
     }
-  }).catch(function() {});
+  }).catch(function() {
+    console.log('远端 promo-config.json 加载失败，使用硬编码兜底');
+    renderPromoMarquee(_PROMO_DEFAULT_FALLBACK);
+  });
   // 拉取一次性产品配置
   fetchRemoteJSON('disposable-config.json').then(function(data) {
     if (data && Object.keys(data).length > 0) {
@@ -4304,21 +4322,55 @@ function showMarketingTips(items) {
   });
   var totalItems = podCount + dispCount;
   if (totalItems === 0) { el.style.display = 'none'; return; }
-  if (podCount >= 4) {
-    el.textContent = '🎁 烟弹满 10 盒可私信客服了解老客专属福利';
-    el.style.display = 'block';
-  } else if (podCount === 2 && totalItems === 2) {
-    el.textContent = '💡 再选 1 件，赠送价值 ¥19.9 烟杆保护套（幻影系列适配，随机款式）';
-    el.style.display = 'block';
-  } else if (dispCount >= 2) {
-    el.textContent = '🎉 店内满 5 支活动进行中，咨询企微客服';
-    el.style.display = 'block';
-  } else if (totalItems < 2) {
-    el.textContent = '💡 再选 1 件，到店可享同城跑腿';
-    el.style.display = 'block';
-  } else {
-    el.style.display = 'none';
+
+  // 门槛从跑马灯配置动态读取，避免与活动文案脱节
+  var cfg = loadPromoConfig();
+  function promoNum(id, fallback) {
+    var it = (cfg.items || []).filter(function(x) { return x.id === id; })[0];
+    if (!it) return fallback;
+    var n = parseInt(String(it.num).replace(/\D/g, ''), 10);
+    return isNaN(n) ? fallback : n;
   }
+  var FREE_SHIP = promoNum(1, 3);    // 全场满 N 件包邮
+  var POD_GIFT  = promoNum(2, 5);    // 烟弹满 N 盒赠保护套
+  var POD_GIFT2 = promoNum(3, 10);   // 烟弹满 N 盒赠 1 盒
+  var DISP_GIFT = promoNum(4, 5);    // 一次性满 N 支赠 1 支
+
+  // 收集所有「尚未达成」的门槛，每条记录还差多少（gap），最后取 gap 最小的一条展示。
+  // 用候选列表而非 if/else 互斥链：包邮和赠保护套本不冲突，应展示最容易达成的那条。
+  var MAX_GAP = 3;  // 差距超过 3 就不再引导（"再选 5 盒"这类提示没有说服力）
+  var cands = [];
+  // prio 越小越优先：同 gap 时先推赠品（实物 ¥19.9 比包邮更能拉动客单价），包邮排最后
+  function addCand(gap, prio, text) { if (gap > 0 && gap <= MAX_GAP) cands.push({ gap: gap, prio: prio, text: text }); }
+
+  // 烟弹 → 赠保护套
+  if (podCount > 0) {
+    addCand(POD_GIFT - podCount, 0,
+      '💡 再选 ' + (POD_GIFT - podCount) + ' 盒，赠送价值 ¥19.9 烟杆保护套（幻影系列适配，随机款式）');
+  }
+  // 一次性 → 赠 1 支
+  if (dispCount > 0) {
+    addCand(DISP_GIFT - dispCount, 1,
+      '💡 再选 ' + (DISP_GIFT - dispCount) + ' 支，赠送同款一次性 1 支');
+  }
+  // 烟弹 → 赠 1 盒（高门槛，靠 MAX_GAP 自然过滤）
+  if (podCount > 0) {
+    addCand(POD_GIFT2 - podCount, 2,
+      '🎁 再选 ' + (POD_GIFT2 - podCount) + ' 盒，烟弹满 ' + POD_GIFT2 + ' 盒赠 1 盒');
+  }
+  // 全场 → 包邮（唯一按「总件数」算的门槛，优先级最低）
+  addCand(FREE_SHIP - totalItems, 3,
+    '💡 再选 ' + (FREE_SHIP - totalItems) + ' 件，可享全场包邮');
+
+  if (!cands.length) {
+    // 全部门槛已达成，或剩余差距都超过 MAX_GAP
+    el.style.display = 'none';
+    return;
+  }
+  // 先比 gap（越近越优先），gap 相同再比 prio，保证结果稳定可预期
+  cands.sort(function(a, b) { return (a.gap - b.gap) || (a.prio - b.prio); });
+  el.textContent = cands[0].text;
+  el.style.display = 'block';
 }
 
 function computeGiftInfo(items) {
@@ -4332,11 +4384,20 @@ function computeGiftInfo(items) {
     }
   });
   var totalItems = podCount + dispCount;
+  // 门槛从跑马灯配置动态读取，避免与活动文案脱节
+  var pcfg = loadPromoConfig();
+  function pnum(id, fallback) {
+    var it = (pcfg.items || []).filter(function(x) { return x.id === id; })[0];
+    if (!it) return fallback;
+    var n = parseInt(String(it.num).replace(/\D/g, ''), 10);
+    return isNaN(n) ? fallback : n;
+  }
+  var FREE_SHIP = pnum(1, 3), POD_GIFT = pnum(2, 5), POD_GIFT2 = pnum(3, 10), DISP_GIFT = pnum(4, 5);
   var gifts = [];
-  if (totalItems >= 2) gifts.push('🎁 全场满2件 · 包邮');
-  if (podCount >= 3) gifts.push('🎁 烟弹满3盒 · 赠保护套（幻影系列适配，随机款式）');
-  if (podCount >= 10) gifts.push('🎁 烟弹满10盒 · 赠1盒');
-  if (dispCount >= 5) gifts.push('🎁 一次性满5支 · 赠1支');
+  if (totalItems >= FREE_SHIP) gifts.push('🎁 全场满' + FREE_SHIP + '件 · 包邮');
+  if (podCount >= POD_GIFT) gifts.push('🎁 烟弹满' + POD_GIFT + '盒 · 赠保护套（幻影系列适配，随机款式）');
+  if (podCount >= POD_GIFT2) gifts.push('🎁 烟弹满' + POD_GIFT2 + '盒 · 赠1盒');
+  if (dispCount >= DISP_GIFT) gifts.push('🎁 一次性满' + DISP_GIFT + '支 · 赠1支');
   return gifts;
 }
 

@@ -239,7 +239,7 @@
         "style": "清淡",
         "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/pod_images/image9.jpeg?v=2",
         "flags": [],
-        "status": "active"
+        "status": "off"
       },
       {
         "id": 10,
@@ -312,7 +312,7 @@
         "style": "偏浓",
         "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/pod_images/image12.jpeg?v=2",
         "flags": [],
-        "status": "active"
+        "status": "off"
       },
       {
         "id": 13,

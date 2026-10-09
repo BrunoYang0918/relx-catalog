@@ -252,7 +252,7 @@
     ]
   },
   "other": {
-    "title": "Voopoo · 美深威 · HQD",
+    "title": "Voopoo · 美深威 · 可逸",
     "products": [
       {
         "id": 110,
@@ -354,7 +354,7 @@
         "style": "适中",
         "img": "https://cdn.jsdelivr.net/gh/BrunoYang0918/relx-catalog/extracted_images/disposable_images/image14.jpeg?v=2",
         "flags": [],
-        "status": "active"
+        "status": "off"
       },
       {
         "id": 115,
